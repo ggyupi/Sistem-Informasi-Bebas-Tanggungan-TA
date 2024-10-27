@@ -1,3 +1,5 @@
+<p align="left"><img alt="Logo" src="blobs/KawaiiLogoV1.png" width=270></p>
+
 # 📚 Sistem Informasi Bebas Tanggungan Tugas Akhir 🎓
 
 Sistem ini dirancang untuk membantu mahasiswa dalam menyelesaikan proses administrasi bebas tanggungan tugas akhir secara otomatis dan terpusat. Dengan ini, mahasiswa dapat dengan mudah memantau dan mengelola status tanggungan mereka seperti perpustakaan, akademik, laporan magang, dan lainnya.
