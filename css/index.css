@@ -85,7 +85,7 @@ body {
 }
 
 #banner-wrapper {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -93,6 +93,54 @@ body {
 #banner-wrapper::after {
   content: "";
   flex-grow: 0.5;
+}
+
+#baner-bg-top {
+  min-width: 100%;
+  min-height: 115%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  overflow-x: clip;
+}
+
+#baner-bg-bottom {
+  min-width: 100%;
+  min-height: 125%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: -190%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  overflow-x: clip;
+}
+
+.banner-bg {
+  min-height: 115vh;
+  min-width: 125vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(
+    to right,
+    #ff1267 0%,
+    #2196f3 34%,
+    #8565be 67%,
+    #ed6746 100%
+  );
+  filter: blur(100px);
+  overflow: hidden;
 }
 
 #banner {
@@ -103,12 +151,6 @@ body {
   flex-wrap: wrap;
   gap: 100px;
 }
-
-/* @media (max-width: 995px){
-    #banner {
-       gap: 100px;
-    }
-} */
 
 #banner-left,
 #banner-right {
@@ -155,22 +197,27 @@ body {
 }
 
 #bawa-aku-login {
-  background-image: linear-gradient(
-    to right,
-    var(--bs-primary),
-    var(--bs-secondary)
-  );
-
+  background-color: var(--bs-secondary);
+  background: linear-gradient(to right, var(--bs-primary), var(--bs-secondary));
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
   gap: 10px;
+  transition: background 0.3s;
+  color: white;
+  text-decoration: none;
+  padding: 18px 24px;
 }
 
-#bawa-aku-login a {
+#bawa-aku-login:hover {
+  background: var(--bs-secondary-bg);
+}
+
+#bawa-aku-login h6 {
   font-family: "FOT-Yuruka";
   font-size: 16px;
+  margin: auto;
 }
 
 #members {
@@ -266,4 +313,11 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  transition: 0.3s;
+}
+
+#login-go:hover {
+  background-color: var(--bs-secondary);
+  color: var(--bs-body-bg);
+  border: none;
 }
