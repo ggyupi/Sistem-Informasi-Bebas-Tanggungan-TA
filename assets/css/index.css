@@ -192,8 +192,9 @@ body {
 
 #banner-right .card {
   max-width: 490px;
-  /* margin: 0px 100px; */
+  background: rgba(6, 20, 46, 0.5);
   padding: 12px 12px;
+  backdrop-filter: blur(100px);
 }
 
 #bawa-aku-login {
