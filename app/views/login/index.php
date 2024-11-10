@@ -3,19 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="assets/js/jquery-3.7.1.js"></script>
+    <script src="../assets/js/jquery-3.7.1.js"></script>
     <link
       rel="stylesheet"
       type="text/css"
       media="screen"
-      href="assets/css/bootstrap-5.3.3.css"
+      href="../assets/css/bootstrap-5.3.3.css"
     />
-    <script src="assets/js/bootstrap-5.3.3.js"></script>
+    <script src="../assets/js/bootstrap-5.3.3.js"></script>
     <link
       rel="stylesheet"
       type="text/css"
       media="screen"
-      href="assets/css/login.css"
+      href="../assets/css/login.css"
     />
     <title>Loginkan dulu</title>
   </head>
@@ -23,12 +23,12 @@
     <div id="background-image"></div>
     <div id="form-login">
       <div id="form-banner">
-        <img src="assets/imgs/jti_polinema.png" />
+        <img src="../assets/imgs/jti_polinema.png" />
         <h1>Welcome</h1>
         <p>Login to PBL Bebas TA</p>
       </div>
       <div id="form-input">
-        <form>
+        <form method="post">
           <div class="mb-3">
             <label for="input-username" class="form-label">Username</label>
             <input

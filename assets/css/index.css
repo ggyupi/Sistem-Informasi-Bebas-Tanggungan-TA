@@ -156,10 +156,11 @@ body {
 #banner-right {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
   gap: 24px;
   flex-grow: 1;
+  min-height: 80vh;
 }
 
 #banner-left h5 {
@@ -270,8 +271,7 @@ body {
 #what-they-card-wrapper {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  /* justify-content: space-around; */
+  align-items: stretch;
   gap: 24px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -286,6 +286,7 @@ body {
 }
 
 #what-they-card-wrapper .card {
+  max-width: 500px;
   min-width: min(100%, 500px);
   min-height: 460px;
   border: none;
