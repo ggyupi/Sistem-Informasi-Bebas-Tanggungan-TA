@@ -1,18 +1,71 @@
 <?php
 
+require_once '../app/models/User.php';
+
 class LoginController extends Controller
 {
-    // Default method to load when this controller is accessed
-    // Delete later - Raruu
+    private $user;
+
+    public function __construct()
+    {
+        $this->user = new User(Database::getInstance(getDatabaseConfig()));
+    }
+
+
     public function index()
     {
-        // Example data to pass to the view
-        $data = [
-            // 'title' => 'Welcome to My MVC App',
-            // 'content' => 'This is the home page content loaded from the HomeController.'
-        ];
+        $this->view('landing/index', []);
+    }
 
-        // Load the view and pass the data
-        $this->view('login/index', $data);
+    public function login()
+    {
+        $db = Database::getInstance(getDatabaseConfig());
+
+        if ($db->getConnection()) {
+            consoleLog("[LoginController, login]", "koneksi berhasil tuan");
+        }
+        if (Session::exists('username') && Session::exists('password') && Session::exists('level')) {
+            $this->dologin();
+        } else {
+            $this->view('login/index', ['']);
+        }
+    }
+
+    public function postLogin()
+    {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $level = isset($_POST['isAdmin']) ? 'Admin' : 'Mahasiswa';
+
+        Session::set('username', $username);
+        Session::set('password', $password);
+        Session::set('level', $level);
+        $this->dologin();
+    }
+
+    public function dologin()
+    {
+        $user = $this->user->getUserByUsername(Session::get('username'), Session::get('password'), Session::get('level'));
+        if ($user) {
+            if (Session::get('level')) {
+                $this->view('admin/index', []);
+            } else {
+                $this->view('user/index', []);
+            }
+        } else {
+            $username = Session::get('username');
+            $password = Session::get('password');
+            $level = Session::get('level');
+            Session::destroy();
+            Session::start();
+            $this->view('login/index', ['not_found' => true, 'username' => $username, 'password' => $password, 'level' => $level]);
+        }
+    }
+
+    public function logout()
+    {
+        Session::destroy();
+        $this->view('landing/index', []);
+        exit();
     }
 }

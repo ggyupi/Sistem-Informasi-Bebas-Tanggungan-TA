@@ -2,38 +2,37 @@
 
 class App
 {
-    protected $controller = 'LoginController';
-    protected $method = 'index';
-    protected $params = [];
+    protected static $controller = 'LoginController';
+    protected static $method = 'index';
+    protected static $params = [];
 
-    public function __construct()
+    public static function route()
     {
-        $url = $this->parseUrl();
-
-        if (isset($url[0]) && file_exists("../app/controllers/" . $url[0] . ".php")) {
-            $this->controller = $url[0];
-            unset($url[0]);
+        $url = self::parseUrl();
+        if (isset($url[0]) && file_exists("../app/controllers/" . ucwords($url[0]) . "Controller.php")) {
+            self::$controller = ucwords($url[0]) . "Controller";
         }
 
-        require_once "../app/controllers/" . $this->controller . ".php";
-        $this->controller = new $this->controller;
+        require_once "../app/controllers/" . self::$controller . ".php";
+        self::$controller = new self::$controller;
 
-        if (isset($url[1])) {
-            if (method_exists($this->controller, $url[1])) {
-                $this->method = $url[1];
-                unset($url[1]);
-            }
+        $endUrl = explode("?", end($url));
+        if (method_exists(self::$controller, $endUrl[0])) {
+            self::$method = preg_replace('/\.php$/', '', $endUrl[0]);
         }
 
-        $this->params = $url ? array_values($url) : [];
+        self::$params = $url ? array_values($url) : [];
 
-        call_user_func_array([$this->controller, $this->method], $this->params);
+        call_user_func_array([self::$controller, self::$method], self::$params);
     }
 
-    public function parseUrl()
+    public static function parseUrl()
     {
+        // consoleLog("[App, parseUrl]", $_GET['url']);
         if (isset($_GET['url'])) {
-            return explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
+            $arr =  array_values(array_filter(explode('/', filter_var(trim($_GET['url'], '/'), FILTER_SANITIZE_URL))));
+            array_splice($arr, 0, 4);
+            return $arr;
         }
         return [];
     }
