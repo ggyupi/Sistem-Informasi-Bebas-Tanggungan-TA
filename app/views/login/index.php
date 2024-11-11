@@ -28,7 +28,7 @@
         <p>Login to PBL Bebas TA</p>
       </div>
       <div id="form-input">
-        <form method="post" action="login/dologin">
+        <form method="post" action="postLogin">
           <div class="mb-3">
             <label for="input-username" class="form-label">Username</label>
             <input

@@ -169,8 +169,8 @@
             </div>
         </div>
 
-        <form method="post" action="login/login">
-            <button class="button-go" id="login-go" type="submit" name="loginkan">
+        <form method="get" action="login">
+            <button class="button-go" id="login-go" type="submit">
                 <svg
                     fill="transparent"
                     xmlns="http://www.w3.org/2000/svg"

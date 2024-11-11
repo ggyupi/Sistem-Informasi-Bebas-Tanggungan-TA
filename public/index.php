@@ -13,4 +13,5 @@ require_once '../app/core/Database.php';
 require_once '../app/utils/utils.php';
 require_once '../app/config/config.php';
 
-$app = new App();
+Session::start();
+App::route();

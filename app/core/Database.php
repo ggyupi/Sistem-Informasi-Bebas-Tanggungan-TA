@@ -2,9 +2,10 @@
 
 class Database
 {
+    private static $instance = null;
     private $connection;
 
-    public function __construct(array $config)
+    private function __construct(array $config)
     {
         $serverName = $config["server_name"];
         $database = $config["database"];
@@ -18,6 +19,14 @@ class Database
         } catch (PDOException $e) {
             die("Koneksi gagal tuan: " . $e->getMessage());
         }
+    }
+
+    public static function getInstance(array $config)
+    {
+        if (self::$instance === null) {
+            self::$instance = new self($config);
+        }
+        return self::$instance;
     }
 
     public function getConnection()
