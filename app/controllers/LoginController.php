@@ -45,7 +45,7 @@ class LoginController extends Controller
 
     public function dologin()
     {
-        $user = $this->user->getUserByUsername(Session::get('username'), Session::get('password'), Session::get('level'));     
+        $user = $this->user->getUserByUsername(Session::get('username'), Session::get('password'), Session::get('level'));
         if ($user) {
             if (Session::get('level')) {
                 $this->view('admin/index', []);
@@ -53,9 +53,12 @@ class LoginController extends Controller
                 $this->view('user/index', []);
             }
         } else {
+            $username = Session::get('username');
+            $password = Session::get('password');
+            $level = Session::get('level');
             Session::destroy();
             Session::start();
-            $this->view('login/index', ['']);
+            $this->view('login/index', ['not_found' => true, 'username' => $username, 'password' => $password, 'level' => $level]);
         }
     }
 

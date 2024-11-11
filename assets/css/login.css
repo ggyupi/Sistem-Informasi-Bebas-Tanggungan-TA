@@ -156,15 +156,12 @@ body {
   transform: translateX(-101%);
 }
 
-#login-as-switch-options p:last-child {
-  color: black;
-}
-
 #login-as-switch
   input:checked
   + #login-as-switch-slider
   + #login-as-switch-options
-  p:first-child {
+  p:first-child,
+#login-as-switch-options p:last-child {
   color: #595c5f;
 }
 
@@ -190,4 +187,20 @@ body {
   flex: 1;
   margin: auto;
   text-align: center;
+}
+
+#msg-tidak-ditemukan{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  background-color: var(--bs-form-invalid-color);
+  padding: 10px 28px;
+  border-radius: 12px;
+}
+
+#msg-tidak-ditemukan p{
+  margin: 0px;
+  font-size: 0.9em;
 }
