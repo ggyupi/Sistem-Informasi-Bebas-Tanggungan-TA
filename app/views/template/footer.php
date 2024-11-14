@@ -26,6 +26,7 @@
     document.getElementById('toggle-dark-mode').addEventListener('click', function() {
         const html = document.getElementById('html');
         html.setAttribute('data-bs-theme', html.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark');
+        document.getElementById("dark-mode-text").innerHTML = (html.getAttribute('data-bs-theme') === 'dark' ? 'Dark' : 'Light') + " Mode";
         setUiState({
             'theme_mode': html.getAttribute('data-bs-theme')
         });
