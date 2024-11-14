@@ -7,6 +7,7 @@ body {
   border-radius: 15px;
   text-wrap: nowrap;
   background-color: var(--bs-secondary-bg);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Start Sidebar Expand */
@@ -47,64 +48,49 @@ body {
   margin: auto 0px;
 }
 
-[data-bs-theme="light"] .side-bar-btn {
+.side-bar-btn {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: start;
   gap: 12px;
   padding: 12px 16px;
-  background-color: transparent;
+  background-color: var(--bs-body-bg);
   border: none;
   cursor: pointer;
   border-radius: 99px;
   flex-grow: 1;
   transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: #64748b;
+  color: var(--bs-tertiary-color);
 }
 
-[data-bs-theme="dark"] .side-bar-btn {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  gap: 12px;
-  padding: 12px 16px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  border-radius: 99px;
-  flex-grow: 1;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: #a3a7ac;
+.side-bar-btn svg {
+  stroke: var(--bs-tertiary-color);
 }
 
-[data-bs-theme="light"] .side-bar-btn svg {
-  stroke: #64748b;
+.side-bar-btn:hover {
+  background-color: var(--bs-tertiary-bg);
 }
 
-[data-bs-theme="dark"] .side-bar-btn svg {
-  stroke: #a3a7ac;
+.side-bar-btn:hover,
+.side-bar-btn:hover svg {
+  color: var(--bs-emphasis-color);
+  stroke: var(--bs-emphasis-color);
 }
 
-[data-bs-theme="light"] .side-bar-btn-selected {
-  background-color: #eef2ff !important;
+.side-bar-btn-selected {
+  background-color: var(--bs-tertiary-bg) !important;
 }
 
-[data-bs-theme="dark"] .side-bar-btn-selected {
-  background-color: #3a3f5f !important;
-}
-
-[data-bs-theme="light"] .side-bar-btn-selected,
+.side-bar-btn-selected,
 .side-bar-btn-selected svg {
-  color: #4f46e5 !important;
-  stroke: #4f46e5 !important;
+  color: var(--bs-primary) !important;
+  stroke: var(--bs-primary) !important;
 }
 
 [data-bs-theme="dark"] .side-bar-btn-selected,
 .side-bar-btn-selected svg {
-  color: #fff !important;
-  stroke: #4f46e5 !important;
+  color: var(--bs-emphasis-color) !important;
 }
 
 .side-bar-btn svg {
@@ -116,14 +102,6 @@ body {
   width: 0px;
   margin: -6px;
   transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-[data-bs-theme="light"] .side-bar-btn:hover {
-  background-color: #eef2ff;
-}
-
-[data-bs-theme="dark"] .side-bar-btn:hover {
-  background-color: #3a3f5f;
 }
 
 .side-bar-btn:hover span {
@@ -238,15 +216,8 @@ body {
   left: 267px;
   border: 1px solid #e2e8f0;
 }
-
-[data-bs-theme="light"] 
-#toggle-side-bar-btn svg{
-  fill: #081021;
-}
-
-[data-bs-theme="dark"] 
-#toggle-side-bar-btn svg{
-  fill: #fff;
+#toggle-side-bar-btn svg {
+  fill: var(--bs-emphasis-color);
 }
 
 #toggle-side-bar:checked + #side-bar #toggle-side-bar-btn {
@@ -296,6 +267,7 @@ body {
   justify-content: space-between;
   background-color: var(--bs-body-bg);
   padding: 14px 40px;
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 #top-bar h1 {
@@ -305,6 +277,30 @@ body {
 
 #top-bar form {
   margin: 0px;
+}
+
+#btn-logout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 28px;
+  gap: 6px;
+  border-radius: 10px;
+  background-color: var(--bs-body-bg);
+  border: none;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#btn-logout svg {
+  fill: var(--bs-emphasis-color);
+}
+
+#btn-logout:hover {
+  background-color: var(--bs-tertiary-bg);
+  color: var(--bs-emphasis-color);
 }
 
 #page-content {
