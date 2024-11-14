@@ -1,6 +1,6 @@
 <?php
 
-class Controller
+abstract class Controller
 {
     public function view($view, $data = [])
     {
@@ -18,6 +18,20 @@ class Controller
             return new $model();
         } else {
             die("Model does not exist.");
+        }
+    }
+
+    public function logout()
+    {
+        Session::destroy();
+        header("Location: " . BASE_URL);
+        exit();
+    }
+
+    public function setUiState()
+    {
+        foreach ($_POST['set_ui_state'] as $key => $value) {
+            Session::set($key, $value);
         }
     }
 }

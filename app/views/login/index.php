@@ -4,13 +4,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="<?= JS; ?>jquery-3.7.1.js" type="text/jsx"></script>
+  <script src="<?= JS; ?>jquery-3.7.1.js"></script>
   <link
     rel="stylesheet"
     type="text/css"
     media="screen"
     href="<?= CSS; ?>bootstrap-5.3.3.css" />
-  <script src="<?= JS; ?>bootstrap-5.3.3.js" type="text/jsx"></script>
+  <script src="<?= JS; ?>bootstrap-5.3.3.js"></script>
   <link
     rel="stylesheet"
     type="text/css"

@@ -47,10 +47,12 @@ class LoginController extends Controller
     {
         $user = $this->user->getUserByUsername(Session::get('username'), Session::get('password'), Session::get('level'));
         if ($user) {
-            if (Session::get('level')) {
-                $this->view('admin/index', []);
+            if (Session::get('level') == 'Admin') {
+                require_once '../app/controllers/AdminController.php';
+                header("Location: admin/index");
             } else {
-                $this->view('user/index', []);
+                require_once '../app/controllers/UserController.php';
+                header("Location: user/index");
             }
         } else {
             $username = Session::get('username');
