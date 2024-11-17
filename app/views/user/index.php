@@ -8,7 +8,7 @@
 
 <body>
     <input type="checkbox" id="toggle-side-bar" <?= Session::get('toggle_sidebar') === 'true' ? 'checked' : '' ?> />
-    <div id="side-bar">
+    <div class="offcanvas-md offcanvas-start <?= Session::get('toggle_sidebar') === 'true' ? '' : 'show' ?>" id="side-bar">
         <?php include VIEWS . "template/sidebar/sidebar-top.php"; ?>
 
         <div id="side-bar-menu">

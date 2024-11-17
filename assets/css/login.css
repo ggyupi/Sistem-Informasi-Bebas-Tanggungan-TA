@@ -7,6 +7,7 @@ body {
   align-items: center;
   justify-content: end;
   padding: 20px;
+  font-family: "Poppins", sans-serif;
 }
 
 #background-image {
@@ -27,7 +28,7 @@ body {
   height: 97vh;
   max-width: 760px;
   width: 100%;
-  background-color: rgba(39, 39, 39, 0.3);
+  background-color: rgba(161, 161, 161, 0.5);
   backdrop-filter: blur(12px);
   border-radius: 10px;
   display: flex;
@@ -189,7 +190,7 @@ body {
   text-align: center;
 }
 
-#msg-tidak-ditemukan{
+#msg-tidak-ditemukan {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -200,7 +201,7 @@ body {
   border-radius: 12px;
 }
 
-#msg-tidak-ditemukan p{
+#msg-tidak-ditemukan p {
   margin: 0px;
   font-size: 0.9em;
 }
