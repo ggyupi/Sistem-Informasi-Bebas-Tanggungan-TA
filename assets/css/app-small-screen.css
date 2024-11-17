@@ -25,4 +25,8 @@
     justify-content: flex-start;
     gap: 42px;
   }
+
+  #side-bar-bottom .show {
+    display: none !important;
+  }
 }
