@@ -150,6 +150,10 @@ body {
   cursor: pointer;
 }
 
+#side-bar-bottom svg{
+  fill: var(--bs-emphasis-color);
+}
+
 #side-bar-user-info {
   display: flex;
   flex-direction: row;
@@ -279,6 +283,20 @@ body {
   margin: 0px;
 }
 
+#top-bar-logout-wrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+#top-bar-logout-wrapper p {
+  margin: 0px;
+  margin-bottom: -2px;
+  font-size: 20px;
+}
+
 #btn-logout {
   display: flex;
   flex-direction: row;
@@ -299,8 +317,12 @@ body {
 }
 
 #btn-logout:hover {
-  background-color: var(--bs-tertiary-bg);
-  color: var(--bs-emphasis-color);
+  background-color: var(--bs-danger);
+  color: var(--bs-body-bg);
+}
+
+#btn-logout:hover svg{
+  fill: var(--bs-body-bg);
 }
 
 #page-content {

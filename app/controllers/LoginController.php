@@ -1,6 +1,6 @@
 <?php
 
-require_once '../app/models/User.php';
+require_once '../app/models/Login.php';
 
 class LoginController extends Controller
 {
@@ -8,7 +8,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->user = new User(Database::getInstance(getDatabaseConfig(), [$this, 'error']));       
+        $this->user = new Login(Database::getInstance(getDatabaseConfig(), [$this, 'error']));       
     }
 
 

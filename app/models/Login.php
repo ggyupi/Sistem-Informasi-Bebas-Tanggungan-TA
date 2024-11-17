@@ -1,6 +1,6 @@
 <?php
 
-class User
+class Login
 {
     private $db;
 
