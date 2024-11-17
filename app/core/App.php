@@ -6,7 +6,7 @@ class App
     protected static $method = 'index';
     protected static $params = [];
 
-    public static function route($url=BASE_URL)
+    public static function route($url = BASE_URL)
     {
         $url = self::parseUrl($url);
         if (isset($url[0]) && file_exists("../app/controllers/" . ucwords($url[0]) . "Controller.php")) {
