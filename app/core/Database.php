@@ -17,15 +17,23 @@ class Database
             $this->connection = new PDO($dsn, $username, $password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            die("Koneksi gagal tuan: " . $e->getMessage());
+            // die("Koneksi gagal tuan: " . $e->getMessage() . $e->getCode() . $e);
+            throw new PDOException("Koneksi gagal tuan: " . $e->getMessage(), $e->getCode(), $e);
         }
     }
 
-    public static function getInstance(array $config)
+    public static function getInstance(array $config, $onError)
     {
-        if (self::$instance === null) {
-            self::$instance = new self($config);
+        // Test Error Page
+        // call_user_func($onError, "404", "Message");
+        try {
+            if (self::$instance === null) {
+                self::$instance = new self($config);
+            }
+        } catch (PDOException $e) {
+            call_user_func($onError, $e->getCode(), $e->getMessage());
         }
+
         return self::$instance;
     }
 

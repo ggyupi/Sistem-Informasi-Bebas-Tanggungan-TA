@@ -34,4 +34,10 @@ abstract class Controller
             Session::set($key, $value);
         }
     }
+
+    public function error($code = 404, $message = "Page not found")
+    {
+        $this->view('error/index', ["code" => $code, "message" => $message]);
+        exit();
+    }
 }

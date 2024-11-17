@@ -22,7 +22,7 @@
 
     <div id="the-content">
         <div id="top-bar">
-            <?php include VIEWS . "template/sidebar/top-bar.php" ?>
+            <?php include VIEWS . "template/top-bar.php" ?>
         </div>
 
         <div id="page-content">
