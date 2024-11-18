@@ -1,3 +1,5 @@
+<?php include VIEWS . "component/status-card.php"; ?>
+
 <!DOCTYPE html>
 <html data-bs-theme="<?= Session::get('theme_mode') === 'dark' ? 'dark' : 'light' ?>" id="html">
 
@@ -25,6 +27,24 @@
         </div>
         <div id="page-content">
             <?php
+            statusCard(
+                'test-card',
+                'Test',
+                [[
+                    'type' => 'good',
+                    'icon' => Icons::Close,
+                    'title' => '1 Buku',
+                    'subtitle' => 'Terpinjam',
+                    'href' => ''
+                ], [
+                    'type' => 'bad',
+                    'icon' => Icons::Logout,
+                    'title' => '1 Buku',
+                    'subtitle' => 'Terpinjam',
+                    'href' => ''
+                ]]
+            );
+            echo '<br>';
             echo "Username: " . Session::get('username') . "<br>";
             echo "level: " .  Session::get('level') . "<br>";
             echo "password: " .  Session::get('password') . "<br>";
