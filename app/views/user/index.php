@@ -32,12 +32,17 @@
         </div>
     </div>
     <form method="post" action="logout">
-    <?php include VIEWS . "template/dialog-yes-no.php";
-        dialogYesNo('logout', 'Logout', 'Logout dan Hapus Sesi Saat ini', 
-        SvgIcons::getIcon(Icons::Logout) . 'Logout', SvgIcons::getIcon(Icons::Close) . 'Ga Jadi', true);
-    ?>
-    <form>
-
+        <?php include VIEWS . "component/dialog-yes-no.php";
+        dialogYesNo(
+            'logout',
+            'Logout',
+            'Logout dan Hapus Sesi Saat ini',
+            SvgIcons::getIcon(Icons::Logout) . 'Logout',
+            SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
+            true
+        );
+        ?>
+        <form>
 </body>
 
 <?php include VIEWS . "template/footer.php"; ?>
