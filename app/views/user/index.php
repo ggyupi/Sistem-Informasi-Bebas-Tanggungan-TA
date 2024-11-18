@@ -8,12 +8,11 @@
 
 <body>
     <input type="checkbox" id="toggle-side-bar" <?= Session::get('toggle_sidebar') === 'true' ? 'checked' : '' ?> />
-    <div id="side-bar">
+    <div class="dropend offcanvas-md offcanvas-start <?= Session::get('toggle_sidebar') === 'true' ? '' : 'show' ?>" id="side-bar">
         <?php include VIEWS . "template/sidebar/sidebar-top.php"; ?>
 
         <div id="side-bar-menu">
             <?php include VIEWS . "user/sidebar-nav1.php"; ?>
-
             <span id="side-bar-menu-seperator"></span>
             <?php include VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
         </div>
@@ -24,7 +23,6 @@
         <div id="top-bar">
             <?php include VIEWS . "template/top-bar.php" ?>
         </div>
-
         <div id="page-content">
             <?php
             echo "Username: " . Session::get('username') . "<br>";
@@ -33,6 +31,12 @@
             ?>
         </div>
     </div>
+    <form method="post" action="logout">
+    <?php include VIEWS . "template/dialog-yes-no.php";
+        dialogYesNo('logout', 'Logout', 'Logout dan Hapus Sesi Saat ini', 
+        SvgIcons::getIcon(Icons::Logout) . 'Logout', SvgIcons::getIcon(Icons::Close) . 'Ga Jadi', true);
+    ?>
+    <form>
 
 </body>
 

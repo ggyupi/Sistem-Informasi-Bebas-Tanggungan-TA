@@ -1,0 +1,32 @@
+@media (max-width: 768px) {
+  #side-bar {
+    transition: all 0.3s ease-out;
+  }
+
+  #toggle-side-bar:not(:checked) ~ #side-bar #toggle-side-bar-btn {
+    display: flex !important;
+  }
+
+  #top-bar-logout-wrapper,
+  #toggle-side-bar-btn {
+    display: none;
+  }
+
+  #toggle-side-bar-btn-in-top-bar {
+    display: flex !important;
+    transform: rotate(180deg);
+  }
+
+  #toggle-side-bar-btn-in-top-bar svg {
+    fill: var(--bs-emphasis-color);
+  }
+
+  #top-bar {
+    justify-content: flex-start;
+    gap: 42px;
+  }
+
+  #side-bar-bottom .show {
+    display: none !important;
+  }
+}

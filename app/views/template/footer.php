@@ -15,13 +15,22 @@
         });
     }
 
-    document.getElementById('toggle-side-bar-btn').addEventListener('click', function() {
-        var toggleSidebar = document.getElementById('toggle-side-bar');
-        toggleSidebar.checked = !toggleSidebar.checked;
-        setUiState({
-            'toggle_sidebar': toggleSidebar.checked
+    const toggleSideBarBtns = document.getElementsByClassName('toggle-side-bar-btn');
+    for (let i = 0; i < toggleSideBarBtns.length; i++) {
+        toggleSideBarBtns[i].addEventListener('click', function() {
+            const toggleSidebar = document.getElementById('toggle-side-bar');
+            const sideBar = document.getElementById('side-bar');
+            toggleSidebar.checked = !toggleSidebar.checked;
+            if (toggleSidebar.checked) {
+                sideBar.classList.remove('show');
+            } else {
+                sideBar.classList.add('show');
+            }
+            setUiState({
+                'toggle_sidebar': toggleSidebar.checked
+            });
         });
-    });
+    }
 
     document.getElementById('toggle-dark-mode').addEventListener('click', function() {
         const html = document.getElementById('html');
@@ -36,7 +45,7 @@
     for (let i = 0; i < sidebarNav.length; i++) {
         for (let j = 0; j < sidebarNav[i].children.length; j++) {
             const button = sidebarNav[i].children[j];
-            const buttonTitle = button.children[2];      
+            const buttonTitle = button.children[2];
             if (buttonTitle.innerHTML == '<?= ucwords(isset($data['page']) ? $data['page'] : 'Dashboard') ?>') {
                 button.classList.add('side-bar-btn-selected');
                 break;

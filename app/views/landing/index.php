@@ -11,7 +11,7 @@
         type="text/css"
         media="screen"
         href="<?= CSS; ?>bootstrap-5.3.3.css" />
-    <script src="<?= JS; ?>bootstrap-5.3.3.js"></script>
+    <script src="<?= JS; ?>bootstrap.bundle.min-5.3.3.js"></script>
     <link
         rel="stylesheet"
         type="text/css"
