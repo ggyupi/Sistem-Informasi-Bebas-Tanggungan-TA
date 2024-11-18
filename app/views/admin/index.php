@@ -10,10 +10,8 @@
     <input type="checkbox" id="toggle-side-bar" <?= Session::get('toggle_sidebar') === 'true' ? 'checked' : '' ?> />
     <div id="side-bar">
         <?php include VIEWS . "template/sidebar/sidebar-top.php"; ?>
-
         <div id="side-bar-menu">
             <?php include VIEWS . "admin/sidebar-nav1.php"; ?>
-
             <span id="side-bar-menu-seperator"></span>
             <?php include VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
         </div>
@@ -33,7 +31,7 @@
             ?>
         </div>
     </div>
-
+    <?php include VIEWS . "template/dialog_logout.php"; ?>
 </body>
 
 <?php include VIEWS . "template/footer.php"; ?>

@@ -7,4 +7,12 @@ class AdminController extends Controller
         $this->view('admin/index', ["page" => $page]);
     }
 
+    public function page()
+    {
+        if (isset($_GET['page'])) {
+            $page = strtolower($_GET['page']);
+            $this->index($page);
+        }
+    }
+
 }

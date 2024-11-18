@@ -180,7 +180,7 @@ body {
   white-space: nowrap;
 }
 
-.dropdown-menu li a{
+.dropdown-menu li a {
   transition: all 0.25s cubic-bezier(0.34, 0.56, 0.64, 1);
 }
 
@@ -394,4 +394,40 @@ body {
 .dropdown-menu {
   top: unset !important;
   bottom: 16px;
+}
+
+.modal-header {
+  background-color: var(--bs-dark);
+  color: white;
+}
+
+.modal-footer {
+  border: none;
+}
+
+.btn {
+  border-radius: 30px !important;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn svg {
+  fill: var(--bs-btn-color);
+  padding: 3px;
+}
+
+.btn-outline {
+  border: 1px solid var(--bs-emphasis-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--bs-secondary);
+  color: var(--bs-body-bg);
+}
+
+.btn-outline:hover svg {
+  fill: var(--bs-body-bg);
 }

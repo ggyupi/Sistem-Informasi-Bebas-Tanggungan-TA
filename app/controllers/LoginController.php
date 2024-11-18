@@ -63,11 +63,4 @@ class LoginController extends Controller
             $this->view('login/index', ['not_found' => true, 'username' => $username, 'password' => $password, 'level' => $level]);
         }
     }
-
-    public function logout()
-    {
-        Session::destroy();
-        $this->view('landing/index', []);
-        exit();
-    }
 }

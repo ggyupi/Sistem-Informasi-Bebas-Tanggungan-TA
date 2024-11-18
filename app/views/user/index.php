@@ -13,7 +13,6 @@
 
         <div id="side-bar-menu">
             <?php include VIEWS . "user/sidebar-nav1.php"; ?>
-
             <span id="side-bar-menu-seperator"></span>
             <?php include VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
         </div>
@@ -24,7 +23,6 @@
         <div id="top-bar">
             <?php include VIEWS . "template/top-bar.php" ?>
         </div>
-
         <div id="page-content">
             <?php
             echo "Username: " . Session::get('username') . "<br>";
@@ -33,7 +31,7 @@
             ?>
         </div>
     </div>
-
+    <?php include VIEWS . "template/dialog_logout.php"; ?>
 </body>
 
 <?php include VIEWS . "template/footer.php"; ?>
