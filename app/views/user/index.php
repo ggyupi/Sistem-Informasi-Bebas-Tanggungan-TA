@@ -54,7 +54,7 @@
     <form method="post" action="logout">
         <?php include VIEWS . "component/dialog-yes-no.php";
         dialogYesNo(
-            'logout',
+            'dialog-logout',
             'Logout',
             'Logout dan Hapus Sesi Saat ini',
             SvgIcons::getIcon(Icons::Logout) . 'Logout',
