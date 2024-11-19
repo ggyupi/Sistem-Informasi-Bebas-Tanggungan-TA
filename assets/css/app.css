@@ -11,9 +11,9 @@ body {
   min-height: 100vh;
 }
 
-a{
+a {
   text-decoration: none;
-  color: #4079ED;
+  color: #4079ed;
 }
 
 /* Start Sidebar Expand */
@@ -450,11 +450,11 @@ a{
   width: fit-content;
 }
 
-.card-status h2{
+.card-status h2 {
   font-size: 20px;
 }
 
-.card-status-content-wrapper{
+.card-status-content-wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -469,25 +469,43 @@ a{
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  background-color: var(--bs-danger-bg-subtle);
   gap: 12px;
   border-radius: 16px;
   padding: 16px;
+  background-color: var(--bs-tertiary-bg)
 }
 
-.card-status-content h1{
+.card-status-content-danger {
+  background-color: var(--bs-danger-bg-subtle);
+}
+
+.card-status-content-warning {
+  background-color: var(--bs-warning-bg-subtle);
+}
+
+.card-status-content-success {
+  background-color: var(--bs-success-bg-subtle);
+}
+
+[data-bs-theme="dark"] .card-status-content-danger,
+[data-bs-theme="dark"] .card-status-content-warning,
+[data-bs-theme="dark"] .card-status-content-success {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.card-status-content h1 {
   font-size: 24px;
 }
 
-.card-status-content h3{
+.card-status-content h3 {
   font-size: 16px;
 }
 
-.card-status-content a{
+.card-status-content a {
   font-size: 12px;
 }
 
-.card-status-icon{
+.card-status-icon {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -497,7 +515,7 @@ a{
   background-color: var(--bs-danger);
 }
 
-.card-status-icon svg{
+.card-status-icon svg {
   fill: white;
 }
 /* End card-status */

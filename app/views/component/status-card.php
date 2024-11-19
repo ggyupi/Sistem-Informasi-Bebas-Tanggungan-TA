@@ -59,7 +59,7 @@ function statusCard($id, $title, $content)
             default:
                 break;
         }
-        echo '<div style="background-color: var(--bs-' . $color . '-bg-subtle)" class="card-status-content" >';
+        echo '<div class="card-status-content card-status-content-' . $color . '" >';
         echo '<div class="card-status-icon" style="background-color: var(--bs-' . $color . ')">';
         echo SvgIcons::getIcon($c['icon']);
         echo '</div>';

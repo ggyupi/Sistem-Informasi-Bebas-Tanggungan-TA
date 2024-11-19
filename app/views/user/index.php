@@ -42,6 +42,12 @@
                     'title' => '1 Buku',
                     'subtitle' => 'Terpinjam',
                     'href' => ''
+                ],[
+                    'type' => 'warning',
+                    'icon' => Icons::Logout,
+                    'title' => '1 Buku',
+                    'subtitle' => 'Terpinjam',
+                    'href' => ''
                 ]]
             );
             echo '<br>';
