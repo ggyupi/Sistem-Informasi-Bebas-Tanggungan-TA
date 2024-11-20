@@ -5,7 +5,7 @@
 
 <head>
     <?php include VIEWS . "template/head.php"; ?>
-    <title><?= ucwords(isset($data['page']) ? $data['page'] : 'Dashboard') ?></title>
+    <title><?= ucwords($data['screen'] ?? 'Dashboard') ?></title>
 </head>
 
 <body>

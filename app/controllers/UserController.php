@@ -2,16 +2,17 @@
 
 class UserController extends Controller
 {
-    public function index($page = "dashboard")
+    public function index($screen = "dashboard")
     {
-        $this->view('user/index', ["page" => $page]);
+        consoleLog("[UserController, index]", "screen: " . $screen);
+        $this->view('user/index', ["screen" => $screen]);
     }
 
-    public function page()
+    public function screen()
     {
-        if (isset($_GET['page'])) {
-            $page = strtolower($_GET['page']);
-            $this->index($page);
+        if (isset($_GET['screen'])) {
+            $screen = strtolower($_GET['screen']);
+            $this->index($screen);
         }
     }
 }
