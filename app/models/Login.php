@@ -9,7 +9,7 @@ class Login
         $this->db = $db->getConnection();
     }
 
-    public function getUserByUsername($username, $password, $level)
+    public function getUser($username, $password, $level)
     {
         $query = $this->db->prepare("SELECT * FROM Pengguna.[User] WHERE Username = :username AND Password = :password AND Level = :level");
         $query->bindValue(":username", $username);

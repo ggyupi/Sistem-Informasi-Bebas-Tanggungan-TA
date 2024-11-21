@@ -11,6 +11,11 @@ body {
   min-height: 100vh;
 }
 
+a {
+  text-decoration: none;
+  color: #4079ed;
+}
+
 /* Start Sidebar Expand */
 
 #side-bar {
@@ -238,12 +243,16 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  align-items: start;
+  align-items: stretch;
   justify-content: center;
+  width: 145px;
 }
 
 #side-bar-user-text p {
   margin: 0px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #side-bar-user-text p:first-child {
@@ -431,3 +440,86 @@ body {
 .btn-outline:hover svg {
   fill: var(--bs-body-bg);
 }
+
+/* Start card-status */
+.card-status {
+  background-color: var(--bs-body-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 32px;
+  padding: 24px 50px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.card-status h2 {
+  font-size: 20px;
+}
+
+.card-status-content-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 32px;
+}
+
+.card-status-content {
+  min-width: 180px;
+  min-height: 184px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  gap: 12px;
+  border-radius: 16px;
+  padding: 16px;
+  background-color: var(--bs-tertiary-bg)
+}
+
+.card-status-content-danger {
+  background-color: var(--bs-danger-bg-subtle);
+}
+
+.card-status-content-warning {
+  background-color: var(--bs-warning-bg-subtle);
+}
+
+.card-status-content-success {
+  background-color: var(--bs-success-bg-subtle);
+}
+
+[data-bs-theme="dark"] .card-status-content-danger,
+[data-bs-theme="dark"] .card-status-content-warning,
+[data-bs-theme="dark"] .card-status-content-success {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.card-status-content h1 {
+  font-size: 24px;
+}
+
+.card-status-content h3 {
+  font-size: 16px;
+}
+
+.card-status-content a {
+  font-size: 12px;
+}
+
+.card-status-icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 100%;
+  background-color: var(--bs-danger);
+}
+
+.card-status-icon svg {
+  fill: white;
+}
+/* End card-status */

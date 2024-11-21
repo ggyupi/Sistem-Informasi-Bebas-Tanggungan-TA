@@ -3,9 +3,9 @@
         <path fill-rule="evenodd" clip-rule="evenodd" d="M10.1658 4.23431C10.4782 4.54673 10.4782 5.05327 10.1658 5.36569L7.53147 8L10.1658 10.6343C10.4782 10.9467 10.4782 11.4533 10.1658 11.7657C9.85336 12.0781 9.34683 12.0781 9.03441 11.7657L5.83441 8.56569C5.52199 8.25327 5.52199 7.74673 5.83441 7.43431L9.03441 4.23431C9.34683 3.9219 9.85336 3.9219 10.1658 4.23431Z" />
     </svg>
 </button>
-<h1><?= ucwords(isset($data['page']) ? $data['page'] : 'Dashboard') ?> Menu</h1>
+<h1><?= ucwords($data['screen'] ?? 'Dashboard') ?> Menu</h1>
 <div id="top-bar-logout-wrapper">
-    <p>[NIM]</p>
+    <p><?= $data['user']->getPeopleId() ?? '[NIM|NIP]' ?></p>
     <button type="button" data-bs-toggle="modal" data-bs-target="#dialog-logout" id="btn-logout">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_721_6954)">

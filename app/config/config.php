@@ -5,7 +5,7 @@ function getDatabaseConfig(): array
 {
     return [
         "server_name" => "localhost",
-        "database" => "BebasTanggungan",
+        "database" => "BebasTA",
         "username" => "",
         "password" => "",
     ];

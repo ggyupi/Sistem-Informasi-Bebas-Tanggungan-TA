@@ -1,9 +1,11 @@
+<?php include VIEWS . "component/status-card.php"; ?>
+
 <!DOCTYPE html>
 <html data-bs-theme="<?= Session::get('theme_mode') === 'dark' ? 'dark' : 'light' ?>" id="html">
 
 <head>
     <?php include VIEWS . "template/head.php"; ?>
-    <title><?= ucwords(isset($data['page']) ? $data['page'] : 'Dashboard') ?></title>
+    <title><?= ucwords($data['screen'] ?? 'Dashboard') ?></title>
 </head>
 
 <body>
@@ -24,7 +26,37 @@
             <?php include VIEWS . "template/top-bar.php" ?>
         </div>
         <div id="page-content">
+            <form action="uploadTest" method="post" enctype="multipart/form-data">
+                <label for="file">Select a file:</label>
+                <input type="file" name="file" id="file" required>
+                <button class="btn btn-primary" type="submit">Upload</button>
+            </form>
+
             <?php
+            statusCard(
+                'test-card',
+                'Test',
+                [[
+                    'type' => 'good',
+                    'icon' => Icons::Close,
+                    'title' => '1 Buku',
+                    'subtitle' => 'Terpinjam',
+                    'href' => ''
+                ], [
+                    'type' => 'bad',
+                    'icon' => Icons::Logout,
+                    'title' => '1 Buku',
+                    'subtitle' => 'Terpinjam',
+                    'href' => ''
+                ], [
+                    'type' => 'warning',
+                    'icon' => Icons::Logout,
+                    'title' => '1 Buku',
+                    'subtitle' => 'Terpinjam',
+                    'href' => ''
+                ]]
+            );
+            echo '<br>';
             echo "Username: " . Session::get('username') . "<br>";
             echo "level: " .  Session::get('level') . "<br>";
             echo "password: " .  Session::get('password') . "<br>";
@@ -32,12 +64,17 @@
         </div>
     </div>
     <form method="post" action="logout">
-    <?php include VIEWS . "template/dialog-yes-no.php";
-        dialogYesNo('logout', 'Logout', 'Logout dan Hapus Sesi Saat ini', 
-        SvgIcons::getIcon(Icons::Logout) . 'Logout', SvgIcons::getIcon(Icons::Close) . 'Ga Jadi', true);
-    ?>
-    <form>
-
+        <?php include VIEWS . "component/dialog-yes-no.php";
+        dialogYesNo(
+            'dialog-logout',
+            'Logout',
+            'Logout dan Hapus Sesi Saat ini',
+            SvgIcons::getIcon(Icons::Logout) . 'Logout',
+            SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
+            true
+        );
+        ?>
+        <form>
 </body>
 
 <?php include VIEWS . "template/footer.php"; ?>

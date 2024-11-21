@@ -3,7 +3,7 @@
 
 <head>
     <?php include VIEWS . "template/head.php"; ?>
-    <title><?= ucwords(isset($data['page']) ? $data['page'] : 'Dashboard') ?></title>
+    <title><?= ucwords($data['screen'] ?? 'Dashboard') ?></title>
 </head>
 
 <body>
@@ -31,7 +31,18 @@
             ?>
         </div>
     </div>
-    <?php include VIEWS . "template/dialog_logout.php"; ?>
+    <form method="post" action="logout">
+        <?php include VIEWS . "component/dialog-yes-no.php";
+        dialogYesNo(
+            'dialog-logout',
+            'Logout',
+            'Logout dan Hapus Sesi Saat ini',
+            SvgIcons::getIcon(Icons::Logout) . 'Logout',
+            SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
+            true
+        );
+        ?>
+        <form>
 </body>
 
 <?php include VIEWS . "template/footer.php"; ?>
