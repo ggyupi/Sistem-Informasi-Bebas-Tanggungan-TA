@@ -11,7 +11,7 @@
             </div>
             <div id="side-bar-user-text">
                 <p class="text-secondary">Welcome back 👋</p>
-                <p>Raruu</p>
+                <p><?= $data['user']->getPeopleName() ?>aaaaaa</p>
             </div>
         </div>
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -26,6 +26,12 @@
             <?php include VIEWS . "template/top-bar.php" ?>
         </div>
         <div id="page-content">
+            <form action="uploadTest" method="post" enctype="multipart/form-data">
+                <label for="file">Select a file:</label>
+                <input type="file" name="file" id="file" required>
+                <button class="btn btn-primary" type="submit">Upload</button>
+            </form>
+
             <?php
             statusCard(
                 'test-card',
@@ -42,7 +48,7 @@
                     'title' => '1 Buku',
                     'subtitle' => 'Terpinjam',
                     'href' => ''
-                ],[
+                ], [
                     'type' => 'warning',
                     'icon' => Icons::Logout,
                     'title' => '1 Buku',

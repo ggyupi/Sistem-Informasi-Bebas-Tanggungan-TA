@@ -4,11 +4,11 @@ require_once '../app/models/Login.php';
 
 class LoginController extends Controller
 {
-    private $user;
+    private $login;
 
     public function __construct()
     {
-        $this->user = new Login(Database::getInstance(getDatabaseConfig(), [$this, 'error']));       
+        $this->login = new Login(Database::getInstance(getDatabaseConfig(), [$this, 'error']));       
     }
 
 
@@ -19,11 +19,6 @@ class LoginController extends Controller
 
     public function login()
     {
-        $db = Database::getInstance(getDatabaseConfig(), [$this, 'error']);
-
-        if ($db->getConnection()) {
-            consoleLog("[LoginController, login]", "koneksi berhasil tuan");
-        }
         if (Session::exists('username') && Session::exists('password') && Session::exists('level')) {
             $this->dologin();
         } else {
@@ -45,9 +40,9 @@ class LoginController extends Controller
 
     public function dologin()
     {
-        $user = $this->user->getUserByUsername(Session::get('username'), Session::get('password'), Session::get('level'));
+        $user = $this->login->getUser(Session::get('username'), Session::get('password'), Session::get('level'));
         if ($user) {
-            if (Session::get('level') == 'Admin') {
+            if (strpos(Session::get('level'), 'admin') !== false) {
                 require_once '../app/controllers/AdminController.php';
                 header("Location: admin/index");
             } else {

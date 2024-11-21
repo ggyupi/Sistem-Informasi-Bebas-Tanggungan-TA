@@ -243,12 +243,16 @@ a {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  align-items: start;
+  align-items: stretch;
   justify-content: center;
+  width: 145px;
 }
 
 #side-bar-user-text p {
   margin: 0px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #side-bar-user-text p:first-child {
