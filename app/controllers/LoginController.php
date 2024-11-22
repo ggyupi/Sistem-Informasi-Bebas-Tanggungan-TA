@@ -43,8 +43,7 @@ class LoginController extends Controller
         $user = $this->login->getUser(Session::get('username'), Session::get('password'), Session::get('level'));
         if ($user) {
             if (strpos(Session::get('level'), 'admin') !== false) {
-                $userLevel = $user['level'];
-                Session::set('level', substr($userLevel, strpos($userLevel, '-') + 1));
+                Session::set('level', $user['level']);  
                 require_once '../app/controllers/AdminController.php';
                 header("Location: admin/index");
             } else {
