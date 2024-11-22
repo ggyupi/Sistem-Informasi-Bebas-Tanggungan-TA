@@ -11,7 +11,7 @@ class Login
 
     public function getUser($username, $password, $level)
     {
-        $query = $this->db->prepare("SELECT * FROM Pengguna.[User] WHERE Username = :username AND Password = :password AND Level = :level");
+        $query = $this->db->prepare("SELECT * FROM Pengguna.[User] WHERE Username = :username AND Password = :password AND Level LIKE '%' + :level + '%'");
         $query->bindValue(":username", $username);
         $query->bindValue(":password", $password);
         $query->bindValue(":level", $level);
