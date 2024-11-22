@@ -75,7 +75,7 @@
                             </div>
                             <div class="member-info">
                                 <h6>Beryl Funky Mubarok</h6>
-                                <h6>xxxxxxxxxxxxx</h6>
+                                <h6>2341720256</h6>
                             </div>
                         </div>
 
@@ -85,7 +85,7 @@
                             </div>
                             <div class="member-info">
                                 <h6>Candra Ahmad Dani</h6>
-                                <h6>xxxxxxxxxxxx</h6>
+                                <h6>2341720187</h6>
                             </div>
                         </div>
 
