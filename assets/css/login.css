@@ -1,0 +1,207 @@
+body {
+  color: white;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+#background-image {
+  width: 110vw;
+  height: 110vh;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url("../imgs/graduate_hat_bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  z-index: 0;
+}
+
+#form-login {
+  height: 97vh;
+  max-width: 760px;
+  width: 100%;
+  background-color: rgba(161, 161, 161, 0.5);
+  backdrop-filter: blur(12px);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#form-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 12px;
+}
+
+#form-banner h1 {
+  font-size: 72px;
+  font-weight: 900;
+}
+
+@media (max-width: 576px) {
+  #form-banner h1 {
+    font-size: 52px;
+  }
+}
+
+#form-input {
+  max-width: 420px;
+  width: 75%;
+}
+
+#login-as-seperator {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#login-as-seperator::after,
+#login-as-seperator::before {
+  content: "";
+  width: 100%;
+  height: 1px;
+  background: white;
+  display: block;
+}
+
+#login-as-seperator p {
+  min-width: 70px;
+  text-align: center;
+  margin: 0px 8px;
+  margin-bottom: 5px;
+}
+
+#login-as-switch-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#login-as-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 250px;
+  width: 75%;
+  height: 40px;
+  margin: 0px auto;
+  pointer-events: none;
+}
+
+#login-as-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+#login-as-switch-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  border-radius: 10px;
+  transition: 0.4s;
+}
+
+#login-as-switch-slider:after {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 50%;
+  right: 0;
+  border-radius: 10px;
+  transition: 0.4s;
+  cursor: pointer;
+  pointer-events: all;
+  z-index: 1;
+}
+
+#login-as-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 50%;
+  background-color: var(--bs-primary);
+  border-radius: 10px;
+  transition: 0.4s;
+  cursor: default;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#login-as-switch input:checked + #login-as-switch-slider:before {
+  transform: translateX(101%);
+}
+
+#login-as-switch input:checked + #login-as-switch-slider:after {
+  transform: translateX(-101%);
+}
+
+#login-as-switch
+  input:checked
+  + #login-as-switch-slider
+  + #login-as-switch-options
+  p:first-child,
+#login-as-switch-options p:last-child {
+  color: #595c5f;
+}
+
+#login-as-switch
+  input:checked
+  + #login-as-switch-slider
+  + #login-as-switch-options
+  p:last-child {
+  color: white;
+}
+
+#login-as-switch-options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#login-as-switch-options p {
+  flex: 1;
+  margin: auto;
+  text-align: center;
+}
+
+#msg-tidak-ditemukan {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  background-color: var(--bs-form-invalid-color);
+  padding: 10px 28px;
+  border-radius: 12px;
+}
+
+#msg-tidak-ditemukan p {
+  margin: 0px;
+  font-size: 0.9em;
+}
