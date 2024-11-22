@@ -124,10 +124,10 @@ FROM pengguna.[User]
 INSERT INTO pengguna.[User]
   (username, password, level)
 VALUES
-  ('22', '123', 'admin-jurusan'),
+  ('0009107104', '123', 'admin-jurusan'),
   ('0009107105', '123', 'admin-pusat'),
   ('0009107123', '123', 'admin-pusat'),
-  ('11', '123', 'mahasiswa'),
+  ('2341720235', '123', 'mahasiswa'),
   ('2341720234', '123', 'mahasiswa'),
   ('2341720236', '123', 'mahasiswa'),
   ('2341720237', '123', 'mahasiswa'),
@@ -137,7 +137,7 @@ GO
 INSERT INTO pengguna.Admin
   (NIDN, Nama, NIK, Tempat_lahir, tanggal_lahir, Alamat, Nomor_telepon, Jenis_kelamin, username)
 VALUES
-  ('22', 'Supardi', '3212234567890133', 'Surabaya', '1980-01-15', 'Jl. Rajawali 1', '081245678900', 'Laki-laki', '22'),
+  ('0009107104', 'Supardi', '3212234567890133', 'Surabaya', '1980-01-15', 'Jl. Rajawali 1', '081245678900', 'Laki-laki', '0009107104'),
   ('0009107105', 'Sulistiyowati', '3212234567890134', 'Jakarta', '1975-09-23', 'Jl. Elang 2', '081245678901', 'Perempuan', '0009107105'),
   ('0009107123', 'Sudirman Dyayadiningrat', '3212234567890135', 'Bandung', '1983-03-12', 'Jl. Garuda 3', '081245678902', 'Laki-laki', '0009107123');
 GO
@@ -145,7 +145,7 @@ GO
 INSERT INTO pengguna.Mahasiswa
   (NIM, Nama, NIK, Tempat_lahir, tanggal_lahir, Alamat, Nomor_telepon, Jenis_kelamin, ID_prodi, username)
 VALUES
-  ('11', 'Innama Maesa Putri', '3213234567890121', 'Surabaya', '2003-07-19', 'Jl. Bunga 1', '081234567910', 'Perempuan', 1, '11'),
+  ('2341720235', 'Innama Maesa Putri', '3213234567890121', 'Surabaya', '2003-07-19', 'Jl. Bunga 1', '081234567910', 'Perempuan', 1, '2341720235'),
   ('2341720234', 'Muhammad Nur Aziz', '3213234567890122', 'Malang', '2002-02-25', 'Jl. Bunga 2', '081234567911', 'Laki-laki', 2, '2341720234'),
   ('2341720236', 'Hidayat Widi Saputra', '3213234567890123', 'Yogyakarta', '2003-11-11', 'Jl. Bunga 3', '081234567912', 'Laki-laki', 3, '2341720236'),
   ('2341720237', 'Beryl Funky Mubarok', '3213234567890124', 'Jakarta', '2004-05-30', 'Jl. Bunga 4', '081234567913', 'Laki-laki', 4, '2341720237'),
@@ -200,14 +200,14 @@ INSERT INTO dokumen.Upload_dokumen
   (Path_dokumen, Status, Komentar, ID_dokumen, NIM, NIDN)
 VALUES
   -- Data dengan status diverifikasi
-  ('/uploads/skripsi_11.pdf', 'Diverifikasi', NULL, 1, '11', '22'),
+  ('/uploads/skripsi_2341720235.pdf', 'Diverifikasi', NULL, 1, '2341720235', '0009107104'),
   ('/uploads/program_ta_2341720234.zip', 'Diverifikasi', NULL, 2, '2341720234', '0009107105'),
   ('/uploads/publikasi_2341720236.pdf', 'Diverifikasi', NULL, 3, '2341720236', '0009107105'),
-  ('/uploads/tugas_akhir_2341720237.pdf', 'Diverifikasi', NULL, 4, '2341720237', '22'),
+  ('/uploads/tugas_akhir_2341720237.pdf', 'Diverifikasi', NULL, 4, '2341720237', '0009107104'),
   ('/uploads/pkl_2341720212.pdf', 'Diverifikasi', NULL, 5, '2341720212', '0009107123'),
 
   -- Data dengan status ditolak
-  ('/uploads/bebas_kompen_11.pdf', 'Ditolak', 'Dokumen tidak lengkap', 6, '11', '22'),
+  ('/uploads/bebas_kompen_2341720235.pdf', 'Ditolak', 'Dokumen tidak lengkap', 6, '2341720235', '0009107104'),
   ('/uploads/scan_toeic_2341720234.pdf', 'Ditolak', 'Dokumen tidak valid', 7, '2341720234', '0009107105'),
 
   -- Data dengan status menunggu
@@ -215,3 +215,44 @@ VALUES
   ('/uploads/bebas_tanggung_akademik_2341720237.pdf', 'Menunggu', NULL, 9, '2341720237', NULL),
   ('/uploads/pustaka_polinema_2341720212.pdf', 'Menunggu', NULL, 10, '2341720212', NULL);
 GO
+
+ALTER TABLE dokumen.Upload_dokumen
+ADD tanggal DATETIME NOT NULL DEFAULT GETDATE();
+GO
+
+ALTER TABLE dokumen.Upload_dokumen
+DROP COLUMN Komentar;
+GO
+
+CREATE TABLE dokumen.Komentar
+(
+  ID INT NOT NULL IDENTITY PRIMARY KEY,
+  isi_komentar NVARCHAR(MAX) NOT NULL,
+  tanggal DATETIME NOT NULL DEFAULT GETDATE(),
+  ID_upload INT NOT NULL,
+  CONSTRAINT FK_Komentar_Upload FOREIGN KEY(ID_upload) REFERENCES dokumen.Upload_dokumen(ID)
+);
+GO
+
+UPDATE dokumen.Upload_dokumen
+SET tanggal = CASE 
+  WHEN Status = 'Diverifikasi' THEN '2024-11-01'
+  WHEN Status = 'Ditolak' THEN '2024-11-10'
+  WHEN Status = 'Menunggu' THEN '2024-11-20'
+  ELSE GETDATE()
+END;
+GO
+
+-- Tambahkan data komentar baru untuk testing
+INSERT INTO dokumen.Komentar
+  (isi_komentar, tanggal, ID_upload)
+VALUES
+  ('Revisi dokumen diperlukan.', '2024-11-12', 6),
+  -- ID upload dokumen yang ditolak
+  ('Perlu tambahan lampiran.', '2024-11-15', 7);  -- ID upload dokumen yang ditolak
+GO
+
+
+SELECT * FROM dokumen.Upload_dokumen
+
+SELECT * FROM dokumen.Komentar

@@ -4,9 +4,9 @@
 function getDatabaseConfig(): array
 {
     return [
-        "server_name" => "localhost",
+        "server_name" => "KAGAMI-NO-MAJO",
         "database" => "BebasTA",
-        "username" => "",
-        "password" => "",
+        "username" => "pblbebasta",
+        "password" => "weakpasswd",
     ];
 }

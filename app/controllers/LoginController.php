@@ -30,7 +30,7 @@ class LoginController extends Controller
     {
         $username = $_POST['username'];
         $password = $_POST['password'];
-        $level = isset($_POST['isAdmin']) ? 'Admin' : 'Mahasiswa';
+        $level = isset($_POST['isAdmin']) ? 'admin' : 'mahasiswa';
 
         Session::set('username', $username);
         Session::set('password', $password);
@@ -43,6 +43,8 @@ class LoginController extends Controller
         $user = $this->login->getUser(Session::get('username'), Session::get('password'), Session::get('level'));
         if ($user) {
             if (strpos(Session::get('level'), 'admin') !== false) {
+                $userLevel = $user['level'];
+                Session::set('level', substr($userLevel, strpos($userLevel, '-') + 1));
                 require_once '../app/controllers/AdminController.php';
                 header("Location: admin/index");
             } else {
