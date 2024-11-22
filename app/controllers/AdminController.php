@@ -8,10 +8,12 @@ class AdminController extends Controller
 
     public function __construct()
     {
+        $userLevel = Session::get('level');
+        $userLevel = substr($userLevel, strpos($userLevel, '-') + 1);
         $this->admin = new Admin(
             Database::getInstance(getDatabaseConfig(), [$this, 'error']),
             Session::get('username'),
-            Session::get('level'),
+            $userLevel,
         );
     }
     public function index($screen = "dashboard")
