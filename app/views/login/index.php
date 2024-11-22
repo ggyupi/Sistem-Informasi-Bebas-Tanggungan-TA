@@ -71,7 +71,7 @@
         <div id="login-as-switch-wrapper">
           <label id="login-as-switch">
             <input type="checkbox" name="isAdmin"
-              <?= isset($data['level']) ? ($data['level'] === 'Admin' ? 'checked' : '') : '' ?> />
+              <?= isset($data['level']) ? ($data['level'] === 'admin' ? 'checked' : '') : '' ?> />
             <span id="login-as-switch-slider"></span>
             <div id="login-as-switch-options">
               <p>User</p>

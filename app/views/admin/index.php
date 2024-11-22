@@ -1,3 +1,5 @@
+<?php include VIEWS . "component/status-card.php"; ?>
+
 <!DOCTYPE html>
 <html data-bs-theme="<?= Session::get('theme_mode') === 'dark' ? 'dark' : 'light' ?>" id="html">
 
@@ -8,10 +10,13 @@
 
 <body>
     <input type="checkbox" id="toggle-side-bar" <?= Session::get('toggle_sidebar') === 'true' ? 'checked' : '' ?> />
-    <div id="side-bar">
+    <div class="dropend offcanvas-md offcanvas-start <?= Session::get('toggle_sidebar') === 'true' ? '' : 'show' ?>" id="side-bar">
         <?php include VIEWS . "template/sidebar/sidebar-top.php"; ?>
+
         <div id="side-bar-menu">
-            <?php include VIEWS . "admin/sidebar-nav1.php"; ?>
+            <?php            
+            include VIEWS . "admin/sidebar-nav1". ($data['user']->adminApa === 'super' ? '-super' : '') .".php"; 
+            ?>
             <span id="side-bar-menu-seperator"></span>
             <?php include VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
         </div>
@@ -22,9 +27,40 @@
         <div id="top-bar">
             <?php include VIEWS . "template/top-bar.php" ?>
         </div>
-
         <div id="page-content">
+            <h1>Selamat Datang, Admin <strong><?= ucwords($data['user']->adminApa) ?></strong></h1>
+            <br> <br> <br> <br>
+            <form action="uploadTest" method="post" enctype="multipart/form-data">
+                <label for="file">Select a file:</label>
+                <input type="file" name="file" id="file" required>
+                <button class="btn btn-primary" type="submit">Upload</button>
+            </form>
+
             <?php
+            statusCard(
+                'test-card',
+                'Test',
+                [[
+                    'type' => 'good',
+                    'icon' => Icons::Close,
+                    'title' => '1 Buku',
+                    'subtitle' => 'Terpinjam',
+                    'href' => ''
+                ], [
+                    'type' => 'bad',
+                    'icon' => Icons::Logout,
+                    'title' => '1 Buku',
+                    'subtitle' => 'Terpinjam',
+                    'href' => ''
+                ], [
+                    'type' => 'warning',
+                    'icon' => Icons::Logout,
+                    'title' => '1 Buku',
+                    'subtitle' => 'Terpinjam',
+                    'href' => ''
+                ]]
+            );
+            echo '<br>';
             echo "Username: " . Session::get('username') . "<br>";
             echo "level: " .  Session::get('level') . "<br>";
             echo "password: " .  Session::get('password') . "<br>";
