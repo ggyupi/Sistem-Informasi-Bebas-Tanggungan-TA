@@ -21,7 +21,7 @@
         <?php include VIEWS . "template/sidebar/sidebar-bottom.php"; ?>
     </div>
 
-    <div id="the-content">
+    <div id="right-section">
         <div id="top-bar">
             <?php include VIEWS . "template/top-bar.php" ?>
         </div>

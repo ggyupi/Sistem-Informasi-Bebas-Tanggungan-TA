@@ -29,4 +29,8 @@
   #side-bar-bottom .show {
     display: none !important;
   }
+
+  #page-content {
+    max-height: calc(100vh - 56.8px);
+  }
 }
