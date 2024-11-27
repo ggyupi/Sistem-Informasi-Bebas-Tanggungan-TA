@@ -17,8 +17,18 @@ class UserController extends Controller
 
     public function index($screen = "dashboard")
     {
-        new UploadFile();
-        $this->view('user/index', ["screen" => $screen, "user" => $this->mahasiswa]);
+        $title = $screen;
+        if (strpos($title, '/') !== false) {
+            $title = array_pop(explode('/', $title));
+            $title = str_replace('_', ' ', $title);
+            $title = ucwords($title);
+        }
+
+        $this->view('user/index', [
+            "screen" => $screen, 
+            "user" => $this->mahasiswa,
+            "title" => $title
+        ]);
     }
 
     public function screen()
