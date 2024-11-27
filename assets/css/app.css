@@ -56,6 +56,12 @@ td,
   background-color: var(--bs-tertiary-bg) !important;
 }
 
+.form-control:focus,
+.form-select:focus {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  box-shadow: none;
+}
+
 /* Start Sidebar Expand */
 
 #side-bar {
@@ -370,7 +376,7 @@ td,
   width: calc(100vw - 280px);
 }
 
-#toggle-side-bar:checked ~ #right-section{
+#toggle-side-bar:checked ~ #right-section {
   width: calc(100vw - 76px);
 }
 
@@ -580,7 +586,7 @@ td,
   background-color: var(--bs-danger);
 }
 
-.status-badge-text{
+.status-badge-text {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -672,7 +678,7 @@ td,
 }
 
 #table-wrapper tr.table-active + tr td .table-expand {
-  max-height: 700px !important;  
+  max-height: 700px !important;
 }
 
 .table-expand {
