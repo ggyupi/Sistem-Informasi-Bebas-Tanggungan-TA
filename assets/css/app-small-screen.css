@@ -21,13 +21,18 @@
     fill: var(--bs-emphasis-color);
   }
 
+  #side-bar-bottom .show {
+    display: none !important;
+  }
+
+  #right-section,
+  #toggle-side-bar:checked ~ #right-section {
+    max-width: 100vw !important;
+  }
+
   #top-bar {
     justify-content: flex-start;
     gap: 42px;
-  }
-
-  #side-bar-bottom .show {
-    display: none !important;
   }
 
   #page-content {

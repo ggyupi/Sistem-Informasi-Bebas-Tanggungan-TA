@@ -7,8 +7,9 @@ body {
   border-radius: 15px;
   text-wrap: nowrap;
   background-color: var(--bs-secondary-bg);
-  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   min-height: 100vh;
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
 }
 
 a {
@@ -366,6 +367,11 @@ td,
   align-items: stretch;
   justify-content: start;
   flex: 1;
+  width: calc(100vw - 280px);
+}
+
+#toggle-side-bar:checked ~ #right-section{
+  width: calc(100vw - 76px);
 }
 
 #top-bar {
@@ -463,11 +469,11 @@ td,
 
 .btn-outline:hover {
   background-color: var(--bs-secondary);
-  color: var(--bs-body-bg);
+  color: white;
 }
 
 .btn-outline:hover svg {
-  fill: var(--bs-body-bg);
+  fill: white;
 }
 
 .btn-icon {
@@ -574,6 +580,20 @@ td,
   background-color: var(--bs-danger);
 }
 
+.status-badge-text{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background-color: var(--bs-warning);
+  height: 32px;
+  width: 32px;
+  font-size: 16px;
+  padding-top: 3px;
+  color: white;
+}
+
 .status-badge-icon svg {
   fill: white;
   height: 12px;
@@ -652,7 +672,7 @@ td,
 }
 
 #table-wrapper tr.table-active + tr td .table-expand {
-  max-height: 100px !important;  
+  max-height: 700px !important;  
 }
 
 .table-expand {
