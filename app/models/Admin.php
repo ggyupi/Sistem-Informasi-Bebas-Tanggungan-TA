@@ -1,10 +1,17 @@
 <?php
 
 require_once '../app/core/IUserApp.php';
+require_once '../app/core/Model.php';
 
-class Admin implements IUserApp
+enum TipeAdmin : String
 {
-    private $db;
+    case Super = 'super';
+    case Jurusan = 'jurusan';
+    case Pusat = 'pusat';
+}
+
+class Admin extends Model implements IUserApp
+{
     public $NIDN;
     public $nama;
     public $adminApa;
@@ -12,11 +19,12 @@ class Admin implements IUserApp
 
     public function __construct($db, $username, $adminApa)
     {
-        $this->db = $db->getConnection();
+        parent::__construct($db);
         $output = $this->getAdminBasicInformation($username);
         $this->NIDN = $output['NIDN'];
-        $this->nama = $output['Nama'];
-        $this->adminApa = $adminApa;
+        $this->nama = $output['Nama'];        
+        $adminApa = substr($adminApa, strpos($adminApa, '-') + 1);
+        $this->adminApa = TipeAdmin::from($adminApa);        
     }
 
     public function getPeopleId()

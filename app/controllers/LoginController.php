@@ -8,7 +8,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->login = new Login(Database::getInstance(getDatabaseConfig(), [$this, 'error']));       
+        $this->login = new Login(Database::getInstance(getDatabaseConfig(), [$this, 'error']));
     }
 
 
@@ -28,14 +28,16 @@ class LoginController extends Controller
 
     public function postLogin()
     {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $level = isset($_POST['isAdmin']) ? 'admin' : 'mahasiswa';
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $level = isset($_POST['isAdmin']) ? 'admin' : 'mahasiswa';
 
-        Session::set('username', $username);
-        Session::set('password', $password);
-        Session::set('level', $level);
-        $this->dologin();
+            Session::set('username', $username);
+            Session::set('password', $password);
+            Session::set('level', $level);
+            $this->dologin();
+        }
     }
 
     public function dologin()
@@ -43,7 +45,7 @@ class LoginController extends Controller
         $user = $this->login->getUser(Session::get('username'), Session::get('password'), Session::get('level'));
         if ($user) {
             if (strpos(Session::get('level'), 'admin') !== false) {
-                Session::set('level', $user['level']);  
+                Session::set('level', $user['level']);
                 require_once '../app/controllers/AdminController.php';
                 header("Location: admin/index");
             } else {

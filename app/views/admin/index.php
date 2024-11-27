@@ -1,11 +1,14 @@
-<?php include VIEWS . "component/status-card.php"; ?>
+<?php
+include VIEWS . "component/status-card.php";
+include VIEWS . "component/dialog-yes-no.php"; 
+?>
 
 <!DOCTYPE html>
 <html data-bs-theme="<?= Session::get('theme_mode') === 'dark' ? 'dark' : 'light' ?>" id="html">
 
 <head>
     <?php include VIEWS . "template/head.php"; ?>
-    <title><?= ucwords($data['screen'] ?? 'Dashboard') ?></title>
+    <title><?= ucwords($data['title'] ?? 'Dashboard') ?></title>
 </head>
 
 <body>
@@ -14,8 +17,8 @@
         <?php include VIEWS . "template/sidebar/sidebar-top.php"; ?>
 
         <div id="side-bar-menu">
-            <?php            
-            include VIEWS . "admin/sidebar-nav1". ($data['user']->adminApa === 'super' ? '-super' : '') .".php"; 
+            <?php
+            include VIEWS . "admin/sidebar-nav1" . ($data['user']->adminApa === TipeAdmin::Super ? '-super' : '') . ".php";
             ?>
             <span id="side-bar-menu-seperator"></span>
             <?php include VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
@@ -23,52 +26,16 @@
         <?php include VIEWS . "template/sidebar/sidebar-bottom.php"; ?>
     </div>
 
-    <div id="the-content">
+    <div id="right-section">
         <div id="top-bar">
             <?php include VIEWS . "template/top-bar.php" ?>
         </div>
         <div id="page-content">
-            <h1>Selamat Datang, Admin <strong><?= ucwords($data['user']->adminApa) ?></strong></h1>
-            <br> <br> <br> <br>
-            <form action="uploadTest" method="post" enctype="multipart/form-data">
-                <label for="file">Select a file:</label>
-                <input type="file" name="file" id="file" required>
-                <button class="btn btn-primary" type="submit">Upload</button>
-            </form>
-
-            <?php
-            statusCard(
-                'test-card',
-                'Test',
-                [[
-                    'type' => 'good',
-                    'icon' => Icons::Close,
-                    'title' => '1 Buku',
-                    'subtitle' => 'Terpinjam',
-                    'href' => ''
-                ], [
-                    'type' => 'bad',
-                    'icon' => Icons::Logout,
-                    'title' => '1 Buku',
-                    'subtitle' => 'Terpinjam',
-                    'href' => ''
-                ], [
-                    'type' => 'warning',
-                    'icon' => Icons::Logout,
-                    'title' => '1 Buku',
-                    'subtitle' => 'Terpinjam',
-                    'href' => ''
-                ]]
-            );
-            echo '<br>';
-            echo "Username: " . Session::get('username') . "<br>";
-            echo "level: " .  Session::get('level') . "<br>";
-            echo "password: " .  Session::get('password') . "<br>";
-            ?>
+            <?php include VIEWS . "admin/screens/" . $data['screen'] . ".php"; ?>
         </div>
     </div>
     <form method="post" action="logout">
-        <?php include VIEWS . "component/dialog-yes-no.php";
+        <?php
         dialogYesNo(
             'dialog-logout',
             'Logout',
