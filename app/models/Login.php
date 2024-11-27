@@ -1,12 +1,12 @@
 <?php
 
-class Login
-{
-    private $db;
+require_once '../app/core/Model.php';
 
+class Login extends Model
+{
     public function __construct($db)
     {
-        $this->db = $db->getConnection();
+        parent::__construct($db);
     }
 
     public function getUser($username, $password, $level)

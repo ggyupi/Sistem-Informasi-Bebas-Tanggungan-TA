@@ -1,4 +1,4 @@
-<h1>Selamat Datang, Admin <strong><?= ucwords($data['user']->adminApa) ?></strong></h1>
+<h1>Selamat Datang, Admin <strong><?= ucwords($data['user']->adminApa->value) ?></strong></h1>
 <br> <br> <br> <br>
 <form action="uploadTest" method="post" enctype="multipart/form-data">
     <label for="file">Select a file:</label>

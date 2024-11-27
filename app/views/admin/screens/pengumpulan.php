@@ -9,6 +9,7 @@ include VIEWS . 'component/btn-icon.php';
         flex-direction: column;
         gap: 24px;
         flex: 1;
+        overflow-y: auto;
     }
 </style>
 
@@ -63,7 +64,7 @@ include VIEWS . 'component/btn-icon.php';
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">NO</th>
                     <th scope="col" style="width: 10%;">NIM</th>
                     <th scope="col" style="width: 35%;">NAMA</th>
                     <th scope="col">JURUSAN</th>
@@ -105,8 +106,6 @@ include VIEWS . 'component/btn-icon.php';
         </table>
     </div>
 
-
-
     <script>
         function removeTableActive() {
             document.querySelectorAll('tbody tr').forEach(function(row) {
@@ -128,16 +127,14 @@ include VIEWS . 'component/btn-icon.php';
             const btnSee = '<?= iconButton('btn-see', Icons::Eye, 'var(--bs-emphasis-color)', '#onclick') ?>';
             const btnAcc = '<?= iconButton('btn-acc', Icons::Check, 'green', '#onclick') ?>';
             const btnDecl = '<?= iconButton('btn-decl', Icons::Close, 'red', '#onclick') ?>';
-            const badgeTertanggung = `
-            <div class="d-flex flex-row align-items-center" style="gap: 12px">
-                <div class="status-badge-text">1</div> <?= statusBadge('warning', Icons::Close, 'Tertanggung') ?>
-            </div>
-            `;
+            const badgeTertanggung = `<?= statusBadge('danger', Icons::Close, 'Tertanggung') ?>`;
             const badgeSelesai = '<?= statusBadge('success', Icons::Check, 'Selesai') ?>';
 
             let tableBody = document.createElement('tbody');
+            let countItem = 0;
 
             for (let i = 0; i < data.length; i++) {
+                countItem += 1;
                 let tr = document.createElement('tr');
                 let dataMahasiswa = data[i].data_mahasiswa;
                 let dataDetails = data[i].data_detail;
@@ -148,13 +145,27 @@ include VIEWS . 'component/btn-icon.php';
                         break;
                     }
                 }
+
+                let sumMenunggu = 0;
+                for (const dataDetail of dataDetails) {
+                    if (dataDetail.status.toLowerCase() == 'menunggu') {
+                        sumMenunggu += 1;
+                    }
+                }
+                let badgeTertanggungWithNumber = `
+                <div class="d-flex flex-row align-items-center" style="gap: 12px;">
+                    <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 1 : 0};">${sumMenunggu}</div> 
+                    ${badgeTertanggung}
+                    <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 0 : 0};">${sumMenunggu}</div> 
+                </div>
+                `;
                 tr.innerHTML = `
-                    <td>${dataMahasiswa.id}</td>
+                    <td>${countItem}</td>
                     <td>${dataMahasiswa.nim}</td>
                     <td>${dataMahasiswa.nama}</td>
                     <td>${dataMahasiswa.jurusan}</td>
-                    <td>${dataMahasiswa.programStudi}</td> 
-                    <td style="place-items: center">${tuntas ? badgeSelesai : badgeTertanggung}</td>                   
+                    <td>${dataMahasiswa.program_studi}</td> 
+                    <td style="place-items: center">${tuntas ? badgeSelesai : badgeTertanggungWithNumber}</td>                   
                 `;
                 if (i == idTableExpand) {
                     tr.classList.add('table-active');
@@ -189,7 +200,6 @@ include VIEWS . 'component/btn-icon.php';
                         btnDecl.replace(`#onclick`, `changeModalDialogMessage('dialog-decl', 
                         'Tolak <strong>${dataDetail.dokumen}</strong>?')`)
                     ];
-                    console.log(actions[0]);
 
                     if (dataDetail.status.toLowerCase() == 'diverifikasi') {
                         tableExpandItemIcon.classList.add('success');
@@ -234,43 +244,25 @@ include VIEWS . 'component/btn-icon.php';
             return tableBody;
         }
 
-        let test = [{
-            data_mahasiswa: {
-                id: 1,
-                nim: '2341720157',
-                nama: 'UwU Kagamihara',
-                jurusan: 'Teknologi Informasi',
-                programStudi: 'Teknik Informatika',
-                status: 'Tertanggung'
-            },
-            data_detail: [{
-                    dokumen: 'test',
-                    status: 'diverifikasi'
+        function getDataPengumpulan() {
+            let tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = '';
+            $.ajax({
+                type: "POST",
+                url: "getDataPengumpulan",                
+                success: function(response) {
+                    let data = JSON.parse(response);
+                    tableBody.append(...generateTableBodyItems(data).children);
                 },
-                {
-                    dokumen: 'waaa',
-                    status: 'diverifikasi'
+                error: function(response) {
+                    console.log(response);
                 }
-            ]
-        }, {
-            data_mahasiswa: {
-                id: 1,
-                nim: '2341712357',
-                nama: 'Kami Kagamihara',
-                jurusan: 'Teknologi Informasi',
-                programStudi: 'Teknik Informatika',
-                status: 'Tertanggung'
-            },
-            data_detail: [{
-                dokumen: 'test',
-                status: 'Tertanggung'
-            },{
-                dokumen: 'test2',
-                status: 'Tertanggung'
-            }]
-        }];
+            });
 
-        document.getElementById('table-body').append(...generateTableBodyItems(test).children);
+        }
+
+        getDataPengumpulan();
+
 
         document.getElementById('dialog-acc').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -289,7 +281,7 @@ include VIEWS . 'component/btn-icon.php';
             });
         });
 
-        document.getElementById('dialog-acc').addEventListener('submit', function(e) {
+        document.getElementById('dialog-decl').addEventListener('submit', function(e) {
             e.preventDefault();
             $.ajax({
                 type: "POST",

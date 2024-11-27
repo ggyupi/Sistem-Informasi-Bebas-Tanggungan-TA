@@ -8,7 +8,7 @@ include VIEWS . "component/dialog-yes-no.php";
 
 <head>
     <?php include VIEWS . "template/head.php"; ?>
-    <title><?= ucwords($data['screen'] ?? 'Dashboard') ?></title>
+    <title><?= ucwords($data['title'] ?? 'Dashboard') ?></title>
 </head>
 
 <body>
@@ -18,7 +18,7 @@ include VIEWS . "component/dialog-yes-no.php";
 
         <div id="side-bar-menu">
             <?php
-            include VIEWS . "admin/sidebar-nav1" . ($data['user']->adminApa === 'super' ? '-super' : '') . ".php";
+            include VIEWS . "admin/sidebar-nav1" . ($data['user']->adminApa === TipeAdmin::Super ? '-super' : '') . ".php";
             ?>
             <span id="side-bar-menu-seperator"></span>
             <?php include VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
