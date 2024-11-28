@@ -1,6 +1,6 @@
 <?php
-include VIEWS . 'component/status-badge.php';
-include VIEWS . 'component/btn-icon.php';
+include_once VIEWS . 'component/status-badge.php';
+include_once VIEWS . 'component/btn-icon.php';
 ?>
 
 <style>
