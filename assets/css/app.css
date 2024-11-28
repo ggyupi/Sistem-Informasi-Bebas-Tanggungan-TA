@@ -725,12 +725,12 @@ td,
   flex: 1;
   border-top: 1px solid var(--bs-border-color);
   border-bottom: 1px solid var(--bs-border-color);
-  padding: 12px 64px;
-  cursor: pointer;
+  padding: 12px 64px;  
 }
 
-.table-expand-item:hover {
+.table-expand-item:hover.table-expand-item-hoverable{
   background-color: var(--bs-tertiary-bg);
+  cursor: pointer;
 }
 
 .table-expand-item p {

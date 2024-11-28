@@ -130,19 +130,19 @@ dialogYesNoCustom(
         </table>
     </div>
 
-    <nav aria-label="Page navigation example">
+    <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
+                <a class="page-link" href="#">
+                    <span>&laquo;</span>
                 </a>
             </li>
             <li class="page-item"><a class="page-link" href="#">1</a></li>
             <li class="page-item"><a class="page-link" href="#">2</a></li>
             <li class="page-item"><a class="page-link" href="#">3</a></li>
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
+                <a class="page-link" href="#">
+                    <span>&raquo;</span>
                 </a>
             </li>
         </ul>
@@ -235,6 +235,24 @@ dialogYesNoCustom(
                 tableExpand.classList.add('table-expand');
                 for (const dataDetail of dataDetails) {
                     let tableExpandItem = document.createElement('div');
+                    let actions = [
+                        btnAcc.replace(`#onclick`, `changeModalDialogMessage('dialog-acc', 
+                            'Acc <strong>${dataDetail.dokumen}</strong>?')`),
+                        btnDecl.replace(`#onclick`, `changeModalDialogMessage('dialog-decl', 
+                        'Tolak <strong>${dataDetail.dokumen}</strong>?')`)
+                    ];
+                    let pdfFileUrl = pdfDatabasePrefix + dataDetail.path_dokumen;
+                    if (getFileName(pdfFileUrl) != '') {
+                        actions.unshift(btnSee.replace(`#onclick`, `pdfViewerLoadPdf('${pdfFileUrl}')`));
+                        tableExpandItem.onclick = function() {
+                            pdfViewerLoadPdf(`${pdfFileUrl}`);
+
+                        };
+                        tableExpandItem.dataset.bsToggle = "modal";
+                        tableExpandItem.dataset.bsTarget = "#btn-see";
+                        tableExpandItem.classList.add('table-expand-item-hoverable');
+                    }
+                    
                     tableExpandItem.classList.add('table-expand-item');
                     let tableExpandItemDocument = document.createElement('div');
                     tableExpandItemDocument.classList.add('d-flex', 'flex-row', 'align-items-center', 'action');
@@ -246,19 +264,6 @@ dialogYesNoCustom(
                     let tableExpandItemAction = document.createElement('div');
                     tableExpandItemAction.classList.add('d-flex', 'flex-row', 'align-items-center', 'action');
                     tableExpandItemAction.id = 'action';
-
-                    let actions = [
-                        btnAcc.replace(`#onclick`, `changeModalDialogMessage('dialog-acc', 
-                            'Acc <strong>${dataDetail.dokumen}</strong>?')`),
-                        btnDecl.replace(`#onclick`, `changeModalDialogMessage('dialog-decl', 
-                        'Tolak <strong>${dataDetail.dokumen}</strong>?')`)
-                    ];
-
-                    let pdfFileUrl = pdfDatabasePrefix + dataDetail.path_dokumen;
-                    if (getFileName(pdfFileUrl) != '') {
-                        actions.unshift(btnSee.replace(`#onclick`, `pdfViewerLoadPdf('${pdfFileUrl}')`));
-                    }
-                
 
                     if (dataDetail.status.toLowerCase() == 'diverifikasi') {
                         tableExpandItemIcon.classList.add('success');
@@ -356,8 +361,9 @@ dialogYesNoCustom(
             });
         });
 
-        document.getElementById('search-input').addEventListener('keyup', function() {
+        document.getElementById('search-input').addEventListener('input', function() {
             var search = this.value.toLowerCase();
+            removeTableActive();
             document.querySelectorAll('tr #search-mahasiswa').forEach(function(row) {
                 row.parentNode.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
             });
