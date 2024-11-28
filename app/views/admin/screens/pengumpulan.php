@@ -82,7 +82,10 @@ dialogYesNoCustom(
 <div id="pengumpulan-page">
 
     <div id="page-content-top">
-        <h1>Data Dokumen</h1>
+        <?php
+        $tipe = explode(' ', $data['title']);
+        echo '<h1>Data Dokumen <strong>' . ucwords($data['user']->adminApa === TipeAdmin::Super ? end($tipe) : $data['user']->adminApa->value) . '</strong></h1>';
+        ?>
         <div id="page-content-top-right">
             <div class="w-100 input-group d-flex">
                 <label class="input-group-text rounded-start-pill" for="inputGroupSelect01">Status</label>
@@ -323,9 +326,14 @@ dialogYesNoCustom(
         function getDataPengumpulan() {
             let tableBody = document.getElementById('table-body');
             tableBody.innerHTML = '';
+            let data = <?php
+                $tipe = explode(' ', $data['title']);
+                echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super-tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
+                ?>;
             $.ajax({
                 type: "POST",
                 url: "getDataPengumpulan",
+                data: data,
                 success: function(response) {
                     let data = JSON.parse(response);
                     console.log(data);

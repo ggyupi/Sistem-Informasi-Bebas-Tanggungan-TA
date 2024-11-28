@@ -26,7 +26,8 @@ class AdminController extends Controller
     {
         $title = $screen;
         if (strpos($title, '/') !== false) {
-            $title = array_pop(explode('/', $title));
+            $title = explode('/', $title);
+            $title = array_pop($title);
             $title = str_replace('_', ' ', $title);
             $title = ucwords($title);
         }
@@ -51,7 +52,12 @@ class AdminController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mahasiswaList = $this->mahasiswa->getAllMahasiswaInformation();
 
-            $tingkatDokumen = TingkatDokumen::from(ucwords($this->admin->adminApa->value));
+            $tingkatDokumen = $this->admin->adminApa;
+            if ($tingkatDokumen === TipeAdmin::Super) {
+                $tingkatDokumen = TingkatDokumen::from($_POST['super-tingkat']);
+            } else {
+                $tingkatDokumen = TingkatDokumen::from(ucwords($this->admin->adminApa->value));
+            }
             $dokumenList = $this->dokumen->getDokumenList($tingkatDokumen);
             $everToSubmit = [];
             foreach ($dokumenList as $dokumen) {
@@ -68,7 +74,7 @@ class AdminController extends Controller
                 foreach ($dokumenList as $dokumen) {
                     $temp['data_detail'][] = [
                         'dokumen' => $dokumen['dokumen'],
-                        'id'=> $dokumen['id'],
+                        'id' => $dokumen['id'],
                         'status' => ''
                     ];
                 }
