@@ -68,6 +68,7 @@ class AdminController extends Controller
                 foreach ($dokumenList as $dokumen) {
                     $temp['data_detail'][] = [
                         'dokumen' => $dokumen['dokumen'],
+                        'id'=> $dokumen['id'],
                         'status' => ''
                     ];
                 }
@@ -75,12 +76,25 @@ class AdminController extends Controller
                     $dokumenMahasiswaNim = $everToSubmit[$mahasiswa['nim']];
                     foreach ($dokumenMahasiswaNim as $key => $value) {
                         $temp['data_detail'][$key] = $value;
-                    }                    
+                    }
                 }
                 $data[] = $temp;
             }
         }
 
         echo json_encode($data);
+    }
+
+    public function updateDataPengumpulan()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->dokumen->updateUploadDokumen(
+                $_POST['id_dokumen'],
+                $_POST['nim'],
+                $this->admin->getPeopleId(),
+                $_POST['acc'] === 'true' ? StatusDokumen::Diverifikasi : StatusDokumen::Ditolak,
+                isset($_POST['komentar']) ? $_POST['komentar'] : ''
+            );
+        }
     }
 }

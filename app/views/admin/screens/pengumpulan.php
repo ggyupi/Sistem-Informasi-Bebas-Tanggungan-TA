@@ -13,12 +13,19 @@ include_once VIEWS . 'component/btn-icon.php';
     }
 </style>
 
+<form class="d-none" id="in-open-dokumen">
+    <input type="text" name="id_dokumen" id="id_dokumen" />
+    <input type="text" name="nama_dokumen" id="nama_dokumen" />
+    <input type="text" name="nama_mahasiswa" id="nama_mahasiswa" />
+    <input type="text" name="nim" id="nim" />
+</form>
+
 <form id="dialog-acc">
     <?=
     dialogYesNo(
         'btn-acc',
         'Acc?',
-        'Logout dan Hapus Sesi Saat ini',
+        'Acc',
         SvgIcons::getIcon(Icons::Check) . 'Acc kan min',
         SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
         true,
@@ -31,7 +38,7 @@ include_once VIEWS . 'component/btn-icon.php';
     dialogYesNo(
         'btn-decl',
         'Tolak',
-        'Logout dan Hapus Sesi Saat ini',
+        'Decl',
         SvgIcons::getIcon(Icons::Check) . 'Tolak saja min',
         SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
         true
@@ -45,18 +52,28 @@ dialogYesNoCustom(
     '<div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
         ' . iconButton('', Icons::Close, 'white') . '
         <h1 class="modal-title fs-5" id="pdf-viewer-title"></h1>
-        ' . iconButton('', Icons::OpenInNewTab, 'white', 'window.open(document.getElementById(`pdf-viewer`).getAttribute(`data`), `_blank`);') . '
+        ' . iconButton('', Icons::OpenInNewTab, 'white', 'window.open(document.getElementById(`pdf-viewer`).getAttribute(`src`), `_blank`);') . '
     </div>',
     '<div id="pdf-viewer-wrapper">
     </div>',
-    '<form class="d-flex flex-row align-items-center">
-        <button type="submit" class="btn btn-badge">
-            ' . statusBadge('danger', Icons::Close, 'Tolak') . '
+    '<div class="d-flex flex-row align-items-center">
+        <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-decl" 
+        onclick="
+            changeModalDialogMessage(`dialog-decl`, 
+                `Tolak <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
+                ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
+                ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
+                ' . statusBadge('danger', Icons::Close, 'Tolak') . '
         </button>
-        <button type="submit" class="btn btn-badge">
+        <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-acc"
+        onclick="
+            changeModalDialogMessage(`dialog-acc`, 
+                `Acc <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
+                ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
+                ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
          ' . statusBadge('success', Icons::Check, 'Terima') . '
          </button>
-    </form>',
+    </div>',
     true,
     '70vw'
 )
@@ -96,37 +113,7 @@ dialogYesNoCustom(
                     <th scope="col" class="text-center">STATUS</th>
                 </tr>
             </thead>
-            <tbody class="align-middle" id="table-body">
-                <!-- <tr class="table-active">
-                    <td>1</td>
-                    <td>2341720157</td>
-                    <td>UwU Kagamihara</td>
-                    <td>Teknologi Informasi</td>
-                    <td>Teknik Informatika</td>
-                    <td style="place-items: center">
-                        <?= statusBadge('warning', Icons::Check, 'Tertanggung') ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="table-expand-wrapper" colspan="6">
-                        <div class="table-expand">
-                            <div class="table-expand-item">
-                                <div class="d-flex flex-row align-items-center" id="table-expand-item">
-                                    <div class="status-badge-icon success">
-                                        <?= SvgIcons::getIcon(Icons::Question) ?>
-                                    </div>
-                                    <p>Tukamm</p>
-                                </div>
-                                <div class="d-flex flex-row align-items-center" id="action">
-                                    <?= iconButton('btn-see', Icons::Eye, 'var(--bs-emphasis-color)') ?>
-                                    <?= iconButton('btn-acc', Icons::Check, 'green') ?>
-                                    <?= iconButton('btn-decl', Icons::Close, 'red') ?>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr> -->
-            </tbody>
+            <tbody class="align-middle" id="table-body"></tbody>
         </table>
     </div>
 
@@ -160,6 +147,23 @@ dialogYesNoCustom(
             document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
             document.getElementById('pdf-viewer-wrapper').innerHTML = `<iframe src="${url}" id="pdf-viewer" style="width: 100%; height: 70vh;">Loading...</iframe>`;
         }
+
+        function setDokumenInOpen(idDokumen, namaDokumen, namaMahasiswa, nim) {
+            console.log('setDokumenInOpen');
+            document.getElementById('id_dokumen').value = idDokumen;
+            document.getElementById('nama_dokumen').value = namaDokumen;
+            document.getElementById('nama_mahasiswa').value = namaMahasiswa;
+            document.getElementById('nim').value = nim;
+        }
+
+        function clearDokumenInOpen() {
+            console.log('clearDokumenInOpen');
+            document.getElementById('id_dokumen').value = '';
+            document.getElementById('nim').value = '';
+        }
+
+        document.getElementById('btn-acc').addEventListener('hidden.bs.modal', clearDokumenInOpen);
+        document.getElementById('btn-decl').addEventListener('hidden.bs.modal', clearDokumenInOpen);
 
         function removeTableActive() {
             document.querySelectorAll('tbody tr').forEach(function(row) {
@@ -221,12 +225,9 @@ dialogYesNoCustom(
                     <td>${dataMahasiswa.program_studi}</td> 
                     <td style="place-items: center">${tuntas ? badgeSelesai : badgeTertanggungWithNumber}</td>                   
                 `;
-                if (i == idTableExpand) {
-                    tr.classList.add('table-active');
-                }
                 tableBody.appendChild(tr);
 
-                // OnExampand           
+                // OnExpand           
                 tr = document.createElement('tr');
                 let td = document.createElement('td');
                 td.colSpan = 6;
@@ -236,23 +237,27 @@ dialogYesNoCustom(
                 for (const dataDetail of dataDetails) {
                     let tableExpandItem = document.createElement('div');
                     let actions = [
-                        btnAcc.replace(`#onclick`, `changeModalDialogMessage('dialog-acc', 
-                            'Acc <strong>${dataDetail.dokumen}</strong>?')`),
-                        btnDecl.replace(`#onclick`, `changeModalDialogMessage('dialog-decl', 
-                        'Tolak <strong>${dataDetail.dokumen}</strong>?')`)
+                        btnAcc.replace(`#onclick`, `                        
+                        changeModalDialogMessage('dialog-acc', 
+                            'Acc <strong>[${dataMahasiswa.nim}] ${dataMahasiswa.nama}<br>${dataDetail.dokumen}</strong>?');`),
+                        btnDecl.replace(`#onclick`, `                        
+                        changeModalDialogMessage('dialog-decl', 
+                        'Tolak <strong>[${dataMahasiswa.nim}] ${dataMahasiswa.nama}<br>${dataDetail.dokumen}</strong>?');`)
                     ];
                     let pdfFileUrl = pdfDatabasePrefix + dataDetail.path_dokumen;
                     if (getFileName(pdfFileUrl) != '') {
-                        actions.unshift(btnSee.replace(`#onclick`, `pdfViewerLoadPdf('${pdfFileUrl}')`));
+                        actions.unshift(btnSee.replace(`#onclick`, `
+                        setDokumenInOpen('${dataDetail.id}', '${dataDetail.dokumen}', '${dataMahasiswa.nama}', '${dataMahasiswa.nim}');
+                        pdfViewerLoadPdf('${pdfFileUrl}');`));
                         tableExpandItem.onclick = function() {
+                            setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
                             pdfViewerLoadPdf(`${pdfFileUrl}`);
-
                         };
                         tableExpandItem.dataset.bsToggle = "modal";
                         tableExpandItem.dataset.bsTarget = "#btn-see";
                         tableExpandItem.classList.add('table-expand-item-hoverable');
                     }
-                    
+
                     tableExpandItem.classList.add('table-expand-item');
                     let tableExpandItemDocument = document.createElement('div');
                     tableExpandItemDocument.classList.add('d-flex', 'flex-row', 'align-items-center', 'action');
@@ -277,6 +282,10 @@ dialogYesNoCustom(
                         tableExpandItemIcon.classList.add('danger');
                         tableExpandItemIcon.innerHTML = iconDecl;
                     }
+                    if (getFileName(pdfFileUrl) == '') {
+                        tableExpandItemAction.style.opacity = '0';
+                        tableExpandItemAction.style.pointerEvents = 'none';
+                    }
                     tableExpandItemAction.innerHTML = actions.join('');
 
                     tableExpandItemDocument.appendChild(tableExpandItemIcon);
@@ -293,6 +302,9 @@ dialogYesNoCustom(
             let rows = tableBody.querySelectorAll('tbody tr');
             for (let i = 0; i < rows.length; i++) {
                 let row = rows[i];
+                if (i == idTableExpand) {
+                    row.classList.add('table-active');
+                }
                 row.addEventListener('click', function() {
                     if (row.children[0].classList.contains('table-expand-wrapper')) {
                         return;
@@ -331,15 +343,14 @@ dialogYesNoCustom(
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "",
-                data: {
-
-                },
-                success: function() {
-
+                url: "updateDataPengumpulan",
+                data: $('#in-open-dokumen').serialize() + '&acc=true',
+                success: function(response) {
+                    console.log(response);
+                    getDataPengumpulan();
                 },
                 error: function(response) {
-
+                    console.log(response);
                 }
             });
         });
@@ -348,15 +359,14 @@ dialogYesNoCustom(
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "",
-                data: {
-
-                },
-                success: function() {
-
+                url: "updateDataPengumpulan",
+                data: $('#in-open-dokumen').serialize() + '&acc=false',
+                success: function(response) {
+                    console.log(response);
+                    getDataPengumpulan();
                 },
                 error: function(response) {
-
+                    console.log(response);
                 }
             });
         });

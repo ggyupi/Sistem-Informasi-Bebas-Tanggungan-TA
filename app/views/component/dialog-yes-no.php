@@ -26,7 +26,7 @@ function dialogYesNo($id = '', $title = 'Yes/No Dialog', $message = 'message', $
     echo '</div>';
     echo '<div class="modal-footer">';
     echo '<button type="button" class="btn ' . ($btnNo === '' ? 'btn-outline' : $btnNo) . '" data-bs-dismiss="modal">' . $textNo . '</button>';
-    echo '<button type="submit" class="btn ' . ($btnYes === '' ? 'btn-danger' : $btnYes) . '">' . $textYes . '</button>';
+    echo '<button type="submit" class="btn ' . ($btnYes === '' ? 'btn-danger' : $btnYes) . '" data-bs-dismiss="modal">' . $textYes . '</button>';
     echo '</div>';
     echo '</div>';
     echo '</div>';
