@@ -606,6 +606,32 @@ td,
   width: 12px;
 }
 
+.btn-badge {
+  padding: 0px 8px;
+  border: none;
+}
+
+.btn-badge:hover .status-badge.success-bg {
+  background-color: var(--bs-success) !important;
+}
+.btn-badge:hover .status-badge.danger-bg {
+  background-color: var(--bs-danger) !important;
+}
+
+.btn-badge:hover .status-badge {
+  color: white;
+}
+
+.btn-badge .status-badge {
+  font-size: 16px;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-badge .status-badge-icon svg {
+  height: auto;
+  width: auto;
+}
+
 /* End status-badge */
 
 /* Start page-content */

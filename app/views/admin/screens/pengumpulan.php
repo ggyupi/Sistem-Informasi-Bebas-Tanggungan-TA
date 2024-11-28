@@ -21,7 +21,8 @@ include_once VIEWS . 'component/btn-icon.php';
         'Logout dan Hapus Sesi Saat ini',
         SvgIcons::getIcon(Icons::Check) . 'Acc kan min',
         SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
-        true
+        true,
+        'btn-success'
     );
     ?>
 </form>
@@ -37,6 +38,29 @@ include_once VIEWS . 'component/btn-icon.php';
     );
     ?>
 </form>
+
+<?=
+dialogYesNoCustom(
+    'btn-see',
+    '<div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
+        ' . iconButton('', Icons::Close, 'white') . '
+        <h1 class="modal-title fs-5" id="pdf-viewer-title"></h1>
+        ' . iconButton('', Icons::OpenInNewTab, 'white', 'window.open(document.getElementById(`pdf-viewer`).getAttribute(`data`), `_blank`);') . '
+    </div>',
+    '<div id="pdf-viewer-wrapper">
+    </div>',
+    '<form class="d-flex flex-row align-items-center">
+        <button type="submit" class="btn btn-badge">
+            ' . statusBadge('danger', Icons::Close, 'Tolak') . '
+        </button>
+        <button type="submit" class="btn btn-badge">
+         ' . statusBadge('success', Icons::Check, 'Terima') . '
+         </button>
+    </form>',
+    true,
+    '70vw'
+)
+?>
 
 <div id="pengumpulan-page">
 
@@ -125,6 +149,18 @@ include_once VIEWS . 'component/btn-icon.php';
     </nav>
 
     <script>
+        const pdfDatabasePrefix = '<?= FILEDATABASE_URL ?>';
+
+        function getFileName(url) {
+            let filename = url.substring(url.lastIndexOf('/') + 1);
+            return filename === 'undefined' ? '' : filename;
+        }
+
+        function pdfViewerLoadPdf(url) {
+            document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
+            document.getElementById('pdf-viewer-wrapper').innerHTML = `<iframe src="${url}" id="pdf-viewer" style="width: 100%; height: 70vh;">Loading...</iframe>`;
+        }
+
         function removeTableActive() {
             document.querySelectorAll('tbody tr').forEach(function(row) {
                 row.classList.remove('table-active');
@@ -146,7 +182,7 @@ include_once VIEWS . 'component/btn-icon.php';
             const btnAcc = '<?= iconButton('btn-acc', Icons::Check, 'green', '#onclick') ?>';
             const btnDecl = '<?= iconButton('btn-decl', Icons::Close, 'red', '#onclick') ?>';
             const badgeTertanggung = `<?= statusBadge('danger', Icons::Close, 'Tertanggung') ?>`;
-            const badgeSelesai = '<?= statusBadge('success', Icons::Check, 'Selesai') ?>';
+            const badgeSelesai = `<?= statusBadge('success', Icons::Check, 'Selesai') ?>`;
 
             let tableBody = document.createElement('tbody');
             let countItem = 0;
@@ -212,12 +248,17 @@ include_once VIEWS . 'component/btn-icon.php';
                     tableExpandItemAction.id = 'action';
 
                     let actions = [
-                        btnSee,
                         btnAcc.replace(`#onclick`, `changeModalDialogMessage('dialog-acc', 
                             'Acc <strong>${dataDetail.dokumen}</strong>?')`),
                         btnDecl.replace(`#onclick`, `changeModalDialogMessage('dialog-decl', 
                         'Tolak <strong>${dataDetail.dokumen}</strong>?')`)
                     ];
+
+                    let pdfFileUrl = pdfDatabasePrefix + dataDetail.path_dokumen;
+                    if (getFileName(pdfFileUrl) != '') {
+                        actions.unshift(btnSee.replace(`#onclick`, `pdfViewerLoadPdf('${pdfFileUrl}')`));
+                    }
+                
 
                     if (dataDetail.status.toLowerCase() == 'diverifikasi') {
                         tableExpandItemIcon.classList.add('success');
@@ -270,6 +311,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 url: "getDataPengumpulan",
                 success: function(response) {
                     let data = JSON.parse(response);
+                    console.log(data);
                     tableBody.append(...generateTableBodyItems(data).children);
                 },
                 error: function(response) {
@@ -278,9 +320,7 @@ include_once VIEWS . 'component/btn-icon.php';
             });
 
         }
-
         getDataPengumpulan();
-
 
         document.getElementById('dialog-acc').addEventListener('submit', function(e) {
             e.preventDefault();

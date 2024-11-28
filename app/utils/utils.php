@@ -13,3 +13,4 @@ define('IMGS', BASE . '/assets/imgs/');
 define('FONTS', BASE . '/assets/fonts/');
 define('VIEWS', '../app/views/');
 define('FILEDATABASE', '../file_database/');
+define('FILEDATABASE_URL', BASE . '/file_database/');
