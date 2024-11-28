@@ -1,37 +1,37 @@
 <?php
-include VIEWS . "component/status-card.php";
-include VIEWS . "component/dialog-yes-no.php"; 
+include_once VIEWS . "component/status-card.php";
+include_once VIEWS . "component/dialog-yes-no.php"; 
 ?>
 
 <!DOCTYPE html>
 <html data-bs-theme="<?= Session::get('theme_mode') === 'dark' ? 'dark' : 'light' ?>" id="html">
 
 <head>
-    <?php include VIEWS . "template/head.php"; ?>
+    <?php include_once VIEWS . "template/head.php"; ?>
     <title><?= ucwords($data['title'] ?? 'Dashboard') ?></title>
 </head>
 
 <body>
     <input type="checkbox" id="toggle-side-bar" <?= Session::get('toggle_sidebar') === 'true' ? 'checked' : '' ?> />
     <div class="dropend offcanvas-md offcanvas-start <?= Session::get('toggle_sidebar') === 'true' ? '' : 'show' ?>" id="side-bar">
-        <?php include VIEWS . "template/sidebar/sidebar-top.php"; ?>
+        <?php include_once VIEWS . "template/sidebar/sidebar-top.php"; ?>
 
         <div id="side-bar-menu">
             <?php
-            include VIEWS . "admin/sidebar-nav1" . ($data['user']->adminApa === TipeAdmin::Super ? '-super' : '') . ".php";
+            include_once VIEWS . "admin/sidebar-nav1" . ($data['user']->adminApa === TipeAdmin::Super ? '-super' : '') . ".php";
             ?>
             <span id="side-bar-menu-seperator"></span>
-            <?php include VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
+            <?php include_once VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
         </div>
-        <?php include VIEWS . "template/sidebar/sidebar-bottom.php"; ?>
+        <?php include_once VIEWS . "template/sidebar/sidebar-bottom.php"; ?>
     </div>
 
     <div id="right-section">
         <div id="top-bar">
-            <?php include VIEWS . "template/top-bar.php" ?>
+            <?php include_once VIEWS . "template/top-bar.php" ?>
         </div>
         <div id="page-content">
-            <?php include VIEWS . "admin/screens/" . $data['screen'] . ".php"; ?>
+            <?php include_once VIEWS . "admin/screens/" . $data['screen'] . ".php"; ?>
         </div>
     </div>
     <form method="post" action="logout">
@@ -48,6 +48,6 @@ include VIEWS . "component/dialog-yes-no.php";
         <form>
 </body>
 
-<?php include VIEWS . "template/footer.php"; ?>
+<?php include_once VIEWS . "template/footer.php"; ?>
 
 </html>

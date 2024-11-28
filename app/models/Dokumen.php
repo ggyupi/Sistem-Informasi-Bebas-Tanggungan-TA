@@ -8,6 +8,13 @@ enum TingkatDokumen: String
     case Pusat = "Pusat";
 }
 
+enum StatusDokumen: String
+{
+    case Menunggu = "Menunggu";
+    case Diverifikasi = "Diverifikasi";
+    case Ditolak = "Ditolak";
+}
+
 class Dokumen extends Model
 {
     public function __construct($db)
@@ -15,24 +22,48 @@ class Dokumen extends Model
         parent::__construct($db);
     }
 
-    
-    public function uploadDokumenList($id, $nim)
-    {
-        $placeholders = [];
-        foreach ($nim as $index => $tmp) {
-            $placeholders[] = ":nim$index";
-        }
-        $placeholderNim = implode(',', $placeholders);
-
-        $query = $this->db->prepare("SELECT
-            ID id, Path_dokumen path_dokumen, 
-            Status status, tanggal
-            FROM dokumen.Upload_dokumen 
-            WHERE NIM IN ($placeholderNim)");
-
+    public function updateUploadDokumen(
+        $idDokumen,
+        $NIM,
+        $adminID = '',
+        $status = StatusDokumen::Menunggu,
+        $komentar = ''
+    ) {
+        $query = $this->db->prepare("UPDATE dokumen.Upload_dokumen 
+            SET NIDN = :adminID, Status = :status 
+            WHERE ID_dokumen = :idDokumen AND NIM = :NIM");
+        $query->bindValue(":adminID", $adminID);
+        $query->bindValue(":status", $status->value);
+        $query->bindValue(":idDokumen", $idDokumen);
+        $query->bindValue(":NIM", $NIM);
         $query->execute();
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }    
+
+        if ($komentar !== '') {
+            $query = $this->db->prepare("SELECT ID FROM dokumen.Upload_dokumen 
+            WHERE ID_dokumen = :idDokumen AND NIM = :NIM");
+            $query->bindValue(":idDokumen", $idDokumen);
+            $query->bindValue(":NIM", $NIM);
+            $query->execute();
+            $result = $query->fetch();
+            $idUpload = $result['ID'];
+
+            $query = $this->db->prepare("SELECT COUNT(*) FROM dokumen.Komentar WHERE ID_upload = :idUpload");
+            $query->bindValue(":idUpload", $idUpload);
+            $query->execute();
+            $count = $query->fetchColumn();
+
+            if ($count > 0) {
+                $query = $this->db->prepare("UPDATE dokumen.Komentar SET isi_komentar = :komentar WHERE ID_upload = :idUpload");
+            } else {
+                $query = $this->db->prepare("INSERT INTO dokumen.Komentar (isi_komentar, ID_upload) VALUES (:komentar, :idUpload)");
+            }
+            $query->bindValue(":komentar", $komentar);
+            $query->bindValue(":idUpload", $idUpload);
+            $query->execute();
+        }
+    }
+
+
 
     public function getDokumenList($tingkatDokumen)
     {

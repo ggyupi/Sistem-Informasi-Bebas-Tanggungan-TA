@@ -2,10 +2,11 @@
 
 function statusBadge($type, $icon, $text)
 {
-    echo '<div class="status-badge ' . $type . '-bg">';
-    echo '<div class="status-badge-icon ' . $type . '">';
-    echo SvgIcons::getIcon($icon);
-    echo '</div>';
-    echo $text;
-    echo '</div>';
+    return '
+    <div class="status-badge ' . $type . '-bg">
+        <div class="status-badge-icon ' . $type . '">
+            ' . SvgIcons::getIcon($icon) . '
+        </div>
+        ' . $text . '
+    </div>';
 }

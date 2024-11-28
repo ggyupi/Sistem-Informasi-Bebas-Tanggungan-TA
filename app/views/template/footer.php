@@ -46,7 +46,7 @@
         for (let j = 0; j < sidebarNav[i].children.length; j++) {
             const button = sidebarNav[i].children[j];
             const buttonTitle = button.children[2];
-            if (buttonTitle.innerHTML == '<?= ucwords(isset($data['screen']) ? $data['screen'] : 'Dashboard') ?>') {
+            if (buttonTitle.innerHTML == '<?= ucwords(isset($data['title']) ? $data['title'] : 'Dashboard') ?>') {
                 button.classList.add('side-bar-btn-selected');
                 break;
             }

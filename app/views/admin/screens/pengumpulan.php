@@ -1,6 +1,6 @@
 <?php
-include VIEWS . 'component/status-badge.php';
-include VIEWS . 'component/btn-icon.php';
+include_once VIEWS . 'component/status-badge.php';
+include_once VIEWS . 'component/btn-icon.php';
 ?>
 
 <style>
@@ -13,15 +13,23 @@ include VIEWS . 'component/btn-icon.php';
     }
 </style>
 
+<form class="d-none" id="in-open-dokumen">
+    <input type="text" name="id_dokumen" id="id_dokumen" />
+    <input type="text" name="nama_dokumen" id="nama_dokumen" />
+    <input type="text" name="nama_mahasiswa" id="nama_mahasiswa" />
+    <input type="text" name="nim" id="nim" />
+</form>
+
 <form id="dialog-acc">
     <?=
     dialogYesNo(
         'btn-acc',
         'Acc?',
-        'Logout dan Hapus Sesi Saat ini',
+        'Acc',
         SvgIcons::getIcon(Icons::Check) . 'Acc kan min',
         SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
-        true
+        true,
+        'btn-success'
     );
     ?>
 </form>
@@ -30,7 +38,7 @@ include VIEWS . 'component/btn-icon.php';
     dialogYesNo(
         'btn-decl',
         'Tolak',
-        'Logout dan Hapus Sesi Saat ini',
+        'Decl',
         SvgIcons::getIcon(Icons::Check) . 'Tolak saja min',
         SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
         true
@@ -38,10 +46,46 @@ include VIEWS . 'component/btn-icon.php';
     ?>
 </form>
 
+<?=
+dialogYesNoCustom(
+    'btn-see',
+    '<div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
+        ' . iconButton('', Icons::Close, 'white') . '
+        <h1 class="modal-title fs-5" id="pdf-viewer-title"></h1>
+        ' . iconButton('', Icons::OpenInNewTab, 'white', 'window.open(document.getElementById(`pdf-viewer`).getAttribute(`src`), `_blank`);') . '
+    </div>',
+    '<div id="pdf-viewer-wrapper">
+    </div>',
+    '<div class="d-flex flex-row align-items-center">
+        <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-decl" 
+        onclick="
+            changeModalDialogMessage(`dialog-decl`, 
+                `Tolak <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
+                ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
+                ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
+                ' . statusBadge('danger', Icons::Close, 'Tolak') . '
+        </button>
+        <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-acc"
+        onclick="
+            changeModalDialogMessage(`dialog-acc`, 
+                `Acc <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
+                ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
+                ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
+         ' . statusBadge('success', Icons::Check, 'Terima') . '
+         </button>
+    </div>',
+    true,
+    '70vw'
+)
+?>
+
 <div id="pengumpulan-page">
 
     <div id="page-content-top">
-        <h1>Data Dokumen</h1>
+        <?php
+        $tipe = explode(' ', $data['title']);
+        echo '<h1>Data Dokumen <strong>' . ucwords($data['user']->adminApa === TipeAdmin::Super ? end($tipe) : $data['user']->adminApa->value) . '</strong></h1>';
+        ?>
         <div id="page-content-top-right">
             <div class="w-100 input-group d-flex">
                 <label class="input-group-text rounded-start-pill" for="inputGroupSelect01">Status</label>
@@ -72,59 +116,58 @@ include VIEWS . 'component/btn-icon.php';
                     <th scope="col" class="text-center">STATUS</th>
                 </tr>
             </thead>
-            <tbody class="align-middle" id="table-body">
-                <!-- <tr class="table-active">
-                    <td>1</td>
-                    <td>2341720157</td>
-                    <td>UwU Kagamihara</td>
-                    <td>Teknologi Informasi</td>
-                    <td>Teknik Informatika</td>
-                    <td style="place-items: center">
-                        <?= statusBadge('warning', Icons::Check, 'Tertanggung') ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="table-expand-wrapper" colspan="6">
-                        <div class="table-expand">
-                            <div class="table-expand-item">
-                                <div class="d-flex flex-row align-items-center" id="table-expand-item">
-                                    <div class="status-badge-icon success">
-                                        <?= SvgIcons::getIcon(Icons::Question) ?>
-                                    </div>
-                                    <p>Tukamm</p>
-                                </div>
-                                <div class="d-flex flex-row align-items-center" id="action">
-                                    <?= iconButton('btn-see', Icons::Eye, 'var(--bs-emphasis-color)') ?>
-                                    <?= iconButton('btn-acc', Icons::Check, 'green') ?>
-                                    <?= iconButton('btn-decl', Icons::Close, 'red') ?>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr> -->
-            </tbody>
+            <tbody class="align-middle" id="table-body"></tbody>
         </table>
     </div>
 
-    <nav aria-label="Page navigation example">
+    <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
+                <a class="page-link" href="#">
+                    <span>&laquo;</span>
                 </a>
             </li>
             <li class="page-item"><a class="page-link" href="#">1</a></li>
             <li class="page-item"><a class="page-link" href="#">2</a></li>
             <li class="page-item"><a class="page-link" href="#">3</a></li>
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
+                <a class="page-link" href="#">
+                    <span>&raquo;</span>
                 </a>
             </li>
         </ul>
     </nav>
 
     <script>
+        const pdfDatabasePrefix = '<?= FILEDATABASE_URL ?>';
+
+        function getFileName(url) {
+            let filename = url.substring(url.lastIndexOf('/') + 1);
+            return filename === 'undefined' ? '' : filename;
+        }
+
+        function pdfViewerLoadPdf(url) {
+            document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
+            document.getElementById('pdf-viewer-wrapper').innerHTML = `<iframe src="${url}" id="pdf-viewer" style="width: 100%; height: 70vh;">Loading...</iframe>`;
+        }
+
+        function setDokumenInOpen(idDokumen, namaDokumen, namaMahasiswa, nim) {
+            console.log('setDokumenInOpen');
+            document.getElementById('id_dokumen').value = idDokumen;
+            document.getElementById('nama_dokumen').value = namaDokumen;
+            document.getElementById('nama_mahasiswa').value = namaMahasiswa;
+            document.getElementById('nim').value = nim;
+        }
+
+        function clearDokumenInOpen() {
+            console.log('clearDokumenInOpen');
+            document.getElementById('id_dokumen').value = '';
+            document.getElementById('nim').value = '';
+        }
+
+        document.getElementById('btn-acc').addEventListener('hidden.bs.modal', clearDokumenInOpen);
+        document.getElementById('btn-decl').addEventListener('hidden.bs.modal', clearDokumenInOpen);
+
         function removeTableActive() {
             document.querySelectorAll('tbody tr').forEach(function(row) {
                 row.classList.remove('table-active');
@@ -146,7 +189,7 @@ include VIEWS . 'component/btn-icon.php';
             const btnAcc = '<?= iconButton('btn-acc', Icons::Check, 'green', '#onclick') ?>';
             const btnDecl = '<?= iconButton('btn-decl', Icons::Close, 'red', '#onclick') ?>';
             const badgeTertanggung = `<?= statusBadge('danger', Icons::Close, 'Tertanggung') ?>`;
-            const badgeSelesai = '<?= statusBadge('success', Icons::Check, 'Selesai') ?>';
+            const badgeSelesai = `<?= statusBadge('success', Icons::Check, 'Selesai') ?>`;
 
             let tableBody = document.createElement('tbody');
             let countItem = 0;
@@ -185,12 +228,9 @@ include VIEWS . 'component/btn-icon.php';
                     <td>${dataMahasiswa.program_studi}</td> 
                     <td style="place-items: center">${tuntas ? badgeSelesai : badgeTertanggungWithNumber}</td>                   
                 `;
-                if (i == idTableExpand) {
-                    tr.classList.add('table-active');
-                }
                 tableBody.appendChild(tr);
 
-                // OnExampand           
+                // OnExpand           
                 tr = document.createElement('tr');
                 let td = document.createElement('td');
                 td.colSpan = 6;
@@ -199,6 +239,28 @@ include VIEWS . 'component/btn-icon.php';
                 tableExpand.classList.add('table-expand');
                 for (const dataDetail of dataDetails) {
                     let tableExpandItem = document.createElement('div');
+                    let actions = [
+                        btnAcc.replace(`#onclick`, `                        
+                        changeModalDialogMessage('dialog-acc', 
+                            'Acc <strong>[${dataMahasiswa.nim}] ${dataMahasiswa.nama}<br>${dataDetail.dokumen}</strong>?');`),
+                        btnDecl.replace(`#onclick`, `                        
+                        changeModalDialogMessage('dialog-decl', 
+                        'Tolak <strong>[${dataMahasiswa.nim}] ${dataMahasiswa.nama}<br>${dataDetail.dokumen}</strong>?');`)
+                    ];
+                    let pdfFileUrl = pdfDatabasePrefix + dataDetail.path_dokumen;
+                    if (getFileName(pdfFileUrl) != '') {
+                        actions.unshift(btnSee.replace(`#onclick`, `
+                        setDokumenInOpen('${dataDetail.id}', '${dataDetail.dokumen}', '${dataMahasiswa.nama}', '${dataMahasiswa.nim}');
+                        pdfViewerLoadPdf('${pdfFileUrl}');`));
+                        tableExpandItem.onclick = function() {
+                            setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
+                            pdfViewerLoadPdf(`${pdfFileUrl}`);
+                        };
+                        tableExpandItem.dataset.bsToggle = "modal";
+                        tableExpandItem.dataset.bsTarget = "#btn-see";
+                        tableExpandItem.classList.add('table-expand-item-hoverable');
+                    }
+
                     tableExpandItem.classList.add('table-expand-item');
                     let tableExpandItemDocument = document.createElement('div');
                     tableExpandItemDocument.classList.add('d-flex', 'flex-row', 'align-items-center', 'action');
@@ -211,14 +273,6 @@ include VIEWS . 'component/btn-icon.php';
                     tableExpandItemAction.classList.add('d-flex', 'flex-row', 'align-items-center', 'action');
                     tableExpandItemAction.id = 'action';
 
-                    let actions = [
-                        btnSee,
-                        btnAcc.replace(`#onclick`, `changeModalDialogMessage('dialog-acc', 
-                            'Acc <strong>${dataDetail.dokumen}</strong>?')`),
-                        btnDecl.replace(`#onclick`, `changeModalDialogMessage('dialog-decl', 
-                        'Tolak <strong>${dataDetail.dokumen}</strong>?')`)
-                    ];
-
                     if (dataDetail.status.toLowerCase() == 'diverifikasi') {
                         tableExpandItemIcon.classList.add('success');
                         actions.splice(1, 1);
@@ -230,6 +284,10 @@ include VIEWS . 'component/btn-icon.php';
                     } else {
                         tableExpandItemIcon.classList.add('danger');
                         tableExpandItemIcon.innerHTML = iconDecl;
+                    }
+                    if (getFileName(pdfFileUrl) == '') {
+                        tableExpandItemAction.style.opacity = '0';
+                        tableExpandItemAction.style.pointerEvents = 'none';
                     }
                     tableExpandItemAction.innerHTML = actions.join('');
 
@@ -247,6 +305,9 @@ include VIEWS . 'component/btn-icon.php';
             let rows = tableBody.querySelectorAll('tbody tr');
             for (let i = 0; i < rows.length; i++) {
                 let row = rows[i];
+                if (i == idTableExpand) {
+                    row.classList.add('table-active');
+                }
                 row.addEventListener('click', function() {
                     if (row.children[0].classList.contains('table-expand-wrapper')) {
                         return;
@@ -265,11 +326,17 @@ include VIEWS . 'component/btn-icon.php';
         function getDataPengumpulan() {
             let tableBody = document.getElementById('table-body');
             tableBody.innerHTML = '';
+            let data = <?php
+                $tipe = explode(' ', $data['title']);
+                echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super-tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
+                ?>;
             $.ajax({
                 type: "POST",
                 url: "getDataPengumpulan",
+                data: data,
                 success: function(response) {
                     let data = JSON.parse(response);
+                    console.log(data);
                     tableBody.append(...generateTableBodyItems(data).children);
                 },
                 error: function(response) {
@@ -278,23 +345,20 @@ include VIEWS . 'component/btn-icon.php';
             });
 
         }
-
         getDataPengumpulan();
-
 
         document.getElementById('dialog-acc').addEventListener('submit', function(e) {
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "",
-                data: {
-
-                },
-                success: function() {
-
+                url: "updateDataPengumpulan",
+                data: $('#in-open-dokumen').serialize() + '&acc=true',
+                success: function(response) {
+                    console.log(response);
+                    getDataPengumpulan();
                 },
                 error: function(response) {
-
+                    console.log(response);
                 }
             });
         });
@@ -303,21 +367,21 @@ include VIEWS . 'component/btn-icon.php';
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "",
-                data: {
-
-                },
-                success: function() {
-
+                url: "updateDataPengumpulan",
+                data: $('#in-open-dokumen').serialize() + '&acc=false',
+                success: function(response) {
+                    console.log(response);
+                    getDataPengumpulan();
                 },
                 error: function(response) {
-
+                    console.log(response);
                 }
             });
         });
 
-        document.getElementById('search-input').addEventListener('keyup', function() {
+        document.getElementById('search-input').addEventListener('input', function() {
             var search = this.value.toLowerCase();
+            removeTableActive();
             document.querySelectorAll('tr #search-mahasiswa').forEach(function(row) {
                 row.parentNode.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
             });
