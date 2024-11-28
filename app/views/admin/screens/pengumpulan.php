@@ -76,10 +76,10 @@ dialogYesNoCustom(
                     <option value="3">Selesai</option>
                 </select>
             </div>
-            <form style="width: 120%;" class="d-flex input-group" role="search">
+            <div style="width: 120%;" class="d-flex input-group" role="search">
                 <label class="input-group-text rounded-start-pill" for="inputGroupSelect01"><?= SvgIcons::getIcon(Icons::Search) ?></label>
-                <input class="form-control me-2 rounded-end-pill" type="search" placeholder="Telusuri">
-            </form>
+                <input class="form-control me-2 rounded-end-pill" type="search" placeholder="Telusuri" id="search-input">
+            </div>
         </div>
     </div>
 
@@ -216,7 +216,7 @@ dialogYesNoCustom(
                 tr.innerHTML = `
                     <td>${countItem}</td>
                     <td>${dataMahasiswa.nim}</td>
-                    <td>${dataMahasiswa.nama}</td>
+                    <td id="search-mahasiswa">${dataMahasiswa.nama}</td>
                     <td>${dataMahasiswa.jurusan}</td>
                     <td>${dataMahasiswa.program_studi}</td> 
                     <td style="place-items: center">${tuntas ? badgeSelesai : badgeTertanggungWithNumber}</td>                   
@@ -353,6 +353,13 @@ dialogYesNoCustom(
                 error: function(response) {
 
                 }
+            });
+        });
+
+        document.getElementById('search-input').addEventListener('keyup', function() {
+            var search = this.value.toLowerCase();
+            document.querySelectorAll('tr #search-mahasiswa').forEach(function(row) {
+                row.parentNode.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
             });
         });
     </script>
