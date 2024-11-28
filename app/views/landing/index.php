@@ -130,6 +130,7 @@
             <div class="card">
                 <h3 class="fw-bold">User</h3>
                 <ul>
+                    <li>Login</li>
                     <li>
                         Menampilkan Tanggungan:
                         <ul>
@@ -137,11 +138,10 @@
                             <li>Laporan Tugas Akhir atau skripsi</li>
                             <li>Akademik Pusat (UKT, SKKM)</li>
                             <li>Kompensasi</li>
+                            <li>Sertifikat TOEIC</li>
                         </ul>
                     </li>
-                    <li>Laporan magang</li>
-                    <li>Sertifikat TOEIC</li>
-                    <li>Formulir online</li>
+                    <li>Mengumpulkan Berkas Jurusan / Pusat</li>
                     <li>Pemantauan Status Pengajuan</li>
                     <li>Notifikasi Real-Time</li>
                     <li>Unduh Surat Keterangan Bebas Tanggungan</li>
@@ -151,17 +151,16 @@
             <div class="card">
                 <h3 class="fw-bold">Admin</h3>
                 <ul>
+                    <li>Login</li>
                     <li>
                         Manajemen Data Tanggungan, Mengelola data:
                         <ul>
-                            <li>Peminjaman dan Pengembalian Perpustakaan</li>
                             <li>Laporan Tugas Akhir dan magang</li>
-                            <li>Data Pembayaran, Tagihan, dan Keringanan Biaya</li>
                             <li>Data Sertifikat TOEIC</li>
                         </ul>
                     </li>
                     <li>Verifikasi Pengajuan Surat Bebas Tanggungan</li>
-                    <li>Pengelolaan Data Mahasiswa</li>
+                    <li>Pengelolaan Berkas Mahasiswa</li>
                     <li>Pengelolaan Dokumen Bebas Tanggungan</li>
                     <li>Manajemen Akun Admin</li>
                     <li>Integrasi Data dan Notifikasi</li>
