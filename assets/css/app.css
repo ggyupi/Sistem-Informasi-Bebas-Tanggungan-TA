@@ -22,7 +22,9 @@ td,
 #side-bar-bottom,
 #side-bar-bottom-menu-not-dropend li,
 .table-expand-item,
-.table-expand {
+.table-expand,
+.toggle-komentar,
+#komentar-wrapper {
   transition: all 0.2s cubic-bezier(0.34, 0.56, 0.64, 1);
 }
 
@@ -36,6 +38,10 @@ td,
 
 .success {
   background-color: var(--bs-success) !important;
+}
+
+.primary {
+  background-color: var(--bs-primary) !important;
 }
 
 .danger-bg {
@@ -265,18 +271,18 @@ td,
 }
 
 .member-picture {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-#side-bar-user-picture {
   min-width: 40px;
   min-height: 40px;
   max-width: 40px;
   max-height: 40px;
   border-radius: 50%;
   overflow: hidden;
+}
+
+.member-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 #side-bar-user-text {
@@ -600,6 +606,12 @@ td,
   color: white;
 }
 
+.status-badge-text.slim {
+  width: 50px;
+  height: 24px;
+  border-radius: 12px;
+}
+
 .status-badge-icon svg {
   fill: white;
   height: 12px;
@@ -725,10 +737,10 @@ td,
   flex: 1;
   border-top: 1px solid var(--bs-border-color);
   border-bottom: 1px solid var(--bs-border-color);
-  padding: 12px 64px;  
+  padding: 12px 64px;
 }
 
-.table-expand-item:hover.table-expand-item-hoverable{
+.table-expand-item:hover.table-expand-item-hoverable {
   background-color: var(--bs-tertiary-bg);
   cursor: pointer;
 }
@@ -757,3 +769,224 @@ td,
   cursor: default;
 }
 /* End Table */
+
+/* Start Pengumpulan User */
+
+#pengumpulan-page h1 {
+  font-size: 36px;
+}
+
+#pengumpulan-page h2 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#pengumpulan-page h3 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#pengumpulan-page h4 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#total-tanggungan,
+#page-content-bottom,
+#list-dokumen-wrapper,
+#form-pengumpulan-item {
+  background-color: var(--bs-body-bg);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+#form-pengumpulan {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+#total-tanggungan,
+#list-dokumen-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+#total-tanggungan-top .flex-row {
+  gap: 16px;
+}
+
+#form-pengumpulan-item-header .flex-row {
+  gap: 8px;
+}
+
+#list-dokumen {
+  border-radius: 12px;
+  clip-path: view-box;
+}
+
+.list-dokumen-item {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  padding: 15px 24px;
+  gap: 30px;
+  background-color: var(--bs-tertiary-bg);
+}
+
+.list-dokumen-item svg {
+  height: 16px;
+  width: 16px;
+}
+
+.list-dokumen-item p {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#page-content-middle {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: stretch;
+  width: 100%;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+#page-content-middle-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#page-content-middle-left,
+#form-pengumpulan {
+  flex: 1;
+}
+
+#pengumpulan-page h2,
+#page-content-middle h3,
+#page-content-middle h4,
+#page-content-middle h5,
+#page-content-middle p {
+  margin: auto 0px;
+}
+
+#form-pengumpulan-item {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+#form-pengumpulan-item-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+#form-pengumpulan-upload-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-pengumpulan-upload {
+  min-height: 62px;
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 12px;
+  border: 1px dashed var(--bs-emphasis-color);
+  border-spacing: 5px;
+  cursor: pointer;
+}
+
+.form-pengumpulan-upload.has-file {
+  border: none;
+}
+
+.form-pengumpulan-upload.has-file #upload-placeholder {
+  display: none;
+}
+
+.form-pengumpulan-upload.has-file {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.form-pengumpulan-upload.has-file #upload-terlampir-wrapper {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#upload-terlampir,
+#upload-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+}
+
+.toggle-komentar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  border-radius: 6px;
+  gap: 10px;
+  padding: 6px 8px;
+  padding-left: 0px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.toggle-komentar:hover {
+  background-color: var(--bs-secondary-bg);
+}
+
+.toggle-komentar svg {
+  fill: var(--bs-emphasis-color);
+}
+
+.toggle-komentar:not(.komentar-expand) + #komentar-wrapper {
+  padding: 0px;
+  pointer-events: none;
+  opacity: 0;
+  border: none;
+  max-height: 0px;
+  overflow: hidden;
+}
+
+.toggle-komentar.komentar-expand + #komentar-wrapper {
+  max-height: 200px !important;
+}
+
+#komentar-people {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 12px;
+}
+
+#komentar-text-wrapper {
+  padding-left: 54px;
+}
+
+#page-content-bottom {
+  padding: 12px 24px;
+  margin-top: -12px;
+}
+
+/* End Pengumpulan User */
