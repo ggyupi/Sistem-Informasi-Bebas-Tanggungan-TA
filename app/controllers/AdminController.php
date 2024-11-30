@@ -60,7 +60,7 @@ class AdminController extends Controller
             }
             $dokumenList = $this->dokumen->getDokumenList($tingkatDokumen);
             $everToSubmit = [];
-            foreach ($dokumenList as $dokumen) {
+            foreach ($this->dokumen->getDokumenListAllWithUpload($tingkatDokumen) as $dokumen) {
                 $nim = $dokumen['nim'];
                 unset($dokumen['nim']);
                 $everToSubmit[$nim][] = $dokumen;

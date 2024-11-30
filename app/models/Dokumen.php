@@ -22,16 +22,46 @@ class Dokumen extends Model
         parent::__construct($db);
     }
 
+    public function insertUploadDokumen($idDokumen, $NIM, $path)
+    {
+        $checkQuery = $this->db->prepare("SELECT COUNT(*)
+            FROM dokumen.Upload_dokumen 
+            WHERE ID_dokumen = :idDokumen AND NIM = :NIM");
+        $checkQuery->bindValue(":idDokumen", $idDokumen);
+        $checkQuery->bindValue(":NIM", $NIM);
+        $checkQuery->execute();
+        if ($checkQuery->fetchColumn() > 0) {
+            $this->updateUploadDokumen($idDokumen, $NIM, path: $path);
+        } else {    
+            $insertQuery = $this->db->prepare("INSERT INTO dokumen.Upload_dokumen
+                (ID_dokumen, NIM, Path_dokumen, Status) VALUES
+                (:idDokumen, :NIM, :path, 'Menunggu')");
+            $insertQuery->bindValue(":idDokumen", $idDokumen);
+            $insertQuery->bindValue(":NIM", $NIM);
+            $insertQuery->bindValue(":path", $path);
+            $insertQuery->execute();
+        }
+    }
+
     public function updateUploadDokumen(
         $idDokumen,
         $NIM,
-        $adminID = '',
+        $adminID = NULL,
         $status = StatusDokumen::Menunggu,
-        $komentar = ''
+        $komentar = '',
+        $path = null
     ) {
-        $query = $this->db->prepare("UPDATE dokumen.Upload_dokumen 
-            SET NIDN = :adminID, Status = :status 
+        $query = '';
+        if ($path !== null) {
+            $query = $this->db->prepare("UPDATE dokumen.Upload_dokumen 
+                SET Path_dokumen = :path, NIDN = :adminID, Status = :status, tanggal = GETDATE() 
+                WHERE ID_dokumen = :idDokumen AND NIM = :NIM");
+            $query->bindValue(":path", $path);
+        } else {
+            $query = $this->db->prepare("UPDATE dokumen.Upload_dokumen 
+            SET NIDN = :adminID, Status = :status, tanggal = GETDATE() 
             WHERE ID_dokumen = :idDokumen AND NIM = :NIM");
+        }
         $query->bindValue(":adminID", $adminID);
         $query->bindValue(":status", $status->value);
         $query->bindValue(":idDokumen", $idDokumen);
@@ -63,9 +93,7 @@ class Dokumen extends Model
         }
     }
 
-
-
-    public function getDokumenList($tingkatDokumen)
+    public function getDokumenListAllWithUpload($tingkatDokumen)
     {
         $query = $this->db->prepare("SELECT li.ID id, 
             li.Nama_dokumen dokumen, up.Path_dokumen path_dokumen,
@@ -74,6 +102,36 @@ class Dokumen extends Model
             ON li.ID = up.ID_dokumen
             WHERE Tingkat = :tingkatDokumen");
         $query->bindValue(":tingkatDokumen", $tingkatDokumen->value);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDokumenList($tingkatDokumen)
+    {
+        $query = $this->db->prepare("SELECT li.ID id, 
+            li.Nama_dokumen dokumen
+            FROM dokumen.Dokumen li
+            WHERE Tingkat = :tingkatDokumen");
+        $query->bindValue(":tingkatDokumen", $tingkatDokumen->value);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDokumenListUploadByNIM($tingkatDokumen, $nim)
+    {
+        $query = $this->db->prepare("SELECT up.ID_Dokumen id,
+            up.Path_dokumen path_dokumen, up.Status status, up.tanggal tanggal_upload,
+            ad.Nama nama_admin, k.isi_komentar, k.tanggal tanggal_komentar
+            FROM dokumen.Dokumen li 
+            LEFT JOIN dokumen.Upload_dokumen up 
+            ON li.ID = up.ID_dokumen
+            LEFT JOIN pengguna.Admin ad
+            on up.NIDN = ad.NIDN
+            LEFT JOIN dokumen.Komentar k
+            on up.ID = k.ID_upload
+            WHERE up.NIM = :nim AND li.Tingkat = :tingkatDokumen");
+        $query->bindValue(":tingkatDokumen", $tingkatDokumen->value);
+        $query->bindValue(":nim", $nim);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }

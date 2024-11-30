@@ -6,8 +6,8 @@
     <div data-bs-toggle="dropdown" data-bs-display="static" id="side-bar-bottom">
 
         <div id="side-bar-user-info">
-            <div id="side-bar-user-picture">
-                <img class="member-picture" src="<?= IMGS; ?>anggota/Raruu.webp" />
+            <div class="member-picture">
+                <img src="<?= IMGS; ?>anggota/Raruu.webp" />
             </div>
             <div id="side-bar-user-text">
                 <p class="text-secondary">Welcome back 👋</p>

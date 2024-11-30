@@ -138,13 +138,8 @@ dialogYesNoCustom(
         </ul>
     </nav>
 
+    <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
-        const pdfDatabasePrefix = '<?= FILEDATABASE_URL ?>';
-
-        function getFileName(url) {
-            let filename = url.substring(url.lastIndexOf('/') + 1);
-            return filename === 'undefined' ? '' : filename;
-        }
 
         function pdfViewerLoadPdf(url) {
             document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
@@ -178,6 +173,20 @@ dialogYesNoCustom(
             let dialog = document.getElementById(id);
             dialog.getElementsByClassName('modal-body')[0].innerHTML = message;
         }
+
+        function funSearch(search) {
+            document.querySelectorAll('tr #search-mahasiswa').forEach(function(row) {
+                row.parentNode.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
+            });
+        }
+
+
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', function() {
+            var search = this.value.toLowerCase();
+            removeTableActive();
+            funSearch(search);
+        });
 
         let idTableExpand = -1;
 
@@ -327,9 +336,9 @@ dialogYesNoCustom(
             let tableBody = document.getElementById('table-body');
             tableBody.innerHTML = '';
             let data = <?php
-                $tipe = explode(' ', $data['title']);
-                echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super-tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
-                ?>;
+                        $tipe = explode(' ', $data['title']);
+                        echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super-tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
+                        ?>;
             $.ajax({
                 type: "POST",
                 url: "getDataPengumpulan",
@@ -338,6 +347,7 @@ dialogYesNoCustom(
                     let data = JSON.parse(response);
                     console.log(data);
                     tableBody.append(...generateTableBodyItems(data).children);
+                    funSearch(searchInput.value);
                 },
                 error: function(response) {
                     console.log(response);
@@ -376,14 +386,6 @@ dialogYesNoCustom(
                 error: function(response) {
                     console.log(response);
                 }
-            });
-        });
-
-        document.getElementById('search-input').addEventListener('input', function() {
-            var search = this.value.toLowerCase();
-            removeTableActive();
-            document.querySelectorAll('tr #search-mahasiswa').forEach(function(row) {
-                row.parentNode.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
             });
         });
     </script>

@@ -4,11 +4,6 @@
         <span></span>
         <p>Dashboard</p>
     </button>
-    <button class="side-bar-btn" type="submit" name="screen" value="akademik">
-        <?= SvgIcons::getIcon(Icons::PresentationLayer) ?>
-        <span></span>
-        <p>Akademik</p>
-    </button>
     <button class="side-bar-btn" type="submit" name="screen" value="pengumpulan">
         <?= SvgIcons::getIcon(Icons::DocumentStack) ?>
         <span></span>
