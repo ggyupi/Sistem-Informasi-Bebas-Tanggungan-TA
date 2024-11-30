@@ -2,15 +2,19 @@
 
 require_once '../app/services/UploadFile.php';
 require_once '../app/models/Mahasiswa.php';
+require_once '../app/models/Dokumen.php';
 
 class UserController extends Controller
 {
     private $mahasiswa;
+    private $dokumen;
 
     function __construct()
     {
+        $db = Database::getInstance(getDatabaseConfig(), [$this, 'error']);
+        $this->dokumen = new Dokumen($db);
         $this->mahasiswa = new Mahasiswa(
-            Database::getInstance(getDatabaseConfig(), [$this, 'error']),
+            $db,
             Session::get('username'),
         );
     }
@@ -25,7 +29,7 @@ class UserController extends Controller
         }
 
         $this->view('user/index', [
-            "screen" => $screen, 
+            "screen" => $screen,
             "user" => $this->mahasiswa,
             "title" => $title
         ]);
@@ -36,6 +40,31 @@ class UserController extends Controller
         if (isset($_GET['screen'])) {
             $screen = strtolower($_GET['screen']);
             $this->index($screen);
+        }
+    }
+
+    public function getDataPengumpulan()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $tingkatDokumen = TingkatDokumen::Jurusan;
+            $dokumenList = $this->dokumen->getDokumenList($tingkatDokumen);
+            $uploadList = $this->dokumen->getDokumenListUploadByNIM($this->mahasiswa->getPeopleId());
+            $uploadListWithIdKey = [];
+            foreach ($uploadList as $dokumen) {
+                $id = $dokumen['id'];
+                unset($dokumen['id']);
+                $uploadListWithIdKey[$id] = $dokumen;
+            }
+
+            foreach ($dokumenList as &$dokumen) {
+                if (isset($uploadListWithIdKey[$dokumen['id']])) {                    
+                    foreach ($uploadListWithIdKey[$dokumen['id']] as $key => $value){
+                      $dokumen[$key] = $value;  
+                    }
+                }
+            }
+
+            echo json_encode($dokumenList);
         }
     }
 

@@ -63,9 +63,7 @@ class Dokumen extends Model
         }
     }
 
-
-
-    public function getDokumenList($tingkatDokumen)
+    public function getDokumenListAllWithUpload($tingkatDokumen)
     {
         $query = $this->db->prepare("SELECT li.ID id, 
             li.Nama_dokumen dokumen, up.Path_dokumen path_dokumen,
@@ -74,6 +72,33 @@ class Dokumen extends Model
             ON li.ID = up.ID_dokumen
             WHERE Tingkat = :tingkatDokumen");
         $query->bindValue(":tingkatDokumen", $tingkatDokumen->value);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDokumenList($tingkatDokumen)
+    {
+        $query = $this->db->prepare("SELECT li.ID id, 
+            li.Nama_dokumen dokumen
+            FROM dokumen.Dokumen li
+            WHERE Tingkat = :tingkatDokumen");
+        $query->bindValue(":tingkatDokumen", $tingkatDokumen->value);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDokumenListUploadByNIM($nim)
+    {
+        $query = $this->db->prepare("SELECT up.ID id,
+            up.Path_dokumen path_dokumen, up.Status status, up.tanggal tanggal_upload,
+            ad.Nama nama_admin, k.isi_komentar, k.tanggal tanggal_komentar
+            FROM dokumen.Upload_dokumen up 
+            LEFT JOIN pengguna.Admin ad
+            on up.NIDN = ad.NIDN
+            LEFT JOIN dokumen.Komentar k
+            on up.ID = k.ID_upload
+            WHERE NIM = :nim");
+        $query->bindValue(":nim", $nim);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }

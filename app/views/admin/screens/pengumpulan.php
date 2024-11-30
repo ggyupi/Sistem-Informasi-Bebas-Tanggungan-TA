@@ -139,12 +139,7 @@ dialogYesNoCustom(
     </nav>
 
     <script>
-        const pdfDatabasePrefix = '<?= FILEDATABASE_URL ?>';
-
-        function getFileName(url) {
-            let filename = url.substring(url.lastIndexOf('/') + 1);
-            return filename === 'undefined' ? '' : filename;
-        }
+        <?php include_once VIEWS . "template/script-helper.php"; ?>
 
         function pdfViewerLoadPdf(url) {
             document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);

@@ -58,7 +58,7 @@ class AdminController extends Controller
             } else {
                 $tingkatDokumen = TingkatDokumen::from(ucwords($this->admin->adminApa->value));
             }
-            $dokumenList = $this->dokumen->getDokumenList($tingkatDokumen);
+            $dokumenList = $this->dokumen->getDokumenListAllWithUpload($tingkatDokumen);
             $everToSubmit = [];
             foreach ($dokumenList as $dokumen) {
                 $nim = $dokumen['nim'];
