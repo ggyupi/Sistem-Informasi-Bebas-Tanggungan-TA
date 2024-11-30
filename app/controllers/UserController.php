@@ -46,9 +46,9 @@ class UserController extends Controller
     public function getDataPengumpulan()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $tingkatDokumen = TingkatDokumen::Jurusan;
+            $tingkatDokumen = TingkatDokumen::Pusat;
             $dokumenList = $this->dokumen->getDokumenList($tingkatDokumen);
-            $uploadList = $this->dokumen->getDokumenListUploadByNIM($this->mahasiswa->getPeopleId());
+            $uploadList = $this->dokumen->getDokumenListUploadByNIM($tingkatDokumen, $this->mahasiswa->getPeopleId());
             $uploadListWithIdKey = [];
             foreach ($uploadList as $dokumen) {
                 $id = $dokumen['id'];
@@ -57,9 +57,9 @@ class UserController extends Controller
             }
 
             foreach ($dokumenList as &$dokumen) {
-                if (isset($uploadListWithIdKey[$dokumen['id']])) {                    
-                    foreach ($uploadListWithIdKey[$dokumen['id']] as $key => $value){
-                      $dokumen[$key] = $value;  
+                if (isset($uploadListWithIdKey[$dokumen['id']])) {
+                    foreach ($uploadListWithIdKey[$dokumen['id']] as $key => $value) {
+                        $dokumen[$key] = $value;
                     }
                 }
             }
@@ -68,11 +68,46 @@ class UserController extends Controller
         }
     }
 
+    public function uploadPengumpulan()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $dokumenList = [];
+            foreach (
+                $this->dokumen->getDokumenList(
+                    TingkatDokumen::from($_POST['tingkat_dokumen'])
+                ) as $dokumen
+            ) {
+                $id = $dokumen['id'];
+                unset($dokumen['id']);
+                $dokumenList[$id] = str_replace('/', '-', $dokumen['dokumen']);
+            }
+
+            $upload = new UploadFile();
+            foreach ($_FILES as $key => $file) {
+                if ($file['error'] === UPLOAD_ERR_OK) {
+                    $pathForDatabase = $upload->writeFile(
+                        $file,
+                        'Upload_dokumen',
+                        $this->mahasiswa->getPeopleId(),
+                        $dokumenList[$key]
+                    );
+                    $this->dokumen->insertUploadDokumen(
+                        $key,
+                        $this->mahasiswa->getPeopleId(),
+                        $pathForDatabase
+                    );
+                } else {
+                    echo "Error uploading file: " . $file['error'];
+                }
+            }
+        }
+    }
+
     public function uploadTest()
     {
         $upload = new UploadFile();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $upload->upload();
+            // $upload->upload();
         }
     }
 }

@@ -55,30 +55,34 @@ include_once VIEWS . 'component/btn-icon.php';
             </div>
         </div>
 
-        <form id="form-pengumpulan">
-           
+        <form id="form-pengumpulan" enctype="multipart/form-data">
         </form>
     </div>
 
     <div class="d-flex flex-row align-items-center justify-content-between" id="page-content-bottom">
-        <h2>Silahkan Upload</h2>
-        <button class="btn btn-secondary">Upload</button>
+        <h2>Silahkan Lengkapi Dokumen Terlebih Dahulu</h2>
+        <button class="btn btn-secondary" id="btn-upload" onclick="upload()" disabled>Upload</button>
     </div>
 
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
         function generatePageContent(data) {
+            const btnUpload = ' <?= iconButton('', Icons::Upload, 'var(--bs-emphasis-color)', ' ') ?>';
+            const btnDownload = ' <?= iconButton('', Icons::Download, 'var(--bs-emphasis-color)', ' ') ?>';
+            const btnOpenInNewTab = ' <?= iconButton('', Icons::OpenInNewTab, 'var(--bs-emphasis-color)', ' ') ?>';
+
             const listDokumen = document.getElementById('list-dokumen');
             listDokumen.innerHTML = '';
-            const fomrPengumpulan = document.getElementById('form-pengumpulan');
-            fomrPengumpulan.innerHTML = '';
+            const formPengumpulan = document.getElementById('form-pengumpulan');
+            formPengumpulan.innerHTML = '';
 
             let countVerifikasi = 0;
             let countPending = 0;
             let countTertanggung = 0;
             let lastestDate = '';
 
-            for (const dataItem of data) {
+            for (let i = 0; i < data.length; i++) {
+                const dataItem = data[i];
                 // LIST
                 let listDokumenItem = document.createElement('div');
                 listDokumenItem.classList.add('list-dokumen-item');
@@ -160,29 +164,59 @@ include_once VIEWS . 'component/btn-icon.php';
                 uploadWrapper.id = 'form-pengumpulan-upload-wrapper';
                 uploadWrapper.innerHTML = `
                 <h3>Bukti Mendukung</h3>
-                    <label for="file-input" class="form-pengumpulan-upload">
+                    <label for="file-input${i}" class="form-pengumpulan-upload">
                         <p id="upload-placeholder">Upload Dokumen Disini min</p>
                         <div class="d-none" id="upload-terlampir-wrapper">
-                            <div id="upload-terlampir">
+                            <div class="w-75" id="upload-terlampir">
                                 <?= SvgIcons::getIconWithFill(Icons::Document, 'var(--bs-tertiary-color)') ?>
                                 <p></p>
                             </div>
-                            <div id="upload-actions">
-                                <?= iconButton('', Icons::Upload, 'var(--bs-emphasis-color)', ' ') ?>
-                                <?= iconButton('', Icons::Download, 'var(--bs-emphasis-color)', ' ') ?>
-                                <?= iconButton('', Icons::OpenInNewTab, 'var(--bs-emphasis-color)', ' ') ?>
-                            </div>
+                            <div id="upload-actions"></div>
                         </div>
                     </label>
-                    <input type="file" class="d-none" id="file-input">
+                    <input type="file" class="d-none" name="${dataItem.id}" id="file-input${i}" accept=".pdf, .zip">                    
                 `;
+                let formPengumpulanUpload = uploadWrapper.getElementsByClassName('form-pengumpulan-upload')[0];
+
+                uploadWrapper.querySelector(`#file-input${i}`).addEventListener('change', function(context) {
+                    const cloneFormPengumpulanUpload = formPengumpulanUpload.cloneNode(true);
+                    formPengumpulanUpload.parentNode.replaceChild(cloneFormPengumpulanUpload, formPengumpulanUpload);
+                    formPengumpulanUpload = cloneFormPengumpulanUpload;
+                    formPengumpulanUpload.addEventListener('click', function(e) {
+                        if (e.target.closest('#upload-actions button:nth-child(1)')) {
+                            formPengumpulanUpload.click();
+                        }
+                        if (e.target.id === 'upload-terlampir-wrapper' ||
+                            e.target.parentNode.id === 'upload-terlampir' ||
+                            e.target.id === 'upload-terlampir' ||
+                            e.target.closest('#upload-actions button:nth-child(2)')) {
+                            e.preventDefault();
+                            const file = new Blob([context.target.files[0]], {
+                                type: 'application/pdf'
+                            });
+                            const fileURL = URL.createObjectURL(file);
+                            window.open(fileURL, '_blank');
+                        }
+                    });
+                    formPengumpulanUpload.classList.add('has-file');
+                    uploadWrapper.querySelector('#upload-actions').innerHTML = btnUpload + btnOpenInNewTab;
+                    uploadWrapper.querySelector('#upload-terlampir p').textContent = context.target.files[0].name;
+                    let readyToUpload = Array.from(document.querySelectorAll('.form-pengumpulan-upload')).every(function(formPengumpulanUpload) {
+                        return formPengumpulanUpload.classList.contains('has-file');
+                    });
+                    if (readyToUpload) {
+                        let pageContentBottom = document.getElementById('page-content-bottom');
+                        pageContentBottom.children[0].innerHTML = 'Silahkan Upload';
+                        pageContentBottom.children[1].removeAttribute('disabled');
+                    }
+                });
 
                 if (typeof dataItem.path_dokumen !== 'undefined') {
                     uploadWrapper.querySelector('#upload-terlampir p').textContent = getFileName(dataItem.path_dokumen);
-                    let formPengumpulanUpload = uploadWrapper.getElementsByClassName('form-pengumpulan-upload')[0];
                     formPengumpulanUpload.classList.add('has-file');
+                    uploadWrapper.querySelector('#upload-actions').innerHTML = btnUpload + btnDownload + btnOpenInNewTab;
+
                     formPengumpulanUpload.addEventListener('click', function(e) {
-                        console.log(e.target);
                         if (e.target.closest('#upload-actions button:nth-child(1)')) {
                             formPengumpulanUpload.click();
                         }
@@ -198,7 +232,9 @@ include_once VIEWS . 'component/btn-icon.php';
                         if (e.target.closest('#upload-actions button:nth-child(3)')) {
                             window.open(`${pdfDatabasePrefix+dataItem.path_dokumen}`, '_blank');
                         }
-                        if (e.target.id === 'upload-terlampir-wrapper') {
+                        if (e.target.id === 'upload-terlampir-wrapper' ||
+                            e.target.parentNode.id === 'upload-terlampir' ||
+                            e.target.id === 'upload-terlampir') {
                             e.preventDefault();
                             window.open(pdfDatabasePrefix + dataItem.path_dokumen, '_blank');
                         }
@@ -210,7 +246,8 @@ include_once VIEWS . 'component/btn-icon.php';
                 let komentarToggle = document.createElement('div');
                 komentarToggle.classList.add('toggle-komentar', 'd-none');
                 if (typeof dataItem.isi_komentar !== 'undefined' &&
-                    dataItem.status !== '<?= StatusDokumen::Diverifikasi->value ?>') {
+                    dataItem.status !== '<?= StatusDokumen::Diverifikasi->value ?>' &&
+                    dataItem.isi_komentar !== null) {
                     komentarToggle.classList.remove('d-none');
                     komentarToggle.innerHTML = `
                     <?= SvgIcons::getIcon(Icons::Message) ?>
@@ -241,7 +278,7 @@ include_once VIEWS . 'component/btn-icon.php';
                     </div> `;
                 formItem.appendChild(komentarWrapper);
 
-                document.getElementById('form-pengumpulan').appendChild(formItem);
+                formPengumpulan.appendChild(formItem);
             }
 
             let totalTanggungan = document.getElementById('total-tanggungan');
@@ -252,13 +289,12 @@ include_once VIEWS . 'component/btn-icon.php';
             totalTanggungan.querySelector('#last-update').textContent = formatDate(lastestDate);
         }
 
-
         function getDataPengumpulan() {
             $.ajax({
                 type: "POST",
                 url: "getDataPengumpulan",
                 success: function(response) {
-                    console.log(response);
+                    // console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
                     generatePageContent(data);
@@ -269,5 +305,40 @@ include_once VIEWS . 'component/btn-icon.php';
             });
         }
         getDataPengumpulan();
+
+        function upload() {
+            let pageContentBottom = document.getElementById('page-content-bottom');
+            pageContentBottom.children[0].innerHTML = 'UPLOADING... (Jangan Klik Apapun)';
+            pageContentBottom.children[1].setAttribute('disabled', 'disabled');
+
+            let formData = new FormData();
+            document.querySelectorAll('#form-pengumpulan-upload-wrapper input[type="file"]').forEach(input => {
+                if (input.files.length > 0) {
+                    formData.append(input.name, input.files[0]);
+                }
+            });
+
+            formData.append('tingkat_dokumen', 'Pusat');
+
+            $.ajax({
+                type: "POST",
+                url: "uploadPengumpulan",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    getDataPengumpulan();
+                    pageContentBottom.children[0].innerHTML = 'Upload Berhasil';
+                    pageContentBottom.children[1].removeAttribute('disabled');
+                },
+                error: function(response) {
+                    console.log(response);
+                    pageContentBottom.children[0].innerHTML = 'Upload Gagal';
+                    pageContentBottom.children[1].removeAttribute('disabled');
+                }
+            });
+        }
     </script>
 </div>

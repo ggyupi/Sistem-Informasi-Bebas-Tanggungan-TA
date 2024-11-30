@@ -601,7 +601,7 @@ td,
   border-radius: 100%;
   background-color: var(--bs-warning);
   height: 32px;
-  width: 32px;
+  min-width: 32px;
   font-size: 16px;
   padding-top: 3px;
   color: white;
@@ -816,6 +816,10 @@ td,
   gap: 24px;
 }
 
+#list-dokumen-wrapper{
+  overflow-y: auto;
+}
+
 #total-tanggungan-top .flex-row {
   gap: 16px;
 }
@@ -863,6 +867,8 @@ td,
   display: flex;
   flex-direction: column;
   gap: 16px;
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 #page-content-middle-left,
@@ -876,6 +882,9 @@ td,
 #page-content-middle h5,
 #page-content-middle p {
   margin: auto 0px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 #form-pengumpulan-item {

@@ -138,8 +138,8 @@ dialogYesNoCustom(
         </ul>
     </nav>
 
+    <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
-        <?php include_once VIEWS . "template/script-helper.php"; ?>
 
         function pdfViewerLoadPdf(url) {
             document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);

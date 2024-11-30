@@ -45,7 +45,8 @@ class Mahasiswa extends Model implements IUserApp
         $query = $this->db->prepare("SELECT m.NIM nim, m.Nama nama,
             p.Nama_Prodi program_studi, p.Jurusan jurusan
             FROM Pengguna.Mahasiswa m 
-            INNER JOIN prodi.Prodi p ON m.ID_prodi = p.ID");
+            INNER JOIN prodi.Prodi p ON m.ID_prodi = p.ID
+            ORDER BY nama ASC");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }

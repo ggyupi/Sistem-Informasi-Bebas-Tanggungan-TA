@@ -7,6 +7,7 @@
     }
 
     function formatDate(date) {
+        if (!date) return '';
         return date.toLocaleDateString('id-ID', {
             day: 'numeric',
             month: 'long',
