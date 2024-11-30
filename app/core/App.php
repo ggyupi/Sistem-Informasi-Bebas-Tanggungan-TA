@@ -21,19 +21,15 @@ class App
             self::$method = preg_replace('/\.php$/', '', $endUrl[0]);
         }
 
-        // TODO : add params ?
-        // self::$params = $url ? array_values($endUrl) : [];
-        self::$params =  [];
-
-        call_user_func_array([self::$controller, self::$method], self::$params);
+        call_user_func_array([self::$controller, self::$method], []);
     }
 
     public static function parseUrl($url)
     {
-        // consoleLog("[App, parseUrl]", $_GET['url']);
         if (isset($url)) {
             $arr =  array_values(array_filter(explode('/', filter_var(trim($url, '/'), FILTER_SANITIZE_URL))));
-            array_splice($arr, 0, 4);
+            // array_splice($arr, 0, 4);
+            array_splice($arr, 0, array_search('public', $arr)+1);
             return $arr;
         }
         return [];
