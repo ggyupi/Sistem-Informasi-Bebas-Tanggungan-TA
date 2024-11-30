@@ -1,8 +1,11 @@
 RewriteEngine On
 Options +Indexes
 
-
 # Redirect everything to index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+
+<FilesMatch "\.(zip|pdf)$">
+    Header unset Cache-Control
+</FilesMatch>
