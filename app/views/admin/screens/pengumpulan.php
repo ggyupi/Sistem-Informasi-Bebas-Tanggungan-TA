@@ -89,11 +89,11 @@ dialogYesNoCustom(
         <div id="page-content-top-right">
             <div class="w-100 input-group d-flex">
                 <label class="input-group-text rounded-start-pill" for="inputGroupSelect01">Status</label>
-                <select class="form-select rounded-end-pill" id="inputGroupSelect01">
-                    <option selected>Semua</option>
-                    <option value="1">Baru</option>
-                    <option value="2">Tertanggung</option>
-                    <option value="3">Selesai</option>
+                <select class="form-select rounded-end-pill" id="filter-data">
+                    <option selected value="semua">Semua</option>
+                    <option value="baru">Baru</option>
+                    <option value="tertanggung">Tertanggung</option>
+                    <option value="selesai">Selesai</option>
                 </select>
             </div>
             <div style="width: 120%;" class="d-flex input-group" role="search">
@@ -140,7 +140,6 @@ dialogYesNoCustom(
 
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
-
         function pdfViewerLoadPdf(url) {
             document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
             document.getElementById('pdf-viewer-wrapper').innerHTML = `<iframe src="${url}" id="pdf-viewer" style="width: 100%; height: 70vh;">Loading...</iframe>`;
@@ -388,6 +387,46 @@ dialogYesNoCustom(
                 }
             });
         });
+        // document.getElementById('filter-data').addEventListener('change', function() {
+        //     const selectedStatus = this.value.toLowerCase();
+        //     document.querySelectorAll('#table-body tr').forEach(function(row) {
+        //         const statusCell = row.querySelector('td:nth-child(6)');
+        //         if (statusCell) {
+        //             const statusText = statusCell.textContent.toLowerCase();
+        //             if (selectedStatus === 'tertanggung') {
+        //                 row.style.display = statusText.includes('tertanggung') ? '' : 'none';
+        //             } else if (selectedStatus === 'selesai') {
+        //                 row.style.display = statusText.includes('selesai') ? '' : 'none';
+        //             } else {
+        //                 row.style.display = selectedStatus === 'semua' || statusText.includes(selectedStatus) ? '' : 'none';
+        //             }
+        //         }
+        //     });
+        // });
+        function selectFilter(value) {
+            document.querySelectorAll('#table-body tr').forEach(function(row) {
+                const statusCell = row.querySelector('td:nth-child(6)');
+                if (statusCell) {
+                    const statusText = statusCell.textContent.toLowerCase();
+                    if (value === 'semua') {
+                        row.style.display = '';
+                    } else if (value === 'baru') {
+                        row.style.display = statusText.includes('baru') ? '' : 'none';
+                    } else if (value === 'tertanggung') {
+                        row.style.display = statusText.includes('tertanggung') ? '' : 'none';
+                    } else if (value === 'selesai') {
+                        row.style.display = statusText.includes('selesai') ? '' : 'none';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        }
+        const selectedStatus = document.getElementById('filter-data');
+        selectedStatus.addEventListener('change', function() {
+            removeTableActive();
+            selectFilter(this.value);
+        });                
     </script>
 
 </div>
