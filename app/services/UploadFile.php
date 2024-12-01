@@ -31,11 +31,11 @@ class UploadFile
             curl_setopt($ch, CURLOPT_URL, FILEDATABASE_POST);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                'file' => new CURLFile($fileTmpPath, mime_content_type($fileTmpPath), $fileName),
-                'folderName' => $folderName,
-                'id' => $id
+                'file' => new CURLFile($fileTmpPath, mime_content_type($fileTmpPath), basename($file['name'])),
+                'folder_name' => $folderName,
+                'id' => $id,
+                'file_name' => $fileName
             ]);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/octet-stream"]);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
             $response = curl_exec($ch);
