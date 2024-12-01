@@ -99,6 +99,7 @@ class AdminController extends Controller
                 $_POST['nim'],
                 $this->admin->getPeopleId(),
                 $_POST['acc'] === 'true' ? StatusDokumen::Diverifikasi : StatusDokumen::Ditolak,
+                // $_POST['acc'] === 'true' ? null :
                 isset($_POST['komentar']) ? $_POST['komentar'] : ''
             );
         }
