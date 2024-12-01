@@ -176,7 +176,7 @@ dialogYesNoCustom(
                 modalBody.innerHTML = `
                 ${message}
                 <p>Masukkan alasan penolakan</p>
-                <input type="text" class="form-control" value="" name="alasan" id="alasan"/>
+                <input type="text" class="form-control" value="" name="komentar" id="komentar-tolak"/>
                 `;
             
             } else {
@@ -388,7 +388,8 @@ dialogYesNoCustom(
             $.ajax({
                 type: "POST",
                 url: "updateDataPengumpulan",
-                data: $('#in-open-dokumen').serialize() + '&acc=false',
+                data: $('#in-open-dokumen').serialize() + '&acc=false&komentar=' 
+                + document.getElementById('komentar-tolak').value,
                 success: function(response) {
                     console.log(response);
                     getDataPengumpulan();
