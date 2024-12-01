@@ -171,7 +171,18 @@ dialogYesNoCustom(
 
         function changeModalDialogMessage(id, message) {
             let dialog = document.getElementById(id);
-            dialog.getElementsByClassName('modal-body')[0].innerHTML = message;
+            let modalBody = dialog.getElementsByClassName('modal-body')[0];
+            console.log(id);
+            if (id == 'dialog-decl') {
+                modalBody.innerHTML = `
+                ${message}
+                <p>Masukkan alasan penolakan</p>
+                <input type="text" class="form-control" value="" name="komentar" id="komentar-tolak"/>
+                `;
+            
+            } else {
+                modalBody.innerHTML = message;
+            }
         }
 
         function funSearch(search) {
@@ -382,7 +393,8 @@ dialogYesNoCustom(
             $.ajax({
                 type: "POST",
                 url: "updateDataPengumpulan",
-                data: $('#in-open-dokumen').serialize() + '&acc=false',
+                data: $('#in-open-dokumen').serialize() + '&acc=false&komentar=' 
+                + document.getElementById('komentar-tolak').value,
                 success: function(response) {
                     console.log(response);
                     getDataPengumpulan();
