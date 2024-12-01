@@ -22,8 +22,8 @@ class UserController extends Controller
     public function index($screen = "dashboard")
     {
         $title = $screen;
-        if (strpos($title, '/') !== false) {
-            $title = array_pop(explode('/', $title));
+        if (strpos($title, '_') !== false) {
+            // $title = array_pop(explode('_', $title));
             $title = str_replace('_', ' ', $title);
             $title = ucwords($title);
         }
@@ -46,7 +46,7 @@ class UserController extends Controller
     public function getDataPengumpulan()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $tingkatDokumen = TingkatDokumen::Pusat;
+            $tingkatDokumen = TingkatDokumen::from($_POST['tingkat_dokumen']);
             $dokumenList = $this->dokumen->getDokumenList($tingkatDokumen);
             $uploadList = $this->dokumen->getDokumenListUploadByNIM($tingkatDokumen, $this->mahasiswa->getPeopleId());
             $uploadListWithIdKey = [];

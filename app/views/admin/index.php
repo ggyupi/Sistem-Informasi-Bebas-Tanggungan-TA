@@ -21,7 +21,7 @@ include_once VIEWS . "component/dialog-yes-no.php";
             include_once VIEWS . "admin/sidebar-nav1" . ($data['user']->adminApa === TipeAdmin::Super ? '-super' : '') . ".php";
             ?>
             <span id="side-bar-menu-seperator"></span>
-            <?php include_once VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
+            <?php include_once VIEWS . "admin/sidebar-nav2.php"; ?>
         </div>
         <?php include_once VIEWS . "template/sidebar/sidebar-bottom.php"; ?>
     </div>

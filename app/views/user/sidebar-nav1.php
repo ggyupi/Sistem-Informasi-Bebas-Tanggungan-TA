@@ -4,9 +4,14 @@
         <span></span>
         <p>Dashboard</p>
     </button>
-    <button class="side-bar-btn" type="submit" name="screen" value="pengumpulan">
+    <button class="side-bar-btn" type="submit" name="screen" value="pengumpulan_jurusan">
         <?= SvgIcons::getIcon(Icons::DocumentStack) ?>
         <span></span>
-        <p>Pengumpulan</p>
+        <p>Pengumpulan Jurusan</p>
+    </button>
+    <button class="side-bar-btn" type="submit" name="screen" value="pengumpulan_pusat">
+        <?= SvgIcons::getIcon(Icons::DocumentStack) ?>
+        <span></span>
+        <p>Pengumpulan Pusat</p>
     </button>
 </form>
