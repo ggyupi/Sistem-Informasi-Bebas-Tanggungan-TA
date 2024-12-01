@@ -57,7 +57,7 @@ dialogYesNoCustom(
     </div>',
     '<div id="pdf-viewer-wrapper">
     </div>',
-    '<div class="d-flex flex-row align-items-center">
+    '<div class="d-flex flex-row align-items-center" id="pdf-viewer-footer">
         <button style="padding: 14px 12px; margin: 0px 8px" type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
         <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-decl" 
         onclick="
@@ -82,7 +82,6 @@ dialogYesNoCustom(
 ?>
 
 <div id="pengumpulan-page">
-
     <div id="page-content-top">
         <?php
         $tipe = explode(' ', $data['title']);
@@ -141,7 +140,13 @@ dialogYesNoCustom(
 
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
-        function pdfViewerLoadPdf(url) {
+        function pdfViewerLoadPdf(url, status) {
+            let pdfViewerFooter = document.querySelector('#btn-see #pdf-viewer-footer');
+            if (status === '<?= StatusDokumen::Diverifikasi->value ?>') {
+                pdfViewerFooter.children[2].style.display = 'none';
+            } else if (status === '<?= StatusDokumen::Ditolak->value ?>') {
+                pdfViewerFooter.children[1].style.display = 'none';
+            }
             document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
             document.getElementById('pdf-viewer-wrapper').innerHTML = `<iframe src="${url}" id="pdf-viewer" style="width: 100%; height: 70vh;">Loading...</iframe>`;
         }
@@ -158,6 +163,9 @@ dialogYesNoCustom(
             console.log('clearDokumenInOpen');
             document.getElementById('id_dokumen').value = '';
             document.getElementById('nim').value = '';
+            document.querySelectorAll('#btn-see #pdf-viewer-footer button').forEach(function(button) {
+                button.style.display = '';
+            });
         }
 
         document.getElementById('btn-acc').addEventListener('hidden.bs.modal', clearDokumenInOpen);
@@ -190,16 +198,16 @@ dialogYesNoCustom(
 
         let idTableExpand = -1;
 
-        function generateTableBodyItems(data) {
-            const iconAcc = '<?= SvgIcons::getIcon(Icons::Check) ?>';
-            const iconDecl = '<?= SvgIcons::getIcon(Icons::Close) ?>';
-            const iconQuestion = '<?= SvgIcons::getIcon(Icons::Question) ?>';
-            const btnSee = '<?= iconButton('btn-see', Icons::Eye, 'var(--bs-emphasis-color)', '#onclick') ?>';
-            const btnAcc = '<?= iconButton('btn-acc', Icons::Check, 'green', '#onclick') ?>';
-            const btnDecl = '<?= iconButton('btn-decl', Icons::Close, 'red', '#onclick') ?>';
-            const badgeTertanggung = `<?= statusBadge('danger', Icons::Close, 'Tertanggung') ?>`;
-            const badgeSelesai = `<?= statusBadge('success', Icons::Check, 'Selesai') ?>`;
+        const iconAcc = '<?= SvgIcons::getIcon(Icons::Check) ?>';
+        const iconDecl = '<?= SvgIcons::getIcon(Icons::Close) ?>';
+        const iconQuestion = '<?= SvgIcons::getIcon(Icons::Question) ?>';
+        const btnSee = '<?= iconButton('btn-see', Icons::Eye, 'var(--bs-emphasis-color)', '#onclick') ?>';
+        const btnAcc = '<?= iconButton('btn-acc', Icons::Check, 'green', '#onclick') ?>';
+        const btnDecl = '<?= iconButton('btn-decl', Icons::Close, 'red', '#onclick') ?>';
+        const badgeTertanggung = `<?= statusBadge('danger', Icons::Close, 'Tertanggung') ?>`;
+        const badgeSelesai = `<?= statusBadge('success', Icons::Check, 'Selesai') ?>`;
 
+        function generateTableBodyItems(data) {
             let tableBody = document.createElement('tbody');
             let countItem = 0;
 
@@ -231,7 +239,7 @@ dialogYesNoCustom(
                 `;
                 tr.innerHTML = `
                     <td>${countItem}</td>
-                    <td>${dataMahasiswa.nim}</td>
+                    <td id="search-nim">${dataMahasiswa.nim}</td>
                     <td id="search-mahasiswa">${dataMahasiswa.nama}</td>
                     <td>${dataMahasiswa.jurusan}</td>
                     <td>${dataMahasiswa.program_studi}</td> 
@@ -260,10 +268,10 @@ dialogYesNoCustom(
                     if (getFileName(pdfFileUrl) != '') {
                         actions.unshift(btnSee.replace(`#onclick`, `
                         setDokumenInOpen('${dataDetail.id}', '${dataDetail.dokumen}', '${dataMahasiswa.nama}', '${dataMahasiswa.nim}');
-                        pdfViewerLoadPdf('${pdfFileUrl}');`));
+                        pdfViewerLoadPdf('${pdfFileUrl}', dataDetail.status);`));
                         tableExpandItem.onclick = function() {
                             setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
-                            pdfViewerLoadPdf(`${pdfFileUrl}`);
+                            pdfViewerLoadPdf(`${pdfFileUrl}`, dataDetail.status);
                         };
                         tableExpandItem.dataset.bsToggle = "modal";
                         tableExpandItem.dataset.bsTarget = "#btn-see";
@@ -336,9 +344,91 @@ dialogYesNoCustom(
             return tableBody;
         }
 
-        function getDataPengumpulan() {
+        function updateTableBodyItems(data) {
             let tableBody = document.getElementById('table-body');
-            tableBody.innerHTML = '';
+            for (let i = 0; i < tableBody.children.length; i += 2) {
+                let dataMahasiswa = data[i / 2].data_mahasiswa;
+                let dataDetails = data[i / 2].data_detail;
+                let row = tableBody.children[i];
+                let rowDetails = tableBody.children[i + 1];
+                let tuntas = true;
+                for (const i of dataDetails) {
+                    if (i.status !== '<?= StatusDokumen::Diverifikasi->value ?>') {
+                        tuntas = false;
+                        break;
+                    }
+                }
+                let sumMenunggu = 0;
+                for (const dataDetail of dataDetails) {
+                    if (dataDetail.status == '<?= StatusDokumen::Menunggu->value ?>') {
+                        sumMenunggu += 1;
+                    }
+                }
+                let badgeTertanggungWithNumber = `
+                    <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 1 : 0};">${sumMenunggu}</div> 
+                        ${badgeTertanggung}
+                    <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 0 : 0};">${sumMenunggu}</div> 
+                `;
+                row.children[row.children.length - 1].children[0].innerHTML = tuntas ? badgeSelesai : badgeTertanggungWithNumber;
+
+
+                for (let j = 0; j < dataDetails.length; j++) {
+                    const dataDetail = dataDetails[j];
+                    let tableExpandItem = rowDetails.children[0].children[0].children[j];
+                    tableExpandItem.children[0].children[0].classList.remove('success', 'warning', 'danger');
+                    let pdfFileUrl = pdfDatabasePrefix + dataDetail.path_dokumen;
+                    let actions = [
+                        btnSee.replace(`#onclick`, `
+                        setDokumenInOpen('${dataDetail.id}', '${dataDetail.dokumen}', '${dataMahasiswa.nama}', '${dataMahasiswa.nim}');
+                        pdfViewerLoadPdf('${pdfFileUrl}', dataDetail.status);`),
+                        btnAcc.replace(`#onclick`, `                        
+                        changeModalDialogMessage('dialog-acc', 
+                            'Acc <strong>[${dataMahasiswa.nim}] ${dataMahasiswa.nama}<br>${dataDetail.dokumen}</strong>?');`),
+                        btnDecl.replace(`#onclick`, `                        
+                        changeModalDialogMessage('dialog-decl', 
+                        'Tolak <strong>[${dataMahasiswa.nim}] ${dataMahasiswa.nama}<br>${dataDetail.dokumen}</strong>?');`)
+                    ];
+                    if (dataDetail.status == '<?= StatusDokumen::Diverifikasi->value ?>') {
+                        tableExpandItem.children[0].children[0].classList.add('success');
+                        tableExpandItem.children[0].children[0].innerHTML = iconAcc;
+                        actions.splice(1, 1);
+                    } else if (dataDetail.status == '<?= StatusDokumen::Menunggu->value ?>') {
+                        tableExpandItem.children[0].children[0].classList.add('warning');
+                        tableExpandItem.children[0].children[0].innerHTML = iconQuestion;
+                    } else if (dataDetail.status == '<?= StatusDokumen::Ditolak->value ?>') {
+                        tableExpandItem.children[0].children[0].classList.add('danger');
+                        tableExpandItem.children[0].children[0].innerHTML = iconDecl;
+                        actions.pop();
+                    }
+
+                    tableExpandItem.children[0].children[1].textContent = dataDetail.dokumen;
+
+                    if (getFileName(pdfFileUrl) != '') {
+                        tableExpandItem.children[1].innerHTML = actions.join('');
+                        tableExpandItem.onclick = function() {
+                            setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
+                            pdfViewerLoadPdf(`${pdfFileUrl}`, dataDetail.status);
+                        };
+                        tableExpandItem.dataset.bsToggle = "modal";
+                        tableExpandItem.dataset.bsTarget = "#btn-see";
+                        tableExpandItem.classList.add('table-expand-item-hoverable');
+                    } else {
+                        tableExpandItem.onclick = null;
+                        delete tableExpandItem.dataset.bsToggle;
+                        delete tableExpandItem.dataset.bsTarget;
+                        tableExpandItem.classList.remove('table-expand-item-hoverable');
+                    }
+                }
+            }
+        }
+
+        var getDataPengumpulanInUpdate = false;
+
+        function getDataPengumpulan(useUpdate = true) {
+            if (getDataPengumpulanInUpdate) {
+                return;
+            }
+            getDataPengumpulanInUpdate = true;
             let data = <?php
                         $tipe = explode(' ', $data['title']);
                         echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super_tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
@@ -350,16 +440,26 @@ dialogYesNoCustom(
                 success: function(response) {
                     let data = JSON.parse(response);
                     console.log(data);
-                    tableBody.append(...generateTableBodyItems(data).children);
-                    funSearch(searchInput.value);
+                    if (useUpdate) {
+                        updateTableBodyItems(data);
+                    } else {
+                        let tableBody = document.getElementById('table-body');
+                        tableBody.innerHTML = '';
+                        tableBody.append(...generateTableBodyItems(data).children);
+                        funSearch(searchInput.value);
+                    }
+                    getDataPengumpulanInUpdate = false;
                 },
                 error: function(response) {
                     console.log(response);
+                    getDataPengumpulanInUpdate = false;
                 }
+
             });
 
         }
-        getDataPengumpulan();
+        getDataPengumpulan(false);
+        funToCallEachInterval.push(getDataPengumpulan);
 
         document.getElementById('dialog-acc').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -396,7 +496,6 @@ dialogYesNoCustom(
         function selectFilter(value) {
             document.querySelectorAll('#table-body tr').forEach(function(row) {
                 const statusCell = row.querySelector('td:nth-child(6)');
-                console.log(statusCell);
                 if (statusCell) {
                     const statusText = statusCell.textContent.toLowerCase();
                     if (value === 'semua') {
@@ -413,8 +512,8 @@ dialogYesNoCustom(
                 }
             });
         }
-        const selectedStatus = document.getElementById('filter-data');
-        selectedStatus.addEventListener('change', function() {
+
+        document.getElementById('filter-data').addEventListener('change', function() {
             removeTableActive();
             selectFilter(this.value);
         });
