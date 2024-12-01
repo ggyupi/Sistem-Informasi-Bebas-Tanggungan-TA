@@ -707,6 +707,17 @@ td,
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding-top: 0px;
+}
+
+#table-wrapper .table {
+  margin-top: 24px;
+}
+
+#table-wrapper .table thead {
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 #table-wrapper tr:not(.table-active) + tr .table-expand-wrapper {
@@ -816,7 +827,7 @@ td,
   gap: 24px;
 }
 
-#list-dokumen-wrapper{
+#list-dokumen-wrapper {
   overflow-y: auto;
 }
 
@@ -929,7 +940,7 @@ td,
   background-color: var(--bs-tertiary-bg);
 }
 
-.form-pengumpulan-upload.has-file:hover{
+.form-pengumpulan-upload.has-file:hover {
   background-color: var(--bs-secondary-bg);
 }
 

@@ -54,7 +54,7 @@ class AdminController extends Controller
 
             $tingkatDokumen = $this->admin->adminApa;
             if ($tingkatDokumen === TipeAdmin::Super) {
-                $tingkatDokumen = TingkatDokumen::from($_POST['super-tingkat']);
+                $tingkatDokumen = TingkatDokumen::from($_POST['super_tingkat']);
             } else {
                 $tingkatDokumen = TingkatDokumen::from(ucwords($this->admin->adminApa->value));
             }

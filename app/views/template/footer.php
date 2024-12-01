@@ -52,4 +52,12 @@
             }
         }
     }
+
+    setInterval(function() {
+        if (funToCallEachInterval) {
+            for (let i = 0; i < funToCallEachInterval.length; i++) {
+                funToCallEachInterval[i]();
+            }
+        }
+    }, 3000);
 </script>
