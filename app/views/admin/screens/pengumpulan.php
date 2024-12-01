@@ -104,8 +104,7 @@ dialogYesNoCustom(
     </div>
 
     <div id="table-wrapper">
-
-        <table class="table table-hover">
+        <table class="table table-hover" style="overflow-y: auto;">
             <thead>
                 <tr>
                     <th scope="col">NO</th>
