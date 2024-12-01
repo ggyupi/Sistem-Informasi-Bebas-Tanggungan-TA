@@ -170,7 +170,18 @@ dialogYesNoCustom(
 
         function changeModalDialogMessage(id, message) {
             let dialog = document.getElementById(id);
-            dialog.getElementsByClassName('modal-body')[0].innerHTML = message;
+            let modalBody = dialog.getElementsByClassName('modal-body')[0];
+            console.log(id);
+            if (id == 'dialog-decl') {
+                modalBody.innerHTML = `
+                ${message}
+                <p>Masukkan alasan penolakan</p>
+                <input type="text" class="form-control" value="" name="alasan" id="alasan"/>
+                `;
+            
+            } else {
+                modalBody.innerHTML = message;
+            }
         }
 
         function funSearch(search) {
@@ -387,22 +398,7 @@ dialogYesNoCustom(
                 }
             });
         });
-        // document.getElementById('filter-data').addEventListener('change', function() {
-        //     const selectedStatus = this.value.toLowerCase();
-        //     document.querySelectorAll('#table-body tr').forEach(function(row) {
-        //         const statusCell = row.querySelector('td:nth-child(6)');
-        //         if (statusCell) {
-        //             const statusText = statusCell.textContent.toLowerCase();
-        //             if (selectedStatus === 'tertanggung') {
-        //                 row.style.display = statusText.includes('tertanggung') ? '' : 'none';
-        //             } else if (selectedStatus === 'selesai') {
-        //                 row.style.display = statusText.includes('selesai') ? '' : 'none';
-        //             } else {
-        //                 row.style.display = selectedStatus === 'semua' || statusText.includes(selectedStatus) ? '' : 'none';
-        //             }
-        //         }
-        //     });
-        // });
+        
         function selectFilter(value) {
             document.querySelectorAll('#table-body tr').forEach(function(row) {
                 const statusCell = row.querySelector('td:nth-child(6)');
