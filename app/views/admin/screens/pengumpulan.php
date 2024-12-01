@@ -33,6 +33,7 @@ include_once VIEWS . 'component/btn-icon.php';
     );
     ?>
 </form>
+
 <form id="dialog-decl">
     <?=
     dialogYesNo(
@@ -57,6 +58,7 @@ dialogYesNoCustom(
     '<div id="pdf-viewer-wrapper">
     </div>',
     '<div class="d-flex flex-row align-items-center">
+        <button style="padding: 14px 12px; margin: 0px 8px" type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
         <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-decl" 
         onclick="
             changeModalDialogMessage(`dialog-decl`, 
@@ -88,7 +90,7 @@ dialogYesNoCustom(
         ?>
         <div id="page-content-top-right">
             <div class="w-100 input-group d-flex">
-                <label class="input-group-text rounded-start-pill" for="inputGroupSelect01">Status</label>
+                <label class="input-group-text rounded-start-pill" for="filter-data">Status</label>
                 <select class="form-select rounded-end-pill" id="filter-data">
                     <option selected value="semua">Semua</option>
                     <option value="baru">Baru</option>
@@ -97,7 +99,7 @@ dialogYesNoCustom(
                 </select>
             </div>
             <div style="width: 120%;" class="d-flex input-group" role="search">
-                <label class="input-group-text rounded-start-pill" for="inputGroupSelect01"><?= SvgIcons::getIcon(Icons::Search) ?></label>
+                <label class="input-group-text rounded-start-pill" for="search-input"><?= SvgIcons::getIcon(Icons::Search) ?></label>
                 <input class="form-control me-2 rounded-end-pill" type="search" placeholder="Telusuri" id="search-input">
             </div>
         </div>
@@ -208,7 +210,7 @@ dialogYesNoCustom(
                 let dataDetails = data[i].data_detail;
                 let tuntas = true;
                 for (const i of dataDetails) {
-                    if (i.status.toLowerCase() !== 'diverifikasi') {
+                    if (i.status !== '<?= StatusDokumen::Diverifikasi->value ?>') {
                         tuntas = false;
                         break;
                     }
@@ -216,7 +218,7 @@ dialogYesNoCustom(
 
                 let sumMenunggu = 0;
                 for (const dataDetail of dataDetails) {
-                    if (dataDetail.status.toLowerCase() == 'menunggu') {
+                    if (dataDetail.status == '<?= StatusDokumen::Menunggu->value ?>') {
                         sumMenunggu += 1;
                     }
                 }
@@ -280,14 +282,18 @@ dialogYesNoCustom(
                     tableExpandItemAction.classList.add('d-flex', 'flex-row', 'align-items-center', 'action');
                     tableExpandItemAction.id = 'action';
 
-                    if (dataDetail.status.toLowerCase() == 'diverifikasi') {
+                    if (dataDetail.status == '<?= StatusDokumen::Diverifikasi->value ?>') {
                         tableExpandItemIcon.classList.add('success');
                         actions.splice(1, 1);
                         tableExpandItemIcon.innerHTML = iconAcc;
 
-                    } else if (dataDetail.status.toLowerCase() == 'menunggu') {
+                    } else if (dataDetail.status == '<?= StatusDokumen::Menunggu->value ?>') {
                         tableExpandItemIcon.classList.add('warning');
                         tableExpandItemIcon.innerHTML = iconQuestion;
+                    } else if (dataDetail.status == '<?= StatusDokumen::Ditolak->value ?>') {
+                        actions.pop();
+                        tableExpandItemIcon.classList.add('danger');
+                        tableExpandItemIcon.innerHTML = iconDecl;
                     } else {
                         tableExpandItemIcon.classList.add('danger');
                         tableExpandItemIcon.innerHTML = iconDecl;
@@ -335,7 +341,7 @@ dialogYesNoCustom(
             tableBody.innerHTML = '';
             let data = <?php
                         $tipe = explode(' ', $data['title']);
-                        echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super-tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
+                        echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super_tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
                         ?>;
             $.ajax({
                 type: "POST",
@@ -386,22 +392,7 @@ dialogYesNoCustom(
                 }
             });
         });
-        // document.getElementById('filter-data').addEventListener('change', function() {
-        //     const selectedStatus = this.value.toLowerCase();
-        //     document.querySelectorAll('#table-body tr').forEach(function(row) {
-        //         const statusCell = row.querySelector('td:nth-child(6)');
-        //         if (statusCell) {
-        //             const statusText = statusCell.textContent.toLowerCase();
-        //             if (selectedStatus === 'tertanggung') {
-        //                 row.style.display = statusText.includes('tertanggung') ? '' : 'none';
-        //             } else if (selectedStatus === 'selesai') {
-        //                 row.style.display = statusText.includes('selesai') ? '' : 'none';
-        //             } else {
-        //                 row.style.display = selectedStatus === 'semua' || statusText.includes(selectedStatus) ? '' : 'none';
-        //             }
-        //         }
-        //     });
-        // });
+
         function selectFilter(value) {
             document.querySelectorAll('#table-body tr').forEach(function(row) {
                 const statusCell = row.querySelector('td:nth-child(6)');
@@ -411,7 +402,7 @@ dialogYesNoCustom(
                     if (value === 'semua') {
                         row.style.display = '';
                     } else if (value === 'baru') {
-                        row.style.display = statusCell.children[0].children[0].style.opacity == 1? '' : 'none';
+                        row.style.display = statusCell.children[0].children[0].style.opacity == 1 ? '' : 'none';
                     } else if (value === 'tertanggung') {
                         row.style.display = statusText.includes('tertanggung') ? '' : 'none';
                     } else if (value === 'selesai') {
@@ -426,7 +417,7 @@ dialogYesNoCustom(
         selectedStatus.addEventListener('change', function() {
             removeTableActive();
             selectFilter(this.value);
-        });                
+        });
     </script>
 
 </div>
