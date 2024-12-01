@@ -406,12 +406,13 @@ dialogYesNoCustom(
         function selectFilter(value) {
             document.querySelectorAll('#table-body tr').forEach(function(row) {
                 const statusCell = row.querySelector('td:nth-child(6)');
+                console.log(statusCell);
                 if (statusCell) {
                     const statusText = statusCell.textContent.toLowerCase();
                     if (value === 'semua') {
                         row.style.display = '';
                     } else if (value === 'baru') {
-                        row.style.display = statusText.includes('baru') ? '' : 'none';
+                        row.style.display = statusCell.children[0].children[0].style.opacity == 1? '' : 'none';
                     } else if (value === 'tertanggung') {
                         row.style.display = statusText.includes('tertanggung') ? '' : 'none';
                     } else if (value === 'selesai') {

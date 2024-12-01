@@ -293,8 +293,9 @@ include_once VIEWS . 'component/btn-icon.php';
             $.ajax({
                 type: "POST",
                 url: "getDataPengumpulan",
+                data: {tingkat_dokumen :"<?=$tingkat ?>"},
                 success: function(response) {
-                    // console.log(response);
+                    console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
                     generatePageContent(data);
@@ -318,7 +319,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 }
             });
 
-            formData.append('tingkat_dokumen', 'Pusat');
+            formData.append('tingkat_dokumen', "<?=$tingkat ?>");
 
             $.ajax({
                 type: "POST",
