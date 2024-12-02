@@ -11,6 +11,32 @@ include_once VIEWS . 'component/btn-icon.php';
         flex: 1;
         overflow-y: auto;
     }
+
+    #result-content h2 {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0px;
+    }
+
+    #result-content {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0px;
+        width: 630px;
+        height: 350px;
+        border-radius: 12px;
+    }
+
+    #result-content svg {
+        width: 50%;
+        height: 50%;
+    }
+
+    #result-content .status-badge-text {
+        width: 90px;
+        min-width: 90px;
+        height: 90px;
+    }
 </style>
 
 <form class="d-none" id="in-open-dokumen">
@@ -38,10 +64,7 @@ include_once VIEWS . 'component/btn-icon.php';
     <?=
     dialogYesNoCustom(
         'btn-decl',
-        '<div class="modal-header">
-        <h1 class="modal-title fs-5">Tolak?</h1>
-        </div>
-        ',
+        '<h1 class="modal-title fs-5">Tolak?</h1>',
         'Decl',
         '<button type="button" class="btn btn-outline'
             . '" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) .
@@ -55,6 +78,27 @@ include_once VIEWS . 'component/btn-icon.php';
     ?>
 </form>
 
+<div class="modal fade" id="result-acc" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">;
+        <div class="d-flex flex-row align-items-center justify-content-center success-bg" id="result-content">
+            <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
+                <div class="status-badge-text success"><?= SvgIcons::getIconWithColor(Icons::Check, "white") ?></div>
+                <h2>Dokumen Berhasil Diverifikasi</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="result-decl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">;
+        <div class="d-flex flex-row align-items-center justify-content-center danger-bg" id="result-content">
+            <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
+                <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
+                <h2>Dokumen Berhasil Ditolak</h2>
+            </div>
+        </div>
+    </div>
+</div>
 <?=
 dialogYesNoCustom(
     'btn-see',
@@ -148,7 +192,7 @@ dialogYesNoCustom(
 
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
-         function resetDialogSee() {
+        function resetDialogSee() {
             document.querySelectorAll('#btn-see #pdf-viewer-footer button').forEach(function(button) {
                 button.style.display = '';
             });
@@ -488,7 +532,22 @@ dialogYesNoCustom(
 
         }
         getDataPengumpulan(false);
-        funToCallEachInterval.push(getDataPengumpulan);
+        // funToCallEachInterval.push(getDataPengumpulan);
+
+        function showResultAcc() {
+            $('#result-acc').modal('show');
+            setTimeout(function(){
+                $('#result-acc').modal('hide');
+            }, 1000);
+            
+        }
+        function showResultDecl() {
+            $('#result-decl').modal('show');
+            setTimeout(function(){
+                $('#result-decl').modal('hide');
+            }, 1000);
+            
+        }
 
         document.getElementById('dialog-acc').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -499,6 +558,7 @@ dialogYesNoCustom(
                 success: function(response) {
                     console.log(response);
                     getDataPengumpulan();
+                    showResultAcc();
                 },
                 error: function(response) {
                     console.log(response);
@@ -519,6 +579,7 @@ dialogYesNoCustom(
                 success: function(response) {
                     console.log(response);
                     getDataPengumpulan();
+                    showResultDecl();
                 },
                 error: function(response) {
                     console.log(response);
