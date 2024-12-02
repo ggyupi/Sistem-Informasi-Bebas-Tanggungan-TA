@@ -25,6 +25,7 @@ include_once VIEWS . 'component/btn-icon.php';
         width: 630px;
         height: 350px;
         border-radius: 12px;
+        opacity: 0;
     }
 
     #result-content svg {
@@ -534,23 +535,38 @@ dialogYesNoCustom(
         getDataPengumpulan(false);
         // funToCallEachInterval.push(getDataPengumpulan);
 
-        function showResultAcc() {
-            $('#result-acc').modal('show');
-            setTimeout(function(){
-                $('#result-acc').modal('hide');
-            }, 1000);
-            
+        function showResultAcc(showResult = false) {
+            if (!showResult) {
+                $('#result-acc').modal('show');
+            } else {
+                let result = document.querySelector('#result-acc #result-content');
+                console.log(result);
+                result.style.opacity = '1';
+                setTimeout(function() {
+                    $('#result-acc').modal('hide');
+                    result.style.opacity = '1';
+                }, 1000);
+            }
+
         }
-        function showResultDecl() {
-            $('#result-decl').modal('show');
-            setTimeout(function(){
-                $('#result-decl').modal('hide');
-            }, 1000);
-            
+
+        function showResultDecl(showResult = false) {
+            if (!showResult) {
+                $('#result-decl').modal('show');
+            } else {
+                let result = document.querySelector('#result-decl #result-content');
+                console.log(result);
+                result.style.opacity = '1';
+                setTimeout(function() {
+                    $('#result-decl').modal('hide');
+                    result.style.opacity = '1';
+                }, 1000);
+            }
         }
 
         document.getElementById('dialog-acc').addEventListener('submit', function(e) {
             e.preventDefault();
+            showResultAcc();
             $.ajax({
                 type: "POST",
                 url: "updateDataPengumpulan",
@@ -558,7 +574,7 @@ dialogYesNoCustom(
                 success: function(response) {
                     console.log(response);
                     getDataPengumpulan();
-                    showResultAcc();
+                    showResultAcc(true);
                 },
                 error: function(response) {
                     console.log(response);
@@ -570,7 +586,7 @@ dialogYesNoCustom(
         document.getElementById('dialog-decl').addEventListener('submit', function(e) {
             e.preventDefault();
             document.querySelector('#btn-decl .btn-outline').click();
-
+            showResultDecl();
             $.ajax({
                 type: "POST",
                 url: "updateDataPengumpulan",
@@ -579,7 +595,7 @@ dialogYesNoCustom(
                 success: function(response) {
                     console.log(response);
                     getDataPengumpulan();
-                    showResultDecl();
+                    showResultDecl(true);
                 },
                 error: function(response) {
                     console.log(response);
