@@ -20,7 +20,7 @@ class Admin extends Model implements IUserApp
     public function __construct($db, $username, $adminApa)
     {
         parent::__construct($db);
-        $output = $this->getAdminBasicInformation($username);
+        $output = $this->getAdminInformation($username);
         $this->NIDN = $output['NIDN'];
         $this->nama = $output['Nama'];        
         $adminApa = substr($adminApa, strpos($adminApa, '-') + 1);
@@ -37,10 +37,24 @@ class Admin extends Model implements IUserApp
         return $this->nama;
     }
 
-    public function getAdminBasicInformation($username)
+    public function getAdminInformation($username)
     {
         $query = $this->db->prepare("SELECT NIDN, Nama FROM Pengguna.Admin WHERE username = :username");
         $query->bindValue(":username", $username);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getAdminList(){
+        $query = $this->db->prepare("SELECT NIDN, Nama, NIDN id FROM Pengguna.Admin");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAdminData($id)
+    {
+        $query = $this->db->prepare("SELECT * FROM Pengguna.Admin WHERE NIDN = :id");
+        $query->bindValue(":id", $id);
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC);
     }

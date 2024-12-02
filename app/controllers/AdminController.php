@@ -103,4 +103,10 @@ class AdminController extends Controller
             );
         }
     }
+
+    public function getAdminList(){
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            echo json_encode($this->admin->getAdminList());
+        }
+    }
 }

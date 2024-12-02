@@ -4,7 +4,7 @@ include_once VIEWS . 'component/btn-icon.php';
 ?>
 
 <style>
-    #data-admin {
+    #admin-page {
         display: flex;
         flex-direction: column;
         gap: 24px;
@@ -12,7 +12,7 @@ include_once VIEWS . 'component/btn-icon.php';
         overflow-y: auto;
     }
 </style>
-<div id="data-admin">
+<div id="admin-page">
     <div id="page-content-top">
         <?php
         $tipe = explode(' ', $data['title']);
@@ -38,16 +38,36 @@ include_once VIEWS . 'component/btn-icon.php';
         <table class="table table-hover" style="overflow-y: auto;">
             <thead>
                 <tr>
-                    <th scope="col">NO</th>
-                    <th scope="col" style="width: 10%;">NIDN</th>
-                    <th scope="col"style="width: 35%;">NAMA</th>
-                    <th scope="col" >Level Admin</th>
-                    <th scope="col" class="text-center">Edit Data</th>
+                    <th scope="col" style="width: 5%;">NO</th>
+                    <th scope="col" style="width: 10%;">ID Admin</th>
+                    <th scope="col" style="width: 50%;">NAMA</th>
+                    <th scope="col" style="width: 10%;">Level Admin</th>
                 </tr>
             </thead>
             <tbody class="align-middle" id="table-body"></tbody>
         </table>
     </div>
-<script>
-    
-</script>
+    <script>
+        function generateTableBodyItems(data) {
+            let tableBody = document.createElement('tbody');
+            let countItem = 0;
+
+            data.forEach(dataAdmin => {
+                let tr = document.createElement('tr');
+
+                tr.innerHTML = `
+                    <td>${countItem + 1}</td>
+                    <td>${dataAdmin.id_admin}</td>
+                    <td>${dataAdmin.nama}</td>
+                    <td>${dataAdmin.level_admin}</td>
+                `;
+                tableBody.appendChild(tr);
+
+                countItem++;
+            });
+
+            return tableBody;
+        }
+
+
+    </script>
