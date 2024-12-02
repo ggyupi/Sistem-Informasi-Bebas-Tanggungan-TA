@@ -63,12 +63,6 @@ td,
   background-color: var(--bs-tertiary-bg) !important;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border: var(--bs-border-width) solid var(--bs-border-color);
-  box-shadow: none;
-}
-
 /* Start Sidebar Expand */
 
 #side-bar {
@@ -779,6 +773,12 @@ td,
   --bs-table-color-state: var(--bs-table-hover-color);
   --bs-table-bg-state: transparent;
   cursor: default;
+}
+
+#page-content-top .form-control:focus,
+#page-content-top .form-select:focus {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  box-shadow: none;
 }
 /* End Table */
 

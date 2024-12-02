@@ -13,10 +13,10 @@
  * Example:
  * dialogYesNo('dialog-id', 'Confirm Delete', 'Are you sure you want to delete this file?', 'Delete', 'Cancel', false);
  */
-function dialogYesNo($id = '', $title = 'Yes/No Dialog', $message = 'message', $textYes = 'Ya', $textNo = 'Tidak', $static = true, $btnYes = '', $btnNo = '')
+function dialogYesNo($id = '', $title = 'Yes/No Dialog', $message = 'message', $textYes = 'Ya', $textNo = 'Tidak', $static = true, $btnYes = '', $btnNo = '', $maxWidth = '')
 {
     echo '<div class="modal fade" id="'  . $id . '" ' . ($static ? 'data-bs-backdrop="static"' : '') . ' data-bs-keyboard="false" tabindex="-1">';
-    echo '<div class="modal-dialog modal-dialog-centered">';
+    echo '<div class="modal-dialog modal-dialog-centered" ' .  ($maxWidth !== '' ? 'style="max-width: ' . $maxWidth . '"' : '') .'>';
     echo '<div class="modal-content">';
     echo '<div class="modal-header">';
     echo '<h1 class="modal-title fs-5">' . $title . '</h1>';

@@ -34,15 +34,23 @@ include_once VIEWS . 'component/btn-icon.php';
     ?>
 </form>
 
-<form id="dialog-decl">
+<form class="needs-validation was-validated" id="dialog-decl">
     <?=
-    dialogYesNo(
+    dialogYesNoCustom(
         'btn-decl',
-        'Tolak',
+        '<div class="modal-header">
+        <h1 class="modal-title fs-5">Tolak?</h1>
+        </div>
+        ',
         'Decl',
-        SvgIcons::getIcon(Icons::Check) . 'Tolak saja min',
-        SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
-        true
+        '<button type="button" class="btn btn-outline'
+            . '" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) .
+            'Ga jadi</button>
+        <button type="submit" class="btn btn-danger'
+            . '" >' . SvgIcons::getIcon(Icons::Check) .
+            'Tolak saja min</button>',
+        true,
+        maxWidth: '30vw'
     );
     ?>
 </form>
@@ -163,13 +171,15 @@ dialogYesNoCustom(
             console.log('clearDokumenInOpen');
             document.getElementById('id_dokumen').value = '';
             document.getElementById('nim').value = '';
-            document.querySelectorAll('#btn-see #pdf-viewer-footer button').forEach(function(button) {
-                button.style.display = '';
-            });
         }
 
         document.getElementById('btn-acc').addEventListener('hidden.bs.modal', clearDokumenInOpen);
         document.getElementById('btn-decl').addEventListener('hidden.bs.modal', clearDokumenInOpen);
+        document.getElementById('btn-see').addEventListener('hidden.bs.modal', () => {
+            document.querySelectorAll('#btn-see #pdf-viewer-footer button').forEach(function(button) {
+                button.style.display = '';
+            });
+        });
 
         function removeTableActive() {
             document.querySelectorAll('tbody tr').forEach(function(row) {
@@ -182,12 +192,15 @@ dialogYesNoCustom(
             let modalBody = dialog.getElementsByClassName('modal-body')[0];
             console.log(id);
             if (id == 'dialog-decl') {
+                // modalBody.parentNode.parentNode.parentNode.parentNode.classList.remove('was-validated');
                 modalBody.innerHTML = `
-                ${message}
-                <p>Masukkan alasan penolakan</p>
-                <input type="text" class="form-control" value="" name="komentar" id="komentar-tolak"/>
+                ${message}<br><br>
+                <label for="komentar-tolak" class="form-label">Masukkan alasan penolakan</label>
+                <input type="text" class="form-control" value="" name="komentar" id="komentar-tolak" required />
+                <div class="invalid-feedback">
+                    Tolong isi alasan penolakan 
+                </div>                
                 `;
-            
             } else {
                 modalBody.innerHTML = message;
             }
@@ -375,12 +388,14 @@ dialogYesNoCustom(
                         sumMenunggu += 1;
                     }
                 }
-                let badgeTertanggungWithNumber = `
-                    <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 1 : 0};">${sumMenunggu}</div> 
-                        ${badgeTertanggung}
-                    <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 0 : 0};">${sumMenunggu}</div> 
+                let badgeWithNumber = `
+                    <div class="d-flex flex-row align-items-center" style="gap: 12px;">
+                        <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 1 : 0};">${sumMenunggu}</div> 
+                            ${badgeTertanggung}
+                        <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 0 : 0};">${sumMenunggu}</div>
+                    </div> 
                 `;
-                row.children[row.children.length - 1].children[0].innerHTML = tuntas ? badgeSelesai : badgeTertanggungWithNumber;
+                row.children[row.children.length - 1].innerHTML = tuntas ? badgeSelesai : badgeWithNumber;
 
 
                 for (let j = 0; j < dataDetails.length; j++) {
@@ -488,13 +503,16 @@ dialogYesNoCustom(
             });
         });
 
+        // let dialogDecl = document.getElementById('dialog-decl');
         document.getElementById('dialog-decl').addEventListener('submit', function(e) {
             e.preventDefault();
+            document.querySelector('#btn-decl .btn-outline').click();
+
             $.ajax({
                 type: "POST",
                 url: "updateDataPengumpulan",
-                data: $('#in-open-dokumen').serialize() + '&acc=false&komentar=' 
-                + document.getElementById('komentar-tolak').value,
+                data: $('#in-open-dokumen').serialize() + '&acc=false&komentar=' +
+                    document.getElementById('komentar-tolak').value,
                 success: function(response) {
                     console.log(response);
                     getDataPengumpulan();
