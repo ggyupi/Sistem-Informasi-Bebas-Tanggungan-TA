@@ -148,7 +148,14 @@ dialogYesNoCustom(
 
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
+         function resetDialogSee() {
+            document.querySelectorAll('#btn-see #pdf-viewer-footer button').forEach(function(button) {
+                button.style.display = '';
+            });
+        }
+
         function pdfViewerLoadPdf(url, status) {
+            resetDialogSee();
             let pdfViewerFooter = document.querySelector('#btn-see #pdf-viewer-footer');
             if (status === '<?= StatusDokumen::Diverifikasi->value ?>') {
                 pdfViewerFooter.children[2].style.display = 'none';
@@ -175,11 +182,7 @@ dialogYesNoCustom(
 
         document.getElementById('btn-acc').addEventListener('hidden.bs.modal', clearDokumenInOpen);
         document.getElementById('btn-decl').addEventListener('hidden.bs.modal', clearDokumenInOpen);
-        document.getElementById('btn-see').addEventListener('hidden.bs.modal', () => {
-            document.querySelectorAll('#btn-see #pdf-viewer-footer button').forEach(function(button) {
-                button.style.display = '';
-            });
-        });
+        document.getElementById('btn-see').addEventListener('hidden.bs.modal', resetDialogSee);
 
         function removeTableActive() {
             document.querySelectorAll('tbody tr').forEach(function(row) {
