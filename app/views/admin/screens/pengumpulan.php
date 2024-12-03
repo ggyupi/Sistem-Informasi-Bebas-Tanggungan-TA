@@ -238,7 +238,6 @@ dialogYesNoCustom(
         function changeModalDialogMessage(id, message) {
             let dialog = document.getElementById(id);
             let modalBody = dialog.getElementsByClassName('modal-body')[0];
-            console.log(id);
             if (id == 'dialog-decl') {                
                 modalBody.innerHTML = `
                 ${message}<br><br>
@@ -333,10 +332,10 @@ dialogYesNoCustom(
                     if (getFileName(pdfFileUrl) != '') {
                         actions.unshift(btnSee.replace(`#onclick`, `
                         setDokumenInOpen('${dataDetail.id}', '${dataDetail.dokumen}', '${dataMahasiswa.nama}', '${dataMahasiswa.nim}');
-                        pdfViewerLoadPdf('${pdfFileUrl}', dataDetail.status);`));
+                        pdfViewerLoadPdf('${pdfFileUrl}', '${dataDetail.status}');`));
                         tableExpandItem.onclick = function() {
                             setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
-                            pdfViewerLoadPdf(`${pdfFileUrl}`, dataDetail.status);
+                            pdfViewerLoadPdf(pdfFileUrl, dataDetail.status);
                         };
                         tableExpandItem.dataset.bsToggle = "modal";
                         tableExpandItem.dataset.bsTarget = "#btn-see";
@@ -447,7 +446,7 @@ dialogYesNoCustom(
                     let actions = [
                         btnSee.replace(`#onclick`, `
                         setDokumenInOpen('${dataDetail.id}', '${dataDetail.dokumen}', '${dataMahasiswa.nama}', '${dataMahasiswa.nim}');
-                        pdfViewerLoadPdf('${pdfFileUrl}', dataDetail.status);`),
+                        pdfViewerLoadPdf('${pdfFileUrl}', '${dataDetail.status}');`),
                         btnAcc.replace(`#onclick`, `                        
                         changeModalDialogMessage('dialog-acc', 
                             'Acc <strong>[${dataMahasiswa.nim}] ${dataMahasiswa.nama}<br>${dataDetail.dokumen}</strong>?');`),
@@ -474,7 +473,7 @@ dialogYesNoCustom(
                         tableExpandItem.children[1].innerHTML = actions.join('');
                         tableExpandItem.onclick = function() {
                             setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
-                            pdfViewerLoadPdf(`${pdfFileUrl}`, dataDetail.status);
+                            pdfViewerLoadPdf(pdfFileUrl, dataDetail.status);
                         };
                         tableExpandItem.dataset.bsToggle = "modal";
                         tableExpandItem.dataset.bsTarget = "#btn-see";
@@ -533,7 +532,6 @@ dialogYesNoCustom(
                 $('#result-acc').modal('show');
             } else {
                 let result = document.querySelector('#result-acc #result-content');
-                console.log(result);
                 result.style.opacity = '1';
                 setTimeout(function() {
                     $('#result-acc').modal('hide');
@@ -548,7 +546,6 @@ dialogYesNoCustom(
                 $('#result-decl').modal('show');
             } else {
                 let result = document.querySelector('#result-decl #result-content');
-                console.log(result);
                 result.style.opacity = '1';
                 setTimeout(function() {
                     $('#result-decl').modal('hide');
