@@ -208,7 +208,13 @@ dialogYesNoCustom(
                 pdfViewerFooter.children[1].style.display = 'none';
             }
             document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
-            document.getElementById('pdf-viewer-wrapper').innerHTML = `<iframe src="${url}" id="pdf-viewer" style="width: 100%; height: 70vh;">Loading...</iframe>`;
+            document.getElementById('pdf-viewer-wrapper').innerHTML = `
+            <iframe src="${url}?t=${new Date().getTime()}" data="" id="pdf-viewer" style="width: 100%; height: 70vh;">
+                Loading...
+            </iframe>`;
+            // setTimeout(() => {
+            //     document.querySelector('#pdf-viewer-wrapper iframe').src = '';
+            // }, 5000)
         }
 
         function setDokumenInOpen(idDokumen, namaDokumen, namaMahasiswa, nim) {
