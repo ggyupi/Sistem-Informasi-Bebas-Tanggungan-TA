@@ -35,7 +35,61 @@
     gap: 42px;
   }
 
+  #top-bar h1 {
+    font-size: 0.9rem;
+  }
+
   #page-content {
     max-height: calc(100vh - 56.8px);
+    padding: 24px 12px;
   }
+
+  #page-content-top h1 {
+    font-size: 24px;
+  }
+
+  /* Start Pengumpulan User */
+  #pengumpulan-page h2 {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: break-spaces;
+  }
+  
+  #pengumpulan-page h3 {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  #pengumpulan-page h4 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .list-dokumen-item p{
+    font-size: 14px;
+    white-space: break-spaces !important;
+  }
+  #total-tanggungan-top{
+    flex-direction: column !important;
+    align-items: start !important;
+  }
+
+  #form-pengumpulan .w-75{
+    width: 50% !important;
+  }
+
+  #list-dokumen-wrapper .list-dokumen-item{
+    gap: 8px;
+  }
+
+  #list-dokumen-wrapper .list-dokumen-item .status-badge-text{
+    height: 24px;
+    min-width: 24px;
+  }
+
+  #list-dokumen-wrapper .list-dokumen-item .status-badge-text svg{
+    height: 10px;
+    width: 10px ;
+  }
+  /* End Pengumpulan User */
 }

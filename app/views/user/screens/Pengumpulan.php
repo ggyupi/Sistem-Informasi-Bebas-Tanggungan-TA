@@ -15,6 +15,27 @@ include_once VIEWS . 'component/btn-icon.php';
     #total-tanggungan-bottom .flex-row {
         gap: 12px;
     }
+
+    #form-pengumpulan-item-header .flex-row {
+        flex-wrap: wrap-reverse;
+        justify-content: flex-end;
+    }
+
+    @media (max-width: 1200px) {
+        #page-content-middle {
+            flex-direction: column;
+            overflow: unset;
+        }
+
+        #page-content-middle-left {
+            width: 100%;
+            overflow: unset;
+        }
+
+        #total-tanggungan #total-tanggungan-bottom {
+            flex-direction: column !important;
+        }
+    }
 </style>
 
 <div id="pengumpulan-page">
@@ -66,6 +87,14 @@ include_once VIEWS . 'component/btn-icon.php';
 
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
+        const statusBadgeIconVerified = `<?= SvgIcons::getIconWithColor(Icons::Check, 'white') ?>`;
+        const statusBadgeIconPending = `<?= SvgIcons::getIconWithColor(Icons::Question, 'white') ?>`;
+        const statusBadgeIconTertanggung = `<?= SvgIcons::getIconWithColor(Icons::Close, 'white') ?>`;
+        const statusBadgeVerified = `<?= statusBadge('success', Icons::Check, 'Terverifikasi') ?>`;
+        const statusBadgePending = `<?= statusBadge('warning', Icons::Question, 'Pending') ?>`;
+        const statusBadgeTertanggung = `<?= statusBadge('danger', Icons::Close, 'Tertanggung') ?>`;
+        const statusBadgeKosong = `<?= statusBadge('danger', Icons::Question, 'Kosong') ?>`;
+
         function generatePageContent(data) {
             const btnUpload = ' <?= iconButton('', Icons::Upload, 'var(--bs-emphasis-color)', ' ') ?>';
             const btnDownload = ' <?= iconButton('', Icons::Download, 'var(--bs-emphasis-color)', ' ') ?>';
@@ -91,22 +120,22 @@ include_once VIEWS . 'component/btn-icon.php';
 
                 switch (dataItem.status) {
                     case '<?= StatusDokumen::Diverifikasi->value ?>':
-                        statusBadge.innerHTML = `<?= SvgIcons::getIconWithColor(Icons::Check, 'white') ?>`;
+                        statusBadge.innerHTML = statusBadgeIconVerified;
                         statusBadge.classList.add('success');
                         countVerifikasi += 1;
                         break;
                     case '<?= StatusDokumen::Menunggu->value ?>':
-                        statusBadge.innerHTML = `<?= SvgIcons::getIconWithColor(Icons::Question, 'white') ?>`;
+                        statusBadge.innerHTML = statusBadgeIconPending;
                         statusBadge.classList.add('warning');
                         countPending += 1;
                         break;
                     case '<?= StatusDokumen::Ditolak->value ?>':
-                        statusBadge.innerHTML = `<?= SvgIcons::getIconWithColor(Icons::Close, 'white') ?>`;
+                        statusBadge.innerHTML = statusBadgeIconTertanggung;
                         statusBadge.classList.add('danger');
                         countTertanggung += 1;
                         break;
                     default:
-                        statusBadge.innerHTML = `<?= SvgIcons::getIconWithColor(Icons::Question, 'white') ?>`;
+                        statusBadge.innerHTML = statusBadgeIconPending;
                         statusBadge.classList.add('danger');
                         countTertanggung += 1;
                         break;
@@ -128,16 +157,16 @@ include_once VIEWS . 'component/btn-icon.php';
                 statusBadge = '';
                 switch (dataItem.status) {
                     case '<?= StatusDokumen::Diverifikasi->value ?>':
-                        statusBadge = ` <?= statusBadge('success', Icons::Check, 'Terverfikasi') ?>`;
+                        statusBadge = statusBadgeVerified;
                         break;
                     case '<?= StatusDokumen::Menunggu->value ?>':
-                        statusBadge = ` <?= statusBadge('warning', Icons::Question, 'Menunggu') ?>`;
+                        statusBadge = statusBadgePending;
                         break;
                     case '<?= StatusDokumen::Ditolak->value ?>':
-                        statusBadge = ` <?= statusBadge('danger', Icons::Close, 'Ditolak') ?>`;
+                        statusBadge = statusBadgeTertanggung;
                         break;
                     default:
-                        statusBadge = ` <?= statusBadge('danger', Icons::Question, 'Kosong') ?>`;
+                        statusBadge = statusBadgeKosong;
                         break;
                 }
                 let formattedDateUpload = '';
@@ -153,7 +182,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 }
                 formHeader.innerHTML = `
                     <h2>${dataItem.dokumen}</h2>
-                    <div class="d-flex flex-row align-items-center">
+                    <div class="d-flex flex-row align-items-center" style="">
                         <p>${formattedDateUpload}</p>
                         ${statusBadge}
                     </div>
@@ -238,16 +267,15 @@ include_once VIEWS . 'component/btn-icon.php';
                             e.preventDefault();
                             window.open(pdfDatabasePrefix + dataItem.path_dokumen, '_blank');
                         }
-
                     });
                 }
                 formItem.appendChild(uploadWrapper);
 
                 let komentarToggle = document.createElement('div');
                 komentarToggle.classList.add('toggle-komentar', 'd-none');
-                if (typeof dataItem.isi_komentar !== 'undefined' &&
+                if (typeof dataItem.nama_admin !== 'undefined' &&
                     dataItem.status !== '<?= StatusDokumen::Diverifikasi->value ?>' &&
-                    dataItem.isi_komentar !== null) {
+                    dataItem.nama_admin !== null) {
                     komentarToggle.classList.remove('d-none');
                     komentarToggle.innerHTML = `
                     <?= SvgIcons::getIcon(Icons::Message) ?>
@@ -270,7 +298,8 @@ include_once VIEWS . 'component/btn-icon.php';
                         <div class="member-picture">
                             <img src="<?= IMGS; ?>anggota/Raruu.webp" />
                         </div>
-                        <h4>${dataItem.nama_admin} <?= SvgIcons::getIconWithColor(Icons::Minidot) ?></h4>
+                        <h4>${dataItem.nama_admin}</h4>
+                          <?= SvgIcons::getIconWithColor(Icons::Minidot, 'var(--bs-emphasis-color)') ?>
                         <p id="tgl-komentar">${formattedDateKomentar}</p>
                     </div>
                     <div id="komentar-text-wrapper">
@@ -289,23 +318,102 @@ include_once VIEWS . 'component/btn-icon.php';
             totalTanggungan.querySelector('#last-update').textContent = formatDate(lastestDate);
         }
 
-        function getDataPengumpulan() {
+        function updatePageContent(data) {
+            let listDocument = document.getElementById('list-dokumen');
+            let formPengumpulanList = document.getElementById('form-pengumpulan');
+            let countVerifikasi = 0;
+            let countPending = 0;
+            let countTertanggung = 0;
+            let lastestDate = '';
+
+            for (let i = 0; i < data.length; i++) {
+                let dataItem = data[i];
+                let dokumenItem = listDocument.children[i];
+                let dokumenItemBadge = dokumenItem.querySelector('.status-badge-text');
+
+                dokumenItem.children[1].textContent = dataItem.dokumen;
+                let formPengumpulanItemHeader = formPengumpulanList.children[i].children[0];
+                formPengumpulanItemHeader.children[0].textContent = dataItem.dokumen;
+                if (typeof dataItem.tanggal_upload !== 'undefined') {
+                    formPengumpulanItemHeader.children[1].children[0].textContent = formatDate(
+                        new Date(dataItem.tanggal_upload));
+                }
+                let formPengumpulanItemHBadge = formPengumpulanItemHeader.children[1].children[1];
+
+                dokumenItemBadge.classList.remove('success', 'warning', 'danger');
+                if (dataItem.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
+                    dokumenItemBadge.classList.add('success');
+                    dokumenItemBadge.innerHTML = statusBadgeIconVerified;
+                    formPengumpulanItemHBadge.outerHTML = statusBadgeVerified;
+                    countVerifikasi += 1;
+                } else if (dataItem.status === '<?= StatusDokumen::Menunggu->value ?>') {
+                    dokumenItemBadge.classList.add('warning');
+                    dokumenItemBadge.innerHTML = statusBadgeIconPending;
+                    formPengumpulanItemHBadge.outerHTML = statusBadgePending;
+                    countPending += 1;
+                } else if (dataItem.status === '<?= StatusDokumen::Ditolak->value ?>') {
+                    dokumenItemBadge.classList.add('danger');
+                    dokumenItemBadge.innerHTML = statusBadgeIconTertanggung;
+                    formPengumpulanItemHBadge.outerHTML = statusBadgeTertanggung;
+                    countTertanggung += 1;
+                } else {
+                    dokumenItemBadge.classList.add('danger');
+                    dokumenItemBadge.innerHTML = statusBadgeIconPending;
+                    formPengumpulanItemHBadge.outerHTML = statusBadgeKosong;
+                    countTertanggung += 1;
+                }
+
+                let komentarToggle = formPengumpulanList.children[i].children[formPengumpulanList.children[i].children.length - 2];
+                komentarToggle.classList.add('toggle-komentar', 'd-none');
+                if (typeof dataItem.nama_admin !== 'undefined' &&
+                    dataItem.status !== '<?= StatusDokumen::Diverifikasi->value ?>' &&
+                    dataItem.nama_admin !== null) {
+                    komentarToggle.classList.remove('d-none');
+                    komentarToggle.innerHTML = `
+                    <?= SvgIcons::getIcon(Icons::Message) ?>
+                    <h3>Komentar</h3>`;
+
+                    let komentarWrapper = formPengumpulanList.children[i].children[formPengumpulanList.children[i].children.length - 1];
+                    let komentarPeople = komentarWrapper.children[0];
+                    komentarPeople.children[1].innerHTML = `${dataItem.nama_admin}`;
+                    komentarPeople.children[3].textContent = formatDate(new Date(dataItem.tanggal_komentar));
+                    komentarWrapper.children[1].children[0].textContent = dataItem.isi_komentar;
+                }else{
+                    komentarToggle.classList.remove('komentar-expand');
+                }
+            }
+            let totalTanggungan = document.getElementById('total-tanggungan');
+            totalTanggungan.querySelector('#total-dokumen').textContent = countVerifikasi + countPending + countTertanggung;
+            totalTanggungan.querySelector('#total-verifikasi').textContent = countVerifikasi;
+            totalTanggungan.querySelector('#total-pending').textContent = countPending;
+            totalTanggungan.querySelector('#total-tertanggung').textContent = countTertanggung;
+            totalTanggungan.querySelector('#last-update').textContent = formatDate(lastestDate);
+        }
+
+        function getDataPengumpulan(useUpdate = true) {
             $.ajax({
                 type: "POST",
                 url: "getDataPengumpulan",
-                data: {tingkat_dokumen :"<?=$tingkat ?>"},
+                data: {
+                    tingkat_dokumen: "<?= $tingkat ?>"
+                },
                 success: function(response) {
                     //console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
-                    generatePageContent(data);
+                    if (useUpdate) {
+                        updatePageContent(data);
+                    } else {
+                        generatePageContent(data);
+                    }
                 },
                 error: function(response) {
                     console.log(response);
                 }
             });
         }
-        getDataPengumpulan();
+        getDataPengumpulan(false);
+        funToCallEachInterval.push(getDataPengumpulan);
 
         function upload() {
             let pageContentBottom = document.getElementById('page-content-bottom');
@@ -319,7 +427,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 }
             });
 
-            formData.append('tingkat_dokumen', "<?=$tingkat ?>");
+            formData.append('tingkat_dokumen', "<?= $tingkat ?>");
 
             $.ajax({
                 type: "POST",
