@@ -15,6 +15,27 @@ include_once VIEWS . 'component/btn-icon.php';
     #total-tanggungan-bottom .flex-row {
         gap: 12px;
     }
+
+    #form-pengumpulan-item-header .flex-row {
+        flex-wrap: wrap-reverse;
+        justify-content: flex-end;
+    }
+
+    @media (max-width: 1200px) {
+        #page-content-middle {
+            flex-direction: column;
+            overflow: unset;
+        }
+
+        #page-content-middle-left {
+            width: 100%;
+            overflow: unset;
+        }
+
+        #total-tanggungan #total-tanggungan-bottom {
+            flex-direction: column !important;
+        }
+    }
 </style>
 
 <div id="pengumpulan-page">
@@ -153,7 +174,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 }
                 formHeader.innerHTML = `
                     <h2>${dataItem.dokumen}</h2>
-                    <div class="d-flex flex-row align-items-center">
+                    <div class="d-flex flex-row align-items-center" style="">
                         <p>${formattedDateUpload}</p>
                         ${statusBadge}
                     </div>
@@ -293,7 +314,9 @@ include_once VIEWS . 'component/btn-icon.php';
             $.ajax({
                 type: "POST",
                 url: "getDataPengumpulan",
-                data: {tingkat_dokumen :"<?=$tingkat ?>"},
+                data: {
+                    tingkat_dokumen: "<?= $tingkat ?>"
+                },
                 success: function(response) {
                     //console.log(response);
                     let data = JSON.parse(response);
@@ -319,7 +342,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 }
             });
 
-            formData.append('tingkat_dokumen', "<?=$tingkat ?>");
+            formData.append('tingkat_dokumen', "<?= $tingkat ?>");
 
             $.ajax({
                 type: "POST",

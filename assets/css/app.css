@@ -394,6 +394,9 @@ td,
 #top-bar h1 {
   font-size: 24px;
   margin: 0px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #top-bar form {
@@ -656,12 +659,20 @@ td,
   padding: 24px 42px;
 }
 
+
 #page-content-top {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  gap: 16px;
+}
+
+#page-content-top h1 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #page-content-top-right {
@@ -822,6 +833,7 @@ td,
   gap: 16px;
   overflow-y: auto;
   max-height: 100%;
+  width: 100%;
 }
 
 #total-tanggungan,
@@ -882,13 +894,9 @@ td,
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 75%;
   max-height: 100%;
   overflow-y: auto;
-}
-
-#page-content-middle-left,
-#form-pengumpulan {
-  flex: 1;
 }
 
 #pengumpulan-page h2,
