@@ -1019,6 +1019,10 @@ td,
   gap: 12px;
 }
 
+#komentar-people svg {
+  padding-left: 12px;
+}
+
 #komentar-text-wrapper {
   padding-left: 54px;
 }
