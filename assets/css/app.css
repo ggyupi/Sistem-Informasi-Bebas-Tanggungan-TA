@@ -483,6 +483,10 @@ td,
   fill: white;
 }
 
+.btn-primary svg, .btn-danger svg{
+  padding: 0px;
+}
+
 .btn-icon {
   width: 42px;
   height: 42px;
@@ -675,7 +679,7 @@ td,
 
 #page-content-top-right input,
 #page-content-top-right select {
-  border-left: none;
+  border-left: none !important;
 }
 
 #page-content-top-right svg {

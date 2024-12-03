@@ -239,8 +239,7 @@ dialogYesNoCustom(
             let dialog = document.getElementById(id);
             let modalBody = dialog.getElementsByClassName('modal-body')[0];
             console.log(id);
-            if (id == 'dialog-decl') {
-                // modalBody.parentNode.parentNode.parentNode.parentNode.classList.remove('was-validated');
+            if (id == 'dialog-decl') {                
                 modalBody.innerHTML = `
                 ${message}<br><br>
                 <label for="komentar-tolak" class="form-label">Masukkan alasan penolakan</label>
@@ -254,18 +253,12 @@ dialogYesNoCustom(
             }
         }
 
-        function funSearch(search) {
-            document.querySelectorAll('tr #search-mahasiswa').forEach(function(row) {
-                row.parentNode.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
-            });
-        }
-
 
         const searchInput = document.getElementById('search-input');
         searchInput.addEventListener('input', function() {
-            var search = this.value.toLowerCase();
+            let search = this.value.toLowerCase();
             removeTableActive();
-            funSearch(search);
+            funSearch('tr #search-mahasiswa', search);
         });
 
         let idTableExpand = -1;
@@ -520,7 +513,7 @@ dialogYesNoCustom(
                         let tableBody = document.getElementById('table-body');
                         tableBody.innerHTML = '';
                         tableBody.append(...generateTableBodyItems(data).children);
-                        funSearch(searchInput.value);
+                        funSearch('tr #search-mahasiswa', searchInput.value);
                     }
                     getDataPengumpulanInUpdate = false;
                 },
@@ -533,7 +526,7 @@ dialogYesNoCustom(
 
         }
         getDataPengumpulan(false);
-        // funToCallEachInterval.push(getDataPengumpulan);
+        funToCallEachInterval.push(getDataPengumpulan);
 
         function showResultAcc(showResult = false) {
             if (!showResult) {
