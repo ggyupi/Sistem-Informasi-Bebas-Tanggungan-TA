@@ -56,6 +56,9 @@ function statusCard($id, $title, $content)
             case 'good':
                 $color = 'success';
                 break;
+            case 'putih':
+                $color = 'light';
+                break;
             default:
                 break;
         }
