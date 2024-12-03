@@ -332,11 +332,12 @@ td,
   top: 24.5px;
   left: 267px;
 }
+
 #toggle-side-bar-btn svg {
   fill: var(--bs-emphasis-color);
 }
 
-#toggle-side-bar:checked + #side-bar #toggle-side-bar-btn {
+#toggle-side-bar:checked+#side-bar #toggle-side-bar-btn {
   left: 67px;
   z-index: 10;
   transform: rotate(180deg);
@@ -346,23 +347,23 @@ td,
   left: 0px;
 }
 
-#toggle-side-bar:checked + #side-bar p {
+#toggle-side-bar:checked+#side-bar p {
   opacity: 0%;
 }
 
-#toggle-side-bar:checked + #side-bar {
+#toggle-side-bar:checked+#side-bar {
   width: 76px;
 }
 
-#toggle-side-bar:checked + #side-bar #side-bar-menu {
+#toggle-side-bar:checked+#side-bar #side-bar-menu {
   padding: 0px 16px;
 }
 
-#toggle-side-bar:checked + #side-bar #side-bar-bottom {
+#toggle-side-bar:checked+#side-bar #side-bar-bottom {
   padding: 24px 16px;
 }
 
-#toggle-side-bar:checked + #side-bar .side-bar-btn {
+#toggle-side-bar:checked+#side-bar .side-bar-btn {
   padding: 12px;
 }
 
@@ -377,7 +378,7 @@ td,
   width: calc(100vw - 280px);
 }
 
-#toggle-side-bar:checked ~ #right-section {
+#toggle-side-bar:checked~#right-section {
   width: calc(100vw - 76px);
 }
 
@@ -568,6 +569,7 @@ td,
 .card-status-icon svg {
   fill: white;
 }
+
 /* End card-status */
 
 /* Start status-badge */
@@ -628,6 +630,7 @@ td,
 .btn-badge:hover .status-badge.success-bg {
   background-color: var(--bs-success) !important;
 }
+
 .btn-badge:hover .status-badge.danger-bg {
   background-color: var(--bs-danger) !important;
 }
@@ -729,14 +732,14 @@ td,
   z-index: 100;
 }
 
-#table-wrapper tr:not(.table-active) + tr .table-expand-wrapper {
+#table-wrapper tr:not(.table-active)+tr .table-expand-wrapper {
   padding: 0px;
   pointer-events: none;
   opacity: 0;
   border: none;
 }
 
-#table-wrapper tr.table-active + tr td .table-expand {
+#table-wrapper tr.table-active+tr td .table-expand {
   max-height: 700px !important;
 }
 
@@ -780,21 +783,16 @@ td,
   gap: 14px;
 }
 
-.table-hover > tbody > tr:hover td {
+.table-hover>tbody>tr:hover td {
   cursor: pointer;
 }
 
-.table-hover > tbody > tr:hover > .table-expand-wrapper {
+.table-hover>tbody>tr:hover>.table-expand-wrapper {
   --bs-table-color-state: var(--bs-table-hover-color);
   --bs-table-bg-state: transparent;
   cursor: default;
 }
 
-#page-content-top .form-control:focus,
-#page-content-top .form-select:focus {
-  border: var(--bs-border-width) solid var(--bs-border-color);
-  box-shadow: none;
-}
 /* End Table */
 
 /* Start Pengumpulan User */
@@ -915,6 +913,7 @@ td,
   flex-direction: column;
   gap: 18px;
 }
+
 #form-pengumpulan-item-header {
   display: flex;
   flex-direction: row;
@@ -998,7 +997,7 @@ td,
   fill: var(--bs-emphasis-color);
 }
 
-.toggle-komentar:not(.komentar-expand) + #komentar-wrapper {
+.toggle-komentar:not(.komentar-expand)+#komentar-wrapper {
   padding: 0px;
   pointer-events: none;
   opacity: 0;
@@ -1007,7 +1006,7 @@ td,
   overflow: hidden;
 }
 
-.toggle-komentar.komentar-expand + #komentar-wrapper {
+.toggle-komentar.komentar-expand+#komentar-wrapper {
   max-height: 200px !important;
 }
 
@@ -1033,3 +1032,49 @@ td,
 }
 
 /* End Pengumpulan User */
+
+
+
+/* Start jam card */
+
+.jam-card {
+  background-color: var(--bs-body-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Pusatkan secara horizontal */
+  justify-content: center;
+  /* Pusatkan secara vertikal */
+  padding: 24px;
+  border-radius: 12px;
+  height: 300px;
+  text-align: center;
+  /* Pusatkan teks */
+}
+
+.jam-card-content h1 {
+  font-size: clamp(1rem, 3.5vw, 5rem);
+  /* Responsif untuk title */
+  margin: 0;
+  color: #333;
+}
+
+.jam-card-content h3 {
+  font-size: clamp(0.5rem, 1.5vw, 4rem);
+  /* Responsif untuk subtitle */
+  margin: 0;
+  color: #666;
+}
+
+.jam-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Pusatkan secara vertikal di dalam konten */
+  align-items: center;
+  /* Pusatkan secara horizontal di dalam konten */
+  gap: 16px;
+  /* Jarak antar elemen */
+}
+
+/* Start jam card */

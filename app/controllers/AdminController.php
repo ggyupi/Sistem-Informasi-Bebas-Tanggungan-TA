@@ -141,4 +141,28 @@ class AdminController extends Controller
             );
         }
     }
+
+    public function countDocumentStatus(string $status): int
+    {
+        return count(array_filter($this->dokumen->getAllDocumentStatus(), function ($value) use ($status) {
+            return $value === $status;
+        }));
+    }
+
+    public function getCountStatus()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $statusMenunggu = $this->countDocumentStatus(StatusDokumen::Menunggu->value);
+            $statusDiverifikasi = $this->countDocumentStatus(StatusDokumen::Diverifikasi->value);
+            $statusDitolak = $this->countDocumentStatus(StatusDokumen::Ditolak->value);
+
+            echo json_encode([
+                "menunggu" => $statusMenunggu,
+                "diverifikasi" => $statusDiverifikasi,
+                "ditolak" => $statusDitolak
+            ]);
+        }
+    }
+
+
 }

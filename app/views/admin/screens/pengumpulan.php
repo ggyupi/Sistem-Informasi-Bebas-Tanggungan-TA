@@ -49,15 +49,15 @@ include_once VIEWS . 'component/btn-icon.php';
 
 <form id="dialog-acc">
     <?=
-    dialogYesNo(
-        'btn-acc',
-        'Acc?',
-        'Acc',
-        SvgIcons::getIcon(Icons::Check) . 'Acc kan min',
-        SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
-        true,
-        'btn-success'
-    );
+        dialogYesNo(
+            'btn-acc',
+            'Acc?',
+            'Acc',
+            SvgIcons::getIcon(Icons::Check) . 'Acc kan min',
+            SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
+            true,
+            'btn-success'
+        );
     ?>
 </form>
 
@@ -101,16 +101,16 @@ include_once VIEWS . 'component/btn-icon.php';
     </div>
 </div>
 <?=
-dialogYesNoCustom(
-    'btn-see',
-    '<div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
+    dialogYesNoCustom(
+        'btn-see',
+        '<div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
         ' . iconButton('', Icons::Close, 'white') . '
         <h1 class="modal-title fs-5" id="pdf-viewer-title"></h1>
         ' . iconButton('', Icons::OpenInNewTab, 'white', 'window.open(document.getElementById(`pdf-viewer`).getAttribute(`src`), `_blank`);') . '
     </div>',
-    '<div id="pdf-viewer-wrapper">
+        '<div id="pdf-viewer-wrapper">
     </div>',
-    '<div class="d-flex flex-row align-items-center" id="pdf-viewer-footer">
+        '<div class="d-flex flex-row align-items-center" id="pdf-viewer-footer">
         <button style="padding: 14px 12px; margin: 0px 8px" type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
         <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-decl" 
         onclick="
@@ -129,10 +129,10 @@ dialogYesNoCustom(
          ' . statusBadge('success', Icons::Check, 'Terima') . '
          </button>
     </div>',
-    true,
-    '70vw'
-)
-?>
+        true,
+        '70vw'
+    )
+    ?>
 
 <div id="pengumpulan-page">
     <div id="page-content-top">
@@ -151,8 +151,10 @@ dialogYesNoCustom(
                 </select>
             </div>
             <div style="width: 120%;" class="d-flex input-group" role="search">
-                <label class="input-group-text rounded-start-pill" for="search-input"><?= SvgIcons::getIcon(Icons::Search) ?></label>
-                <input class="form-control me-2 rounded-end-pill" type="search" placeholder="Telusuri" id="search-input">
+                <label class="input-group-text rounded-start-pill"
+                    for="search-input"><?= SvgIcons::getIcon(Icons::Search) ?></label>
+                <input class="form-control me-2 rounded-end-pill" type="search" placeholder="Telusuri"
+                    id="search-input">
             </div>
         </div>
     </div>
@@ -236,7 +238,7 @@ dialogYesNoCustom(
         document.getElementById('btn-see').addEventListener('hidden.bs.modal', resetDialogSee);
 
         function removeTableActive() {
-            document.querySelectorAll('tbody tr').forEach(function(row) {
+            document.querySelectorAll('tbody tr').forEach(function (row) {
                 row.classList.remove('table-active');
             });
         }
@@ -338,6 +340,7 @@ dialogYesNoCustom(
                     if (getFileName(pdfFileUrl) != '') {
                         actions.unshift(btnSee.replace(`#onclick`, `
                         setDokumenInOpen('${dataDetail.id}', '${dataDetail.dokumen}', '${dataMahasiswa.nama}', '${dataMahasiswa.nim}');
+
                         pdfViewerLoadPdf('${pdfFileUrl}', '${dataDetail.status}');`));
                         tableExpandItem.onclick = function() {
                             setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
@@ -399,7 +402,7 @@ dialogYesNoCustom(
                 if (i == idTableExpand) {
                     row.classList.add('table-active');
                 }
-                row.addEventListener('click', function() {
+                row.addEventListener('click', function () {
                     if (row.children[0].classList.contains('table-expand-wrapper')) {
                         return;
                     }
@@ -477,7 +480,7 @@ dialogYesNoCustom(
 
                     if (getFileName(pdfFileUrl) != '') {
                         tableExpandItem.children[1].innerHTML = actions.join('');
-                        tableExpandItem.onclick = function() {
+                        tableExpandItem.onclick = function () {
                             setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
                             pdfViewerLoadPdf(pdfFileUrl, dataDetail.status);
                         };
@@ -502,14 +505,14 @@ dialogYesNoCustom(
             }
             getDataPengumpulanInUpdate = true;
             let data = <?php
-                        $tipe = explode(' ', $data['title']);
-                        echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super_tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
-                        ?>;
+            $tipe = explode(' ', $data['title']);
+            echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super_tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
+            ?>;
             $.ajax({
                 type: "POST",
                 url: "getDataPengumpulan",
                 data: data,
-                success: function(response) {
+                success: function (response) {
                     let data = JSON.parse(response);
                     console.log(data);
                     if (useUpdate) {
@@ -522,7 +525,7 @@ dialogYesNoCustom(
                     }
                     getDataPengumpulanInUpdate = false;
                 },
-                error: function(response) {
+                error: function (response) {
                     console.log(response);
                     getDataPengumpulanInUpdate = false;
                 }
@@ -567,12 +570,12 @@ dialogYesNoCustom(
                 type: "POST",
                 url: "updateDataPengumpulan",
                 data: $('#in-open-dokumen').serialize() + '&acc=true',
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     getDataPengumpulan();
                     showResultAcc(true);
                 },
-                error: function(response) {
+                error: function (response) {
                     console.log(response);
                 }
             });
@@ -593,14 +596,14 @@ dialogYesNoCustom(
                     getDataPengumpulan();
                     showResultDecl(true);
                 },
-                error: function(response) {
+                error: function (response) {
                     console.log(response);
                 }
             });
         });
 
         function selectFilter(value) {
-            document.querySelectorAll('#table-body tr').forEach(function(row) {
+            document.querySelectorAll('#table-body tr').forEach(function (row) {
                 const statusCell = row.querySelector('td:nth-child(6)');
                 if (statusCell) {
                     const statusText = statusCell.textContent.toLowerCase();
@@ -619,7 +622,7 @@ dialogYesNoCustom(
             });
         }
 
-        document.getElementById('filter-data').addEventListener('change', function() {
+        document.getElementById('filter-data').addEventListener('change', function () {
             removeTableActive();
             selectFilter(this.value);
         });

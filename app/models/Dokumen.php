@@ -2,13 +2,13 @@
 
 require_once '../app/core/Model.php';
 
-enum TingkatDokumen: String
+enum TingkatDokumen: string
 {
     case Jurusan = "Jurusan";
     case Pusat = "Pusat";
 }
 
-enum StatusDokumen: String
+enum StatusDokumen: string
 {
     case Menunggu = "Menunggu";
     case Diverifikasi = "Diverifikasi";
@@ -32,7 +32,7 @@ class Dokumen extends Model
         $checkQuery->execute();
         if ($checkQuery->fetchColumn() > 0) {
             $this->updateUploadDokumen($idDokumen, $NIM, path: $path);
-        } else {    
+        } else {
             $insertQuery = $this->db->prepare("INSERT INTO dokumen.Upload_dokumen
                 (ID_dokumen, NIM, Path_dokumen, Status) VALUES
                 (:idDokumen, :NIM, :path, 'Menunggu')");
@@ -135,5 +135,13 @@ class Dokumen extends Model
         $query->bindValue(":nim", $nim);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function getAllDocumentStatus()
+    {
+        $query = $this->db->prepare("SELECT up.Status FROM dokumen.Upload_dokumen up");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_COLUMN);
     }
 }
