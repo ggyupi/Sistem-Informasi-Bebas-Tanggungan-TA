@@ -98,15 +98,47 @@ class AdminController extends Controller
                 $_POST['id_dokumen'],
                 $_POST['nim'],
                 $this->admin->getPeopleId(),
-                $_POST['acc'] === 'true' ? StatusDokumen::Diverifikasi : StatusDokumen::Ditolak,                
+                $_POST['acc'] === 'true' ? StatusDokumen::Diverifikasi : StatusDokumen::Ditolak,
                 isset($_POST['komentar']) ? $_POST['komentar'] : 'null'
             );
         }
     }
 
-    public function getAdminList(){
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            echo json_encode($this->admin->getAdminList());
+    public function getAdminList()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $adminList = $this->admin->getAdminList();
+            foreach ($adminList as &$value) {
+                $value['level'] =  ucwords($this->admin->parseAdminApa($value['level']));
+            }
+            echo json_encode($adminList);
+        }
+    }
+
+    public function getAdminData()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $adminData = $this->admin->getAdminData($_POST['id']);
+            $adminData['level'] =  ucwords($this->admin->parseAdminApa($adminData['level']));
+            echo json_encode($adminData);
+        }
+    }
+
+    public function saveAdminData()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $this->admin->saveAdminData(
+                id: $_POST['id_admin'],
+                password: $_POST['password'],
+                nama: $_POST['nama'],
+                nik: $_POST['nik'],
+                tempat_lahir: $_POST['tempat_lahir'],
+                tanggal_lahir: $_POST['tanggal_lahir'],
+                jenis_kel: $_POST['jenis_kel'],
+                alamat: $_POST['alamat'],
+                no_telp: $_POST['no_telp'],
+                level: 'admin-' . strtolower($_POST['level'])
+            );
         }
     }
 }
