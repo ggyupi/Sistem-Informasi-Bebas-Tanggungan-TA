@@ -63,12 +63,6 @@ td,
   background-color: var(--bs-tertiary-bg) !important;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border: var(--bs-border-width) solid var(--bs-border-color);
-  box-shadow: none;
-}
-
 /* Start Sidebar Expand */
 
 #side-bar {
@@ -490,6 +484,10 @@ td,
   fill: white;
 }
 
+.btn-primary svg, .btn-danger svg{
+  padding: 0px;
+}
+
 .btn-icon {
   width: 42px;
   height: 42px;
@@ -684,7 +682,7 @@ td,
 
 #page-content-top-right input,
 #page-content-top-right select {
-  border-left: none;
+  border-left: none !important;
 }
 
 #page-content-top-right svg {
@@ -783,7 +781,6 @@ td,
   --bs-table-bg-state: transparent;
   cursor: default;
 }
-
 /* End Table */
 
 /* Start Pengumpulan User */

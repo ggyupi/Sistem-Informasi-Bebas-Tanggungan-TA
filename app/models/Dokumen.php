@@ -68,7 +68,8 @@ class Dokumen extends Model
         $query->bindValue(":NIM", $NIM);
         $query->execute();
 
-        if ($komentar !== '') {
+        if ($komentar !== '' || $komentar == 'null') {
+            $komentar = $komentar == 'null' ? '': $komentar;
             $query = $this->db->prepare("SELECT ID FROM dokumen.Upload_dokumen 
             WHERE ID_dokumen = :idDokumen AND NIM = :NIM");
             $query->bindValue(":idDokumen", $idDokumen);

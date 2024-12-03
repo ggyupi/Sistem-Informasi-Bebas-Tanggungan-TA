@@ -14,4 +14,10 @@
             year: 'numeric',
         });
     }
+
+    function funSearch(target,search) {
+            document.querySelectorAll(target).forEach(function(row) {
+                row.parentNode.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
+            });
+        }
 </script>

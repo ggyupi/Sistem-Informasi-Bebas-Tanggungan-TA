@@ -11,6 +11,33 @@ include_once VIEWS . 'component/btn-icon.php';
         flex: 1;
         overflow-y: auto;
     }
+
+    #result-content h2 {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0px;
+    }
+
+    #result-content {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0px;
+        width: 630px;
+        height: 350px;
+        border-radius: 12px;
+        opacity: 0;
+    }
+
+    #result-content svg {
+        width: 50%;
+        height: 50%;
+    }
+
+    #result-content .status-badge-text {
+        width: 90px;
+        min-width: 90px;
+        height: 90px;
+    }
 </style>
 
 <form class="d-none" id="in-open-dokumen">
@@ -34,19 +61,45 @@ include_once VIEWS . 'component/btn-icon.php';
     ?>
 </form>
 
-<form id="dialog-decl">
+<form class="needs-validation was-validated" id="dialog-decl">
     <?=
-        dialogYesNo(
-            'btn-decl',
-            'Tolak',
-            'Decl',
-            SvgIcons::getIcon(Icons::Check) . 'Tolak saja min',
-            SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
-            true
-        );
+    dialogYesNoCustom(
+        'btn-decl',
+        '<h1 class="modal-title fs-5">Tolak?</h1>',
+        'Decl',
+        '<button type="button" class="btn btn-outline'
+            . '" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) .
+            'Ga jadi</button>
+        <button type="submit" class="btn btn-danger'
+            . '" >' . SvgIcons::getIcon(Icons::Check) .
+            'Tolak saja min</button>',
+        true,
+        maxWidth: '30vw'
+    );
     ?>
 </form>
 
+<div class="modal fade" id="result-acc" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">;
+        <div class="d-flex flex-row align-items-center justify-content-center success-bg" id="result-content">
+            <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
+                <div class="status-badge-text success"><?= SvgIcons::getIconWithColor(Icons::Check, "white") ?></div>
+                <h2>Dokumen Berhasil Diverifikasi</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="result-decl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">;
+        <div class="d-flex flex-row align-items-center justify-content-center danger-bg" id="result-content">
+            <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
+                <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
+                <h2>Dokumen Berhasil Ditolak</h2>
+            </div>
+        </div>
+    </div>
+</div>
 <?=
     dialogYesNoCustom(
         'btn-see',
@@ -142,7 +195,14 @@ include_once VIEWS . 'component/btn-icon.php';
 
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
+        function resetDialogSee() {
+            document.querySelectorAll('#btn-see #pdf-viewer-footer button').forEach(function(button) {
+                button.style.display = '';
+            });
+        }
+
         function pdfViewerLoadPdf(url, status) {
+            resetDialogSee();
             let pdfViewerFooter = document.querySelector('#btn-see #pdf-viewer-footer');
             if (status === '<?= StatusDokumen::Diverifikasi->value ?>') {
                 pdfViewerFooter.children[2].style.display = 'none';
@@ -165,13 +225,11 @@ include_once VIEWS . 'component/btn-icon.php';
             console.log('clearDokumenInOpen');
             document.getElementById('id_dokumen').value = '';
             document.getElementById('nim').value = '';
-            document.querySelectorAll('#btn-see #pdf-viewer-footer button').forEach(function (button) {
-                button.style.display = '';
-            });
         }
 
         document.getElementById('btn-acc').addEventListener('hidden.bs.modal', clearDokumenInOpen);
         document.getElementById('btn-decl').addEventListener('hidden.bs.modal', clearDokumenInOpen);
+        document.getElementById('btn-see').addEventListener('hidden.bs.modal', resetDialogSee);
 
         function removeTableActive() {
             document.querySelectorAll('tbody tr').forEach(function (row) {
@@ -183,30 +241,26 @@ include_once VIEWS . 'component/btn-icon.php';
             let dialog = document.getElementById(id);
             let modalBody = dialog.getElementsByClassName('modal-body')[0];
             console.log(id);
-            if (id == 'dialog-decl') {
+            if (id == 'dialog-decl') {                
                 modalBody.innerHTML = `
-                ${message}
-                <p>Masukkan alasan penolakan</p>
-                <input type="text" class="form-control" value="" name="komentar" id="komentar-tolak"/>
+                ${message}<br><br>
+                <label for="komentar-tolak" class="form-label">Masukkan alasan penolakan</label>
+                <input type="text" class="form-control" value="" name="komentar" id="komentar-tolak" required />
+                <div class="invalid-feedback">
+                    Tolong isi alasan penolakan 
+                </div>                
                 `;
-
             } else {
                 modalBody.innerHTML = message;
             }
         }
 
-        function funSearch(search) {
-            document.querySelectorAll('tr #search-mahasiswa').forEach(function (row) {
-                row.parentNode.style.display = row.textContent.toLowerCase().includes(search) ? '' : 'none';
-            });
-        }
-
 
         const searchInput = document.getElementById('search-input');
-        searchInput.addEventListener('input', function () {
-            var search = this.value.toLowerCase();
+        searchInput.addEventListener('input', function() {
+            let search = this.value.toLowerCase();
             removeTableActive();
-            funSearch(search);
+            funSearch('tr #search-mahasiswa', search);
         });
 
         let idTableExpand = -1;
@@ -377,12 +431,14 @@ include_once VIEWS . 'component/btn-icon.php';
                         sumMenunggu += 1;
                     }
                 }
-                let badgeTertanggungWithNumber = `
-                    <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 1 : 0};">${sumMenunggu}</div> 
-                        ${badgeTertanggung}
-                    <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 0 : 0};">${sumMenunggu}</div> 
+                let badgeWithNumber = `
+                    <div class="d-flex flex-row align-items-center" style="gap: 12px;">
+                        <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 1 : 0};">${sumMenunggu}</div> 
+                            ${badgeTertanggung}
+                        <div class="status-badge-text" style="opacity: ${sumMenunggu > 0 ? 0 : 0};">${sumMenunggu}</div>
+                    </div> 
                 `;
-                row.children[row.children.length - 1].children[0].innerHTML = tuntas ? badgeSelesai : badgeTertanggungWithNumber;
+                row.children[row.children.length - 1].innerHTML = tuntas ? badgeSelesai : badgeWithNumber;
 
 
                 for (let j = 0; j < dataDetails.length; j++) {
@@ -459,7 +515,7 @@ include_once VIEWS . 'component/btn-icon.php';
                         let tableBody = document.getElementById('table-body');
                         tableBody.innerHTML = '';
                         tableBody.append(...generateTableBodyItems(data).children);
-                        funSearch(searchInput.value);
+                        funSearch('tr #search-mahasiswa', searchInput.value);
                     }
                     getDataPengumpulanInUpdate = false;
                 },
@@ -474,8 +530,38 @@ include_once VIEWS . 'component/btn-icon.php';
         getDataPengumpulan(false);
         funToCallEachInterval.push(getDataPengumpulan);
 
-        document.getElementById('dialog-acc').addEventListener('submit', function (e) {
+        function showResultAcc(showResult = false) {
+            if (!showResult) {
+                $('#result-acc').modal('show');
+            } else {
+                let result = document.querySelector('#result-acc #result-content');
+                console.log(result);
+                result.style.opacity = '1';
+                setTimeout(function() {
+                    $('#result-acc').modal('hide');
+                    result.style.opacity = '1';
+                }, 1000);
+            }
+
+        }
+
+        function showResultDecl(showResult = false) {
+            if (!showResult) {
+                $('#result-decl').modal('show');
+            } else {
+                let result = document.querySelector('#result-decl #result-content');
+                console.log(result);
+                result.style.opacity = '1';
+                setTimeout(function() {
+                    $('#result-decl').modal('hide');
+                    result.style.opacity = '1';
+                }, 1000);
+            }
+        }
+
+        document.getElementById('dialog-acc').addEventListener('submit', function(e) {
             e.preventDefault();
+            showResultAcc();
             $.ajax({
                 type: "POST",
                 url: "updateDataPengumpulan",
@@ -483,6 +569,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 success: function (response) {
                     console.log(response);
                     getDataPengumpulan();
+                    showResultAcc(true);
                 },
                 error: function (response) {
                     console.log(response);
@@ -490,16 +577,20 @@ include_once VIEWS . 'component/btn-icon.php';
             });
         });
 
-        document.getElementById('dialog-decl').addEventListener('submit', function (e) {
+        // let dialogDecl = document.getElementById('dialog-decl');
+        document.getElementById('dialog-decl').addEventListener('submit', function(e) {
             e.preventDefault();
+            document.querySelector('#btn-decl .btn-outline').click();
+            showResultDecl();
             $.ajax({
                 type: "POST",
                 url: "updateDataPengumpulan",
-                data: $('#in-open-dokumen').serialize() + '&acc=false&komentar='
-                    + document.getElementById('komentar-tolak').value,
-                success: function (response) {
+                data: $('#in-open-dokumen').serialize() + '&acc=false&komentar=' +
+                    document.getElementById('komentar-tolak').value,
+                success: function(response) {
                     console.log(response);
                     getDataPengumpulan();
+                    showResultDecl(true);
                 },
                 error: function (response) {
                     console.log(response);
