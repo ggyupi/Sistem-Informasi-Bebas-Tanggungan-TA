@@ -109,7 +109,7 @@ class AdminController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $adminList = $this->admin->getAdminList();
             foreach ($adminList as &$value) {
-                $value['level'] =  ucwords($this->admin->parseAdminApa($value['level']));
+                $value['level'] = ucwords($this->admin->parseAdminApa($value['level']));
             }
             echo json_encode($adminList);
         }
@@ -119,7 +119,7 @@ class AdminController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $adminData = $this->admin->getAdminData($_POST['id']);
-            $adminData['level'] =  ucwords($this->admin->parseAdminApa($adminData['level']));
+            $adminData['level'] = ucwords($this->admin->parseAdminApa($adminData['level']));
             echo json_encode($adminData);
         }
     }
@@ -152,17 +152,25 @@ class AdminController extends Controller
     public function getCountStatus()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $statusMenunggu = $this->countDocumentStatus(StatusDokumen::Menunggu->value);
-            $statusDiverifikasi = $this->countDocumentStatus(StatusDokumen::Diverifikasi->value);
-            $statusDitolak = $this->countDocumentStatus(StatusDokumen::Ditolak->value);
+            $dataByTingkat = $this->dokumen->countDocumentStatusByTingkat();
 
-            echo json_encode([
-                "menunggu" => $statusMenunggu,
-                "diverifikasi" => $statusDiverifikasi,
-                "ditolak" => $statusDitolak
-            ]);
+            $response = [
+                'Jurusan' => [
+                    'menunggu' => $dataByTingkat['Jurusan'][StatusDokumen::Menunggu->value] ?? 0,
+                    'diverifikasi' => $dataByTingkat['Jurusan'][StatusDokumen::Diverifikasi->value] ?? 0,
+                    'ditolak' => $dataByTingkat['Jurusan'][StatusDokumen::Ditolak->value] ?? 0,
+                ],
+                'Pusat' => [
+                    'menunggu' => $dataByTingkat['Pusat'][StatusDokumen::Menunggu->value] ?? 0,
+                    'diverifikasi' => $dataByTingkat['Pusat'][StatusDokumen::Diverifikasi->value] ?? 0,
+                    'ditolak' => $dataByTingkat['Pusat'][StatusDokumen::Ditolak->value] ?? 0,
+                ]
+            ];
+
+            echo json_encode($response);
         }
     }
+
 
 
 }
