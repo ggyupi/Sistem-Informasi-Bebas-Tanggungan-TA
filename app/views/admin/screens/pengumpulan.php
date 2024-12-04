@@ -49,15 +49,15 @@ include_once VIEWS . 'component/btn-icon.php';
 
 <form id="dialog-acc">
     <?=
-        dialogYesNo(
-            'btn-acc',
-            'Acc?',
-            'Acc',
-            SvgIcons::getIcon(Icons::Check) . 'Acc kan min',
-            SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
-            true,
-            'btn-success'
-        );
+    dialogYesNo(
+        'btn-acc',
+        'Acc?',
+        'Acc',
+        SvgIcons::getIcon(Icons::Check) . 'Acc kan min',
+        SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
+        true,
+        'btn-success'
+    );
     ?>
 </form>
 
@@ -101,16 +101,16 @@ include_once VIEWS . 'component/btn-icon.php';
     </div>
 </div>
 <?=
-    dialogYesNoCustom(
-        'btn-see',
-        '<div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
+dialogYesNoCustom(
+    'btn-see',
+    '<div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
         ' . iconButton('', Icons::Close, 'white') . '
         <h1 class="modal-title fs-5" id="pdf-viewer-title"></h1>
         ' . iconButton('', Icons::OpenInNewTab, 'white', 'window.open(document.getElementById(`pdf-viewer`).getAttribute(`src`), `_blank`);') . '
     </div>',
-        '<div id="pdf-viewer-wrapper">
+    '<div id="pdf-viewer-wrapper">
     </div>',
-        '<div class="d-flex flex-row align-items-center" id="pdf-viewer-footer">
+    '<div class="d-flex flex-row align-items-center" id="pdf-viewer-footer">
         <button style="padding: 14px 12px; margin: 0px 8px" type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
         <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-decl" 
         onclick="
@@ -129,10 +129,10 @@ include_once VIEWS . 'component/btn-icon.php';
          ' . statusBadge('success', Icons::Check, 'Terima') . '
          </button>
     </div>',
-        true,
-        '70vw'
-    )
-    ?>
+    true,
+    '70vw'
+)
+?>
 
 <div id="pengumpulan-page">
     <div id="page-content-top">
@@ -175,22 +175,27 @@ include_once VIEWS . 'component/btn-icon.php';
         </table>
     </div>
 
-    <nav>
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#">
-                    <span>&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">
-                    <span>&raquo;</span>
-                </a>
-            </li>
-        </ul>
+    <nav class="d-flex flex-row align-items-center justify-content-between" id="nav-pagination">
+        <div class="w-25 input-group d-flex">
+            <label class="input-group-text rounded-start-pill" for="pagination-settings">Halaman</label>
+            <select class="form-select rounded-end-pill" id="pagination-settings">
+                <option selected value="0">Semua</option>
+                <option value="1">1-10</option>
+                <option value="2">1-25</option>
+                <option value="3">1-50</option>
+            </select>
+        </div>
+        <div class="pagination">
+            <div class="pagination-nextprev" id="pagination-prev">&lt;</div>
+            <div class="pagination-number pagination-active">1</div>
+            <div class="pagination-span">...</div>
+            <div class="pagination-number">2</div>
+            <div class="pagination-number">3</div>
+            <div class="pagination-number">4</div>
+            <div class="pagination-span">...</div>
+            <div class="pagination-number">5</div>
+            <div class="pagination-nextprev" id="pagination-end">></div>
+        </div>
     </nav>
 
     <?php include_once VIEWS . "template/script-helper.php"; ?>
@@ -214,9 +219,6 @@ include_once VIEWS . 'component/btn-icon.php';
             <iframe src="${url}?t=${new Date().getTime()}" data="" id="pdf-viewer" style="width: 100%; height: 70vh;">
                 Loading...
             </iframe>`;
-            // setTimeout(() => {
-            //     document.querySelector('#pdf-viewer-wrapper iframe').src = '';
-            // }, 5000)
         }
 
         function setDokumenInOpen(idDokumen, namaDokumen, namaMahasiswa, nim) {
@@ -238,7 +240,7 @@ include_once VIEWS . 'component/btn-icon.php';
         document.getElementById('btn-see').addEventListener('hidden.bs.modal', resetDialogSee);
 
         function removeTableActive() {
-            document.querySelectorAll('tbody tr').forEach(function (row) {
+            document.querySelectorAll('tbody tr').forEach(function(row) {
                 row.classList.remove('table-active');
             });
         }
@@ -246,7 +248,7 @@ include_once VIEWS . 'component/btn-icon.php';
         function changeModalDialogMessage(id, message) {
             let dialog = document.getElementById(id);
             let modalBody = dialog.getElementsByClassName('modal-body')[0];
-            if (id == 'dialog-decl') {                
+            if (id == 'dialog-decl') {
                 modalBody.innerHTML = `
                 ${message}<br><br>
                 <label for="komentar-tolak" class="form-label">Masukkan alasan penolakan</label>
@@ -260,7 +262,6 @@ include_once VIEWS . 'component/btn-icon.php';
             }
         }
 
-
         const searchInput = document.getElementById('search-input');
         searchInput.addEventListener('input', function() {
             let search = this.value.toLowerCase();
@@ -268,7 +269,132 @@ include_once VIEWS . 'component/btn-icon.php';
             funSearch('tr #search-mahasiswa', search);
         });
 
+        function getRowsPerPage(value) {
+            console.log(value);
+            switch (value) {
+                case '0':
+                    return 0;
+                case '1':
+                    return 10;
+                case '2':
+                    return 25;
+                case '3':
+                    return 50;
+                default:
+                    return 0;
+            }
+        }
+
         let idTableExpand = -1;
+        let rowsPerPage = getRowsPerPage(document.getElementById('pagination-settings').value);
+        let currentPage = 1;
+
+        function nextprevPagination(value) {
+            document.querySelectorAll('.pagination-number').forEach(function(paginationNum) {
+                paginationNum.classList.remove('pagination-active');
+            });
+            let rows = document.querySelectorAll('tbody tr');
+            const totalPages = Math.ceil((rows.length / 2) / rowsPerPage);
+            if (currentPage + value > 0 && currentPage + value <= totalPages) {
+                currentPage += value;
+                console.log(currentPage);
+            }
+            renderPaggedTable();
+        }
+
+        document.getElementById('pagination-prev').addEventListener('click', function() {
+            nextprevPagination(-1);
+        });
+
+        document.getElementById('pagination-end').addEventListener('click', function() {
+            nextprevPagination(1);
+        })
+
+        document.getElementById('pagination-settings').addEventListener('change', function() {
+            rowsPerPage = getRowsPerPage(this.value);
+            renderPaggedTable();
+        });
+
+        document.querySelectorAll('.pagination-number').forEach(function(paginationNumber) {
+            paginationNumber.addEventListener('click', function(e) {
+                if (paginationNumber.classList.contains('pagination-active')) {
+                    return;
+                }
+                document.querySelectorAll('.pagination-number').forEach(function(pn) {
+                    pn.classList.remove('pagination-active');
+                });
+                paginationNumber.classList.add('pagination-active');
+                let rows = document.querySelectorAll('tbody tr');
+                const totalPages = Math.ceil((rows.length / 2) / rowsPerPage);
+
+                let pageNumber = parseInt(paginationNumber.innerHTML);
+                if (pageNumber > totalPages) {
+                    pageNumber = totalPages;
+                }
+                currentPage = pageNumber;
+                renderPaggedTable();
+            });
+        });
+
+        let skipPagination = false;
+
+        function renderPaggedTable() {
+            if (skipPagination) {
+                document.querySelector('.pagination').style.display = 'none';
+                return;
+            }
+            let rows = document.querySelectorAll('tbody tr');
+            let startIndex = Math.max(0, (currentPage - 1) * rowsPerPage * 2);
+            let endIndex = startIndex + rowsPerPage * 2;
+            for (let i = 0; i < rows.length; i += 2) {
+                let row = rows[i];
+                if (i >= startIndex && i < endIndex || endIndex == 0) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+            if (rowsPerPage == 0) {
+                document.querySelector('.pagination').style.display = 'none';
+                return;
+            } else {
+                document.querySelector('.pagination').style.display = '';
+            }
+
+            const totalPages = Math.ceil((rows.length / 2) / rowsPerPage);
+            let paginationNumber = document.querySelectorAll('.pagination-number');
+            let paginationSpan = document.querySelectorAll('.pagination-span');
+            if (totalPages > 5) {
+                for (let i = 1; i < paginationNumber.length; i++) {
+                    paginationNumber[i].classList.remove('d-none');
+                }
+                paginationNumber[paginationNumber.length - 1].innerHTML = totalPages;
+
+                paginationSpan[0].classList.toggle('d-flex', currentPage > 3);
+                paginationSpan[1].classList.toggle('d-flex', currentPage < totalPages - 2);
+
+                let startPage = 1;
+                if (paginationSpan[0].classList.contains('d-flex') &&
+                    paginationSpan[1].classList.contains('d-flex')) {
+                    startPage = Math.max(1, currentPage - 1);
+                } else {
+                    startPage = currentPage > Math.ceil(totalPages / 2) ? totalPages - 3 : 2;
+                }
+                for (let i = 1; i <= 3; i++) {
+                    paginationNumber[i].innerHTML = startPage++;
+                    paginationNumber[i].classList.toggle('pagination-active', paginationNumber[i].innerHTML == currentPage);
+                }
+            } else {
+                for (let i = 0; i < paginationNumber.length; i++) {
+                    paginationNumber[i].classList.remove('d-none');
+                    paginationNumber[i].innerHTML = i + 1;
+                    paginationNumber[i].classList.toggle('pagination-active', paginationNumber[i].innerHTML == currentPage);
+                }
+                for (let i = totalPages; i < paginationNumber.length; i++) {
+                    paginationNumber[i].classList.add('d-none');
+                }
+            }
+        }
 
         const iconAcc = '<?= SvgIcons::getIcon(Icons::Check) ?>';
         const iconDecl = '<?= SvgIcons::getIcon(Icons::Close) ?>';
@@ -402,7 +528,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 if (i == idTableExpand) {
                     row.classList.add('table-active');
                 }
-                row.addEventListener('click', function () {
+                row.addEventListener('click', function() {
                     if (row.children[0].classList.contains('table-expand-wrapper')) {
                         return;
                     }
@@ -480,7 +606,7 @@ include_once VIEWS . 'component/btn-icon.php';
 
                     if (getFileName(pdfFileUrl) != '') {
                         tableExpandItem.children[1].innerHTML = actions.join('');
-                        tableExpandItem.onclick = function () {
+                        tableExpandItem.onclick = function() {
                             setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
                             pdfViewerLoadPdf(pdfFileUrl, dataDetail.status);
                         };
@@ -505,14 +631,14 @@ include_once VIEWS . 'component/btn-icon.php';
             }
             getDataPengumpulanInUpdate = true;
             let data = <?php
-            $tipe = explode(' ', $data['title']);
-            echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super_tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
-            ?>;
+                        $tipe = explode(' ', $data['title']);
+                        echo $data['user']->adminApa === TipeAdmin::Super ? ('{"super_tingkat": "' . ucwords(end($tipe)) . '"}') : '{}';
+                        ?>;
             $.ajax({
                 type: "POST",
                 url: "getDataPengumpulan",
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     let data = JSON.parse(response);
                     console.log(data);
                     if (useUpdate) {
@@ -524,8 +650,9 @@ include_once VIEWS . 'component/btn-icon.php';
                         funSearch('tr #search-mahasiswa', searchInput.value);
                     }
                     getDataPengumpulanInUpdate = false;
+                    renderPaggedTable();
                 },
-                error: function (response) {
+                error: function(response) {
                     console.log(response);
                     getDataPengumpulanInUpdate = false;
                 }
@@ -570,12 +697,12 @@ include_once VIEWS . 'component/btn-icon.php';
                 type: "POST",
                 url: "updateDataPengumpulan",
                 data: $('#in-open-dokumen').serialize() + '&acc=true',
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                     getDataPengumpulan();
                     showResultAcc(true);
                 },
-                error: function (response) {
+                error: function(response) {
                     console.log(response);
                 }
             });
@@ -596,18 +723,20 @@ include_once VIEWS . 'component/btn-icon.php';
                     getDataPengumpulan();
                     showResultDecl(true);
                 },
-                error: function (response) {
+                error: function(response) {
                     console.log(response);
                 }
             });
         });
 
         function selectFilter(value) {
-            document.querySelectorAll('#table-body tr').forEach(function (row) {
+            document.querySelectorAll('#table-body tr').forEach(function(row) {
                 const statusCell = row.querySelector('td:nth-child(6)');
                 if (statusCell) {
                     const statusText = statusCell.textContent.toLowerCase();
+                    skipPagination = true;
                     if (value === 'semua') {
+                        skipPagination = false;
                         row.style.display = '';
                     } else if (value === 'baru') {
                         row.style.display = statusCell.children[0].children[0].style.opacity == 1 ? '' : 'none';
@@ -618,11 +747,12 @@ include_once VIEWS . 'component/btn-icon.php';
                     } else {
                         row.style.display = 'none';
                     }
+                    renderPaggedTable();
                 }
             });
         }
 
-        document.getElementById('filter-data').addEventListener('change', function () {
+        document.getElementById('filter-data').addEventListener('change', function() {
             removeTableActive();
             selectFilter(this.value);
         });
