@@ -5,33 +5,96 @@ include_once VIEWS . 'component/jam-card.php';
 <br>
 <div class="row">
     <div class="col">
-        <?= statusCard(
-            'card-status',
-            'Status Pengumpulan',
-            [
+        <?php
+        $adminTingkat = ucwords($data['user']->adminApa->value);
+
+        if ($adminTingkat === 'Jurusan') {
+            echo statusCard(
+                'card-status-jurusan',
+                'Status Pengumpulan',
                 [
-                    'type' => 'warning',
-                    'icon' => Icons::Document,
-                    'title' => '<span id="status-menunggu">Loading...</span>',
-                    'subtitle' => 'Dokumen pending',
-                    'href' => ''
-                ],
-                [
-                    'type' => 'good',
-                    'icon' => Icons::Document,
-                    'title' => '<span id="status-diverifikasi">Loading...</span>',
-                    'subtitle' => 'Dokumen diverifikasi',
-                    'href' => ''
-                ],
-                [
-                    'type' => 'bad',
-                    'icon' => Icons::Document,
-                    'title' => '<span id="status-ditolak">Loading...</span>',
-                    'subtitle' => 'Dokumen ditolak',
-                    'href' => ''
+                    [
+                        'type' => 'warning',
+                        'icon' => Icons::Document,
+                        'title' => '<span id="jurusan-status-menunggu">Loading...</span>',
+                        'subtitle' => 'Dokumen pending',
+                        'href' => ''
+                    ],
+                    [
+                        'type' => 'good',
+                        'icon' => Icons::Document,
+                        'title' => '<span id="jurusan-status-diverifikasi">Loading...</span>',
+                        'subtitle' => 'Dokumen diverifikasi',
+                        'href' => ''
+                    ],
+                    [
+                        'type' => 'bad',
+                        'icon' => Icons::Document,
+                        'title' => '<span id="jurusan-status-ditolak">Loading...</span>',
+                        'subtitle' => 'Dokumen ditolak',
+                        'href' => ''
+                    ]
                 ]
-            ]
-        ) ?>
+            );
+        } elseif ($adminTingkat === 'Pusat') {
+            echo statusCard(
+                'card-status-pusat',
+                'Status Pengumpulan',
+                [
+                    [
+                        'type' => 'warning',
+                        'icon' => Icons::Document,
+                        'title' => '<span id="pusat-status-menunggu">Loading...</span>',
+                        'subtitle' => 'Dokumen pending',
+                        'href' => ''
+                    ],
+                    [
+                        'type' => 'good',
+                        'icon' => Icons::Document,
+                        'title' => '<span id="pusat-status-diverifikasi">Loading...</span>',
+                        'subtitle' => 'Dokumen diverifikasi',
+                        'href' => ''
+                    ],
+                    [
+                        'type' => 'bad',
+                        'icon' => Icons::Document,
+                        'title' => '<span id="pusat-status-ditolak">Loading...</span>',
+                        'subtitle' => 'Dokumen ditolak',
+                        'href' => ''
+                    ]
+                ]
+            );
+        } elseif ($adminTingkat === 'Super') {
+            echo statusCard(
+                'card-status-super',
+                'Status Pengumpulan',
+                [
+                    [
+                        'type' => 'warning',
+                        'icon' => Icons::Document,
+                        'title' => '<span id="super-status-menunggu">Loading...</span>',
+                        'subtitle' => 'Dokumen pending',
+                        'href' => ''
+                    ],
+                    [
+                        'type' => 'good',
+                        'icon' => Icons::Document,
+                        'title' => '<span id="super-status-diverifikasi">Loading...</span>',
+                        'subtitle' => 'Dokumen diverifikasi',
+                        'href' => ''
+                    ],
+                    [
+                        'type' => 'bad',
+                        'icon' => Icons::Document,
+                        'title' => '<span id="super-status-ditolak">Loading...</span>',
+                        'subtitle' => 'Dokumen ditolak',
+                        'href' => ''
+                    ]
+                ]
+            );
+        }
+        ?>
+
     </div>
     <div class="col">
         <?= jamCard(
@@ -68,11 +131,32 @@ include_once VIEWS . 'component/jam-card.php';
             type: "POST",
             url: "AdminController/getCountStatus",
             success: function (response) {
-                const data = JSON.parse(response);
-                const total = data.menunggu + data.diverifikasi + data.ditolak;
-                document.getElementById("status-menunggu").innerHTML = data.menunggu;
-                document.getElementById("status-diverifikasi").innerHTML = data.diverifikasi;
-                document.getElementById("status-ditolak").innerHTML = data.ditolak;
+                try {
+                    const data = JSON.parse(response);
+
+                    // Variabel yang dirender dari PHP ke JavaScript
+                    const adminTingkat = "<?= $adminTingkat ?>";
+
+                    if (adminTingkat === 'Jurusan') {
+                        document.getElementById("jurusan-status-menunggu").innerText = data.Jurusan.menunggu || 0;
+                        document.getElementById("jurusan-status-diverifikasi").innerText = data.Jurusan.diverifikasi || 0;
+                        document.getElementById("jurusan-status-ditolak").innerText = data.Jurusan.ditolak || 0;
+                    } else if (adminTingkat === 'Pusat') {
+                        document.getElementById("pusat-status-menunggu").innerText = data.Pusat.menunggu || 0;
+                        document.getElementById("pusat-status-diverifikasi").innerText = data.Pusat.diverifikasi || 0;
+                        document.getElementById("pusat-status-ditolak").innerText = data.Pusat.ditolak || 0;
+                    } else {
+                        document.getElementById("super-status-menunggu").innerText =
+                            (parseInt(data.Pusat.menunggu || 0, 10) + parseInt(data.Jurusan.menunggu || 0, 10));
+                        document.getElementById("super-status-diverifikasi").innerText =
+                            (parseInt(data.Pusat.diverifikasi || 0, 10) + parseInt(data.Jurusan.diverifikasi || 0, 10));
+                        document.getElementById("super-status-ditolak").innerText =
+                            (parseInt(data.Pusat.ditolak || 0, 10) + parseInt(data.Jurusan.ditolak || 0, 10));
+
+                    }
+                } catch (error) {
+                    console.error("Error parsing JSON or processing data: ", error);
+                }
             },
             error: function (response) {
                 console.error("Error fetching count status: ", response);
@@ -80,7 +164,7 @@ include_once VIEWS . 'component/jam-card.php';
         });
     }
 
+    // Panggil fungsi pertama kali dan ulangi setiap 60 detik
     updateStatusCard();
-
-    setInterval(updateStatusCard, 60000); 
+    setInterval(updateStatusCard, 60000);
 </script>

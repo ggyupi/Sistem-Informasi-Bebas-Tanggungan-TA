@@ -69,7 +69,7 @@ class Dokumen extends Model
         $query->execute();
 
         if ($komentar !== '' || $komentar == 'null') {
-            $komentar = $komentar == 'null' ? '': $komentar;
+            $komentar = $komentar == 'null' ? '' : $komentar;
             $query = $this->db->prepare("SELECT ID FROM dokumen.Upload_dokumen 
             WHERE ID_dokumen = :idDokumen AND NIM = :NIM");
             $query->bindValue(":idDokumen", $idDokumen);
@@ -144,4 +144,29 @@ class Dokumen extends Model
         $query->execute();
         return $query->fetchAll(PDO::FETCH_COLUMN);
     }
+
+    public function countDocumentStatusByTingkat()
+    {
+        $query = $this->db->prepare("
+        SELECT 
+            d.Tingkat, 
+            up.Status, 
+            COUNT(*) as total 
+        FROM dokumen.Upload_dokumen up
+        JOIN dokumen.Dokumen d ON up.ID_dokumen = d.ID
+        GROUP BY d.Tingkat, up.Status
+    ");
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        // Format hasil agar mudah digunakan
+        $data = [];
+        foreach ($result as $row) {
+            $tingkat = $row['Tingkat'];
+            $status = $row['Status'];
+            $data[$tingkat][$status] = $row['total'];
+        }
+        return $data;
+    }
+
 }
