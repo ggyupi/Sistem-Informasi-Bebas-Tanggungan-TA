@@ -702,6 +702,10 @@ td,
   fill: var(--bs-tertiary-color);
 }
 
+.input-group{
+  flex-wrap: nowrap;
+}
+
 .input-group-text {
   font-size: 0.75em;
   padding: 14px;
