@@ -177,7 +177,7 @@ dialogYesNoCustom(
 
     <nav class="d-flex flex-row align-items-center justify-content-between" id="nav-pagination">
         <div class="w-25 input-group d-flex">
-            <label class="input-group-text rounded-start-pill" for="pagination-settings">Pagination</label>
+            <label class="input-group-text rounded-start-pill" for="pagination-settings">Halaman</label>
             <select class="form-select rounded-end-pill" id="pagination-settings">
                 <option selected value="0">Semua</option>
                 <option value="1">1-10</option>
@@ -186,13 +186,15 @@ dialogYesNoCustom(
             </select>
         </div>
         <div class="pagination">
-            <div>&lt;</div>
+            <div class="pagination-nextprev" id="pagination-prev">&lt;</div>
             <div class="pagination-number pagination-active">1</div>
+            <div class="pagination-span">...</div>
             <div class="pagination-number">2</div>
             <div class="pagination-number">3</div>
-            <div class="pagination-number">...</div>
-            <div class="pagination-number">7</div>
-            <div>></div>
+            <div class="pagination-number">4</div>
+            <div class="pagination-span">...</div>
+            <div class="pagination-number">5</div>
+            <div class="pagination-nextprev" id="pagination-end">></div>
         </div>
     </nav>
 
@@ -267,63 +269,129 @@ dialogYesNoCustom(
             funSearch('tr #search-mahasiswa', search);
         });
 
+        function getRowsPerPage(value) {
+            console.log(value);
+            switch (value) {
+                case '0':
+                    return 0;
+                case '1':
+                    return 10;
+                case '2':
+                    return 25;
+                case '3':
+                    return 50;
+                default:
+                    return 0;
+            }
+        }
+
         let idTableExpand = -1;
-        let rowsPerPage = 0;
+        let rowsPerPage = getRowsPerPage(document.getElementById('pagination-settings').value);
         let currentPage = 1;
 
-        document.getElementById('pagination-settings').addEventListener('change', function() {
-            let val = this.value;
-            switch (val) {
-                case '0':
-                    rowsPerPage = 0;
-                    break
-                case '1':
-                    rowsPerPage = 10;
-                    break;
-                case '2':
-                    rowsPerPage = 25;
-                    break;
-                case '3':
-                    rowsPerPage = 50;
-                    break;
-                default:
-                    rowsPerPage = 0;
-                    break;
+        function nextprevPagination(value) {
+            document.querySelectorAll('.pagination-number').forEach(function(paginationNum) {
+                paginationNum.classList.remove('pagination-active');
+            });
+            let rows = document.querySelectorAll('tbody tr');
+            const totalPages = Math.ceil((rows.length / 2) / rowsPerPage);
+            if (currentPage + value > 0 && currentPage + value <= totalPages) {
+                currentPage += value;
+                console.log(currentPage);
             }
+            renderPaggedTable();
+        }
+
+        document.getElementById('pagination-prev').addEventListener('click', function() {
+            nextprevPagination(-1);
+        });
+
+        document.getElementById('pagination-end').addEventListener('click', function() {
+            nextprevPagination(1);
+        })
+
+        document.getElementById('pagination-settings').addEventListener('change', function() {
+            rowsPerPage = getRowsPerPage(this.value);
             renderPaggedTable();
         });
 
         document.querySelectorAll('.pagination-number').forEach(function(paginationNumber) {
             paginationNumber.addEventListener('click', function(e) {
-                let rows = document.querySelectorAll('tbody tr');
-                const totalPages = Math.ceil((rows.length / 2) / rowsPerPage);
-                
                 if (paginationNumber.classList.contains('pagination-active')) {
                     return;
                 }
+                document.querySelectorAll('.pagination-number').forEach(function(pn) {
+                    pn.classList.remove('pagination-active');
+                });
+                paginationNumber.classList.add('pagination-active');
+                let rows = document.querySelectorAll('tbody tr');
+                const totalPages = Math.ceil((rows.length / 2) / rowsPerPage);
+
                 let pageNumber = parseInt(paginationNumber.innerHTML);
                 if (pageNumber > totalPages) {
                     pageNumber = totalPages;
                 }
                 currentPage = pageNumber;
                 renderPaggedTable();
-                document.querySelectorAll('.pagination-number').forEach(function(pn) {
-                    pn.classList.remove('pagination-active');
-                });
-                paginationNumber.classList.add('pagination-active');
             });
         });
 
+        let skipPagination = false;
+
         function renderPaggedTable() {
+            if (skipPagination) {
+                document.querySelector('.pagination').style.display = 'none';
+                return;
+            }
             let rows = document.querySelectorAll('tbody tr');
-            let startIndex = (currentPage - 1) * rowsPerPage * 2;
-            let endIndex = (startIndex + rowsPerPage) * 2;
+            let startIndex = Math.max(0, (currentPage - 1) * rowsPerPage * 2);
+            let endIndex = startIndex + rowsPerPage * 2;
             for (let i = 0; i < rows.length; i += 2) {
                 let row = rows[i];
                 if (i >= startIndex && i < endIndex || endIndex == 0) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
+                }
+            }
+            if (rowsPerPage == 0) {
+                document.querySelector('.pagination').style.display = 'none';
+                return;
+            } else {
+                document.querySelector('.pagination').style.display = '';
+            }
+
+            const totalPages = Math.ceil((rows.length / 2) / rowsPerPage);
+            let paginationNumber = document.querySelectorAll('.pagination-number');
+            let paginationSpan = document.querySelectorAll('.pagination-span');
+            if (totalPages > 5) {
+                for (let i = 1; i < paginationNumber.length; i++) {
+                    paginationNumber[i].classList.remove('d-none');
+                }
+                paginationNumber[paginationNumber.length - 1].innerHTML = totalPages;
+
+                paginationSpan[0].classList.toggle('d-flex', currentPage > 3);
+                paginationSpan[1].classList.toggle('d-flex', currentPage < totalPages - 2);
+
+                let startPage = 1;
+                if (paginationSpan[0].classList.contains('d-flex') &&
+                    paginationSpan[1].classList.contains('d-flex')) {
+                    startPage = Math.max(1, currentPage - 1);
+                } else {
+                    startPage = currentPage > Math.ceil(totalPages / 2) ? totalPages - 3 : 2;
+                }
+                for (let i = 1; i <= 3; i++) {
+                    paginationNumber[i].innerHTML = startPage++;
+                    paginationNumber[i].classList.toggle('pagination-active', paginationNumber[i].innerHTML == currentPage);
+                }
+            } else {
+                for (let i = 0; i < paginationNumber.length; i++) {
+                    paginationNumber[i].classList.remove('d-none');
+                    paginationNumber[i].innerHTML = i + 1;
+                    paginationNumber[i].classList.toggle('pagination-active', paginationNumber[i].innerHTML == currentPage);
+                }
+                for (let i = totalPages; i < paginationNumber.length; i++) {
+                    paginationNumber[i].classList.add('d-none');
                 }
             }
         }
@@ -582,6 +650,7 @@ dialogYesNoCustom(
                         funSearch('tr #search-mahasiswa', searchInput.value);
                     }
                     getDataPengumpulanInUpdate = false;
+                    renderPaggedTable();
                 },
                 error: function(response) {
                     console.log(response);
@@ -665,7 +734,9 @@ dialogYesNoCustom(
                 const statusCell = row.querySelector('td:nth-child(6)');
                 if (statusCell) {
                     const statusText = statusCell.textContent.toLowerCase();
+                    skipPagination = true;
                     if (value === 'semua') {
+                        skipPagination = false;
                         row.style.display = '';
                     } else if (value === 'baru') {
                         row.style.display = statusCell.children[0].children[0].style.opacity == 1 ? '' : 'none';
@@ -676,6 +747,7 @@ dialogYesNoCustom(
                     } else {
                         row.style.display = 'none';
                     }
+                    renderPaggedTable();
                 }
             });
         }

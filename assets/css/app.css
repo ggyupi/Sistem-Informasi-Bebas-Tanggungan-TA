@@ -25,7 +25,8 @@ td,
 .table-expand,
 .toggle-komentar,
 #komentar-wrapper,
-.form-pengumpulan-upload.has-file {
+.form-pengumpulan-upload.has-file,
+.pagination {
   transition: all 0.2s cubic-bezier(0.34, 0.56, 0.64, 1);
 }
 
@@ -337,7 +338,7 @@ td,
   fill: var(--bs-emphasis-color);
 }
 
-#toggle-side-bar:checked+#side-bar #toggle-side-bar-btn {
+#toggle-side-bar:checked + #side-bar #toggle-side-bar-btn {
   left: 67px;
   z-index: 10;
   transform: rotate(180deg);
@@ -347,23 +348,23 @@ td,
   left: 0px;
 }
 
-#toggle-side-bar:checked+#side-bar p {
+#toggle-side-bar:checked + #side-bar p {
   opacity: 0%;
 }
 
-#toggle-side-bar:checked+#side-bar {
+#toggle-side-bar:checked + #side-bar {
   width: 76px;
 }
 
-#toggle-side-bar:checked+#side-bar #side-bar-menu {
+#toggle-side-bar:checked + #side-bar #side-bar-menu {
   padding: 0px 16px;
 }
 
-#toggle-side-bar:checked+#side-bar #side-bar-bottom {
+#toggle-side-bar:checked + #side-bar #side-bar-bottom {
   padding: 24px 16px;
 }
 
-#toggle-side-bar:checked+#side-bar .side-bar-btn {
+#toggle-side-bar:checked + #side-bar .side-bar-btn {
   padding: 12px;
 }
 
@@ -378,7 +379,7 @@ td,
   width: calc(100vw - 280px);
 }
 
-#toggle-side-bar:checked~#right-section {
+#toggle-side-bar:checked ~ #right-section {
   width: calc(100vw - 76px);
 }
 
@@ -487,7 +488,8 @@ td,
   fill: white;
 }
 
-.btn-primary svg, .btn-danger svg{
+.btn-primary svg,
+.btn-danger svg {
   padding: 0px;
 }
 
@@ -662,7 +664,6 @@ td,
   padding: 24px 42px;
 }
 
-
 #page-content-top {
   display: flex;
   flex-direction: row;
@@ -708,11 +709,11 @@ td,
 }
 
 #page-content-top-right .form-control,
-    #page-content-top-right .form-select,
-    #nav-pagination .form-select  {
-        border: var(--bs-border-width) solid var(--bs-border-color);
-        box-shadow: none !important;
-    }
+#page-content-top-right .form-select,
+#nav-pagination .form-select {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  box-shadow: none !important;
+}
 
 /* End page-content */
 
@@ -739,14 +740,14 @@ td,
   z-index: 100;
 }
 
-#table-wrapper tr:not(.table-active)+tr .table-expand-wrapper {
+#table-wrapper tr:not(.table-active) + tr .table-expand-wrapper {
   padding: 0px;
   pointer-events: none;
   opacity: 0;
   border: none;
 }
 
-#table-wrapper tr.table-active+tr td .table-expand {
+#table-wrapper tr.table-active + tr td .table-expand {
   max-height: 700px !important;
 }
 
@@ -790,11 +791,11 @@ td,
   gap: 14px;
 }
 
-.table-hover>tbody>tr:hover td {
+.table-hover > tbody > tr:hover td {
   cursor: pointer;
 }
 
-.table-hover>tbody>tr:hover>.table-expand-wrapper {
+.table-hover > tbody > tr:hover > .table-expand-wrapper {
   --bs-table-color-state: var(--bs-table-hover-color);
   --bs-table-bg-state: transparent;
   cursor: default;
@@ -1004,7 +1005,7 @@ td,
   fill: var(--bs-emphasis-color);
 }
 
-.toggle-komentar:not(.komentar-expand)+#komentar-wrapper {
+.toggle-komentar:not(.komentar-expand) + #komentar-wrapper {
   padding: 0px;
   pointer-events: none;
   opacity: 0;
@@ -1013,7 +1014,7 @@ td,
   overflow: hidden;
 }
 
-.toggle-komentar.komentar-expand+#komentar-wrapper {
+.toggle-komentar.komentar-expand + #komentar-wrapper {
   max-height: 200px !important;
 }
 
@@ -1039,8 +1040,6 @@ td,
 }
 
 /* End Pengumpulan User */
-
-
 
 /* Start jam card */
 
@@ -1088,7 +1087,7 @@ td,
 
 /* Start Pagination */
 
-#nav-pagination .w-25{
+#nav-pagination .w-25 {
   max-width: 200px !important;
 }
 
@@ -1100,20 +1099,37 @@ td,
   gap: 7px;
 }
 
-.pagination div{
+.pagination-number,
+.pagination-nextprev {
+  cursor: pointer;
   display: flex;
+}
+
+.pagination-span {
+  cursor: default;
+  display: none;
+}
+
+.pagination-number,
+.pagination-span,
+.pagination-nextprev {
   flex-direction: row;
   align-items: center;
   justify-content: center;
   width: 35px;
   height: 35px;
-  cursor: pointer;
+  border-radius: 100%;
+}
+
+.pagination .pagination-number:not(.pagination-active):hover,
+.pagination-nextprev:hover {
+  background-color: rgba(var(--bs-emphasis-color-rgb), 0.5);
+  color: var(--bs-body-bg);
 }
 
 .pagination-active {
   background-color: var(--bs-emphasis-color);
   color: var(--bs-body-bg);
-  border-radius: 100%;
   cursor: default !important;
 }
 
