@@ -3,7 +3,7 @@
 require_once '../app/core/IUserApp.php';
 require_once '../app/core/Model.php';
 
-enum TipeAdmin: String
+enum TipeAdmin: string
 {
     case Super = 'super';
     case Jurusan = 'jurusan';
@@ -112,9 +112,7 @@ class Admin extends Model implements IUserApp
         $query->execute();
 
         if ($id === '') {
-            // TODO : add user
-            // $query = $this->db->prepare("INSERT INTO Pengguna.[User] (username, level, password)
-            //     VALUES (:username, :level, :password)");
+            $query = $this->db->prepare("INSERT INTO Pengguna.[User] (username, level, password) VALUES (:username, :level, :password)");
         } else {
             $query = $this->db->prepare("UPDATE Pengguna.[User] 
             SET level = :level, password = :password
