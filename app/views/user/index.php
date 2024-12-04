@@ -16,7 +16,7 @@
         <div id="side-bar-menu">
             <?php include_once VIEWS . "user/sidebar-nav1.php"; ?>
             <span id="side-bar-menu-seperator"></span>
-            <?php include_once VIEWS . "template/sidebar/sidebar-nav2.php"; ?>
+            <?php include_once VIEWS . "user/sidebar-nav2.php"; ?>
         </div>
         <?php include_once VIEWS . "template/sidebar/sidebar-bottom.php"; ?>
     </div>
