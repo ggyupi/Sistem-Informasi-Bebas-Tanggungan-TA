@@ -210,7 +210,13 @@ include_once VIEWS . 'component/btn-icon.php';
                 pdfViewerFooter.children[1].style.display = 'none';
             }
             document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
-            document.getElementById('pdf-viewer-wrapper').innerHTML = `<iframe src="${url}" id="pdf-viewer" style="width: 100%; height: 70vh;">Loading...</iframe>`;
+            document.getElementById('pdf-viewer-wrapper').innerHTML = `
+            <iframe src="${url}?t=${new Date().getTime()}" data="" id="pdf-viewer" style="width: 100%; height: 70vh;">
+                Loading...
+            </iframe>`;
+            // setTimeout(() => {
+            //     document.querySelector('#pdf-viewer-wrapper iframe').src = '';
+            // }, 5000)
         }
 
         function setDokumenInOpen(idDokumen, namaDokumen, namaMahasiswa, nim) {
@@ -240,7 +246,6 @@ include_once VIEWS . 'component/btn-icon.php';
         function changeModalDialogMessage(id, message) {
             let dialog = document.getElementById(id);
             let modalBody = dialog.getElementsByClassName('modal-body')[0];
-            console.log(id);
             if (id == 'dialog-decl') {                
                 modalBody.innerHTML = `
                 ${message}<br><br>
@@ -335,10 +340,11 @@ include_once VIEWS . 'component/btn-icon.php';
                     if (getFileName(pdfFileUrl) != '') {
                         actions.unshift(btnSee.replace(`#onclick`, `
                         setDokumenInOpen('${dataDetail.id}', '${dataDetail.dokumen}', '${dataMahasiswa.nama}', '${dataMahasiswa.nim}');
-                        pdfViewerLoadPdf('${pdfFileUrl}', dataDetail.status);`));
-                        tableExpandItem.onclick = function () {
+
+                        pdfViewerLoadPdf('${pdfFileUrl}', '${dataDetail.status}');`));
+                        tableExpandItem.onclick = function() {
                             setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
-                            pdfViewerLoadPdf(`${pdfFileUrl}`, dataDetail.status);
+                            pdfViewerLoadPdf(pdfFileUrl, dataDetail.status);
                         };
                         tableExpandItem.dataset.bsToggle = "modal";
                         tableExpandItem.dataset.bsTarget = "#btn-see";
@@ -449,7 +455,7 @@ include_once VIEWS . 'component/btn-icon.php';
                     let actions = [
                         btnSee.replace(`#onclick`, `
                         setDokumenInOpen('${dataDetail.id}', '${dataDetail.dokumen}', '${dataMahasiswa.nama}', '${dataMahasiswa.nim}');
-                        pdfViewerLoadPdf('${pdfFileUrl}', dataDetail.status);`),
+                        pdfViewerLoadPdf('${pdfFileUrl}', '${dataDetail.status}');`),
                         btnAcc.replace(`#onclick`, `                        
                         changeModalDialogMessage('dialog-acc', 
                             'Acc <strong>[${dataMahasiswa.nim}] ${dataMahasiswa.nama}<br>${dataDetail.dokumen}</strong>?');`),
@@ -476,7 +482,7 @@ include_once VIEWS . 'component/btn-icon.php';
                         tableExpandItem.children[1].innerHTML = actions.join('');
                         tableExpandItem.onclick = function () {
                             setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
-                            pdfViewerLoadPdf(`${pdfFileUrl}`, dataDetail.status);
+                            pdfViewerLoadPdf(pdfFileUrl, dataDetail.status);
                         };
                         tableExpandItem.dataset.bsToggle = "modal";
                         tableExpandItem.dataset.bsTarget = "#btn-see";
@@ -535,7 +541,6 @@ include_once VIEWS . 'component/btn-icon.php';
                 $('#result-acc').modal('show');
             } else {
                 let result = document.querySelector('#result-acc #result-content');
-                console.log(result);
                 result.style.opacity = '1';
                 setTimeout(function() {
                     $('#result-acc').modal('hide');
@@ -550,7 +555,6 @@ include_once VIEWS . 'component/btn-icon.php';
                 $('#result-decl').modal('show');
             } else {
                 let result = document.querySelector('#result-decl #result-content');
-                console.log(result);
                 result.style.opacity = '1';
                 setTimeout(function() {
                     $('#result-decl').modal('hide');
