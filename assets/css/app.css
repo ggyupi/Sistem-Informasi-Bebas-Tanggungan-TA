@@ -707,6 +707,13 @@ td,
   background-color: var(--bs-body-bg);
 }
 
+#page-content-top-right .form-control,
+    #page-content-top-right .form-select,
+    #nav-pagination .form-select  {
+        border: var(--bs-border-width) solid var(--bs-border-color);
+        box-shadow: none !important;
+    }
+
 /* End page-content */
 
 /* Start Table */
@@ -1077,4 +1084,37 @@ td,
   /* Jarak antar elemen */
 }
 
-/* Start jam card */
+/* End jam card */
+
+/* Start Pagination */
+
+#nav-pagination .w-25{
+  max-width: 200px !important;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  gap: 7px;
+}
+
+.pagination div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.pagination-active {
+  background-color: var(--bs-emphasis-color);
+  color: var(--bs-body-bg);
+  border-radius: 100%;
+  cursor: default !important;
+}
+
+/* End Pagination */
