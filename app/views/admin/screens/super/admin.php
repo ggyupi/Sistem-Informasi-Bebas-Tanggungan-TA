@@ -40,13 +40,14 @@ include_once VIEWS . 'component/btn-icon.php';
                 <div class="modal-body">
                     <div class="d-flex flex-column align-items-start justify-content-center" style="gap: 4px;">
                         <label for="input-id-admin" class="form-label"><b>ID Admin</b></label>
-                        <input type="text" class="form-control" name="id_admin" value="AUTO INCREMENT" id="input-id-admin" required readonly style="pointer-events: none;" />
+                        <input type="text" class="form-control" name="id_admin" id="input-id-admin" required />
                         <label for="input-password" class="form-label"><b>Password</b></label>
-                        <input type="password" class="form-control" value="" name="password" id="input-password" required />
+                        <input type="password" class="form-control" value="" name="password" id="input-password"
+                            required />
                         <label for="input-tingkat" class="form-label"><b>Tingkat Admin</b></label>
                         <select name="level" class="form-select" id="input-tingkat">
                             <option selected>Tingkat Admin</option>
-                            <?php foreach (TipeAdmin::cases() as $tipe) : ?>
+                            <?php foreach (TipeAdmin::cases() as $tipe): ?>
                                 <option value="<?= $tipe->name ?>"><?= ucwords($tipe->name) ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -55,22 +56,26 @@ include_once VIEWS . 'component/btn-icon.php';
                         <label class="form-label"><b>Jenis Kelamin</b></label>
                         <div class="d-flex flex-row align-items-stretch justify-content-evenly" style="gap: 32px;">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value="Laki-laki" name="jenis_kel" id="jenis-kel-laki">
+                                <input class="form-check-input" type="radio" value="Laki-laki" name="jenis_kel"
+                                    id="jenis-kel-laki">
                                 <label class="form-check-label" for="jenis-kel-laki">
                                     Laki-Laki
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value="Perempuan" name="jenis_kel" id="jenis-kel-perempuan">
+                                <input class="form-check-input" type="radio" value="Perempuan" name="jenis_kel"
+                                    id="jenis-kel-perempuan">
                                 <label class="form-check-label" for="jenis-kel-perempuan">
                                     Perempuan
                                 </label>
                             </div>
                         </div>
                         <label for="input-tanggal_lahir" class="form-label"><b>Tanggal Lahir</b></label>
-                        <input type="date" class="form-control" value="" name="tanggal_lahir" id="input-tanggal_lahir" required />
+                        <input type="date" class="form-control" value="" name="tanggal_lahir" id="input-tanggal_lahir"
+                            required />
                         <label for="input-lahir" class="form-label"><b>Tempat Lahir</b></label>
-                        <input type="text" class="form-control" value="" name="tempat_lahir" id="input-lahir" required />
+                        <input type="text" class="form-control" value="" name="tempat_lahir" id="input-lahir"
+                            required />
                         <label for="input-nik" class="form-label"><b>NIK</b></label>
                         <input type="text" class="form-control" value="" name="nik" id="input-nik" required />
                         <label for="input-alamat" class="form-label"><b>Alamat</b></label>
@@ -112,14 +117,16 @@ include_once VIEWS . 'component/btn-icon.php';
                 <label class="input-group-text rounded-start-pill" for="filter-data">level</label>
                 <select class="form-select rounded-end-pill" id="filter-data">
                     <option selected value="semua">Semua</option>
-                    <?php foreach (TipeAdmin::cases() as $tipe) : ?>
+                    <?php foreach (TipeAdmin::cases() as $tipe): ?>
                         <option value="<?= $tipe->name ?>"><?= ucwords($tipe->name) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div style="width: 120%;" class="d-flex input-group" role="search">
-                <label class="input-group-text rounded-start-pill" for="search-input"><?= SvgIcons::getIcon(Icons::Search) ?></label>
-                <input class="form-control me-2 rounded-end-pill" type="search" placeholder="Telusuri" id="search-input">
+                <label class="input-group-text rounded-start-pill"
+                    for="search-input"><?= SvgIcons::getIcon(Icons::Search) ?></label>
+                <input class="form-control me-2 rounded-end-pill" type="search" placeholder="Telusuri"
+                    id="search-input">
             </div>
         </div>
     </div>
@@ -140,7 +147,7 @@ include_once VIEWS . 'component/btn-icon.php';
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
         const searchInput = document.getElementById('search-input');
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             let search = this.value.toLowerCase();
             funSearch('tr #search-nama', search);
         });
@@ -206,7 +213,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 data: {
                     id: id
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
@@ -230,7 +237,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 `;
                 tr.dataset.bsToggle = "modal";
                 tr.dataset.bsTarget = "#the-dialog";
-                tr.onclick = function() {
+                tr.onclick = function () {
                     getAdminData(dataAdmin.id_admin);
                 };
                 tableBody.appendChild(tr);
@@ -245,7 +252,7 @@ include_once VIEWS . 'component/btn-icon.php';
             $.ajax({
                 type: "POST",
                 url: "getAdminList",
-                success: function(response) {
+                success: function (response) {
                     // console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
@@ -269,7 +276,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 data: data,
                 contentType: false,
                 processData: false,
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     getAdminList();
                     closeFormDialog();

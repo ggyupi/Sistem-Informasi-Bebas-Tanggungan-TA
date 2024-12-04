@@ -86,41 +86,83 @@ class Admin extends Model implements IUserApp
         $no_telp,
         $jenis_kel,
         $level,
-        $id = ''
+        $id
     ) {
-        if ($id === '') {
-            $query = $this->db->prepare("INSERT INTO Pengguna.Admin 
-                (Nama, NIK, Tempat_lahir, tanggal_lahir, Alamat,
-                Nomor_telepon, Jenis_kelamin)
-                VALUES (:nama, :nik, :tempat_lahir, :tanggal_lahir,
-                :alamat, :no_telp, :jenis_kelamin)");
-        } else {
-            $query = $this->db->prepare("UPDATE Pengguna.Admin 
-                SET Nama = :nama, NIK = :nik, Tempat_lahir = :tempat_lahir,
-                tanggal_lahir = :tanggal_lahir, Alamat = :alamat, 
-                Nomor_telepon = :no_telp, Jenis_kelamin = :jenis_kelamin
-                WHERE NIDN = :id");
-            $query->bindValue(":id", $id);
-        }
-        $query->bindValue(":nama", $nama);
-        $query->bindValue(":nik", $nik);
-        $query->bindValue(":tempat_lahir", $tempat_lahir);
-        $query->bindValue(":tanggal_lahir", $tanggal_lahir);
-        $query->bindValue(":alamat", $alamat);
-        $query->bindValue(":no_telp", $no_telp);
-        $query->bindValue(":jenis_kelamin", $jenis_kel);
-        $query->execute();
+        try {
+            // Memulai transaksi
+            $this->db->beginTransaction();
 
-        if ($id === '') {
-            $query = $this->db->prepare("INSERT INTO Pengguna.[User] (username, level, password) VALUES (:username, :level, :password)");
-        } else {
-            $query = $this->db->prepare("UPDATE Pengguna.[User] 
-            SET level = :level, password = :password
-            WHERE username = :username");
+            // Pengecekan apakah id sudah ada di database
+            $queryCheck = $this->db->prepare("SELECT COUNT(*) FROM Pengguna.[User] WHERE username = :username");
+            $queryCheck->bindValue(":username", $id);
+            $queryCheck->execute();
+            $exists = $queryCheck->fetchColumn() > 0; // Mengembalikan true jika id sudah ada
+
+            if ($exists) {
+                // Jika id sudah ada, lakukan UPDATE pada tabel User
+                $queryUser = $this->db->prepare("
+                UPDATE Pengguna.[User] 
+                SET level = :level, password = :password
+                WHERE username = :username
+            ");
+            } else {
+                // Jika id belum ada, lakukan INSERT pada tabel User
+                $queryUser = $this->db->prepare("
+                INSERT INTO Pengguna.[User] (username, level, password)
+                VALUES (:username, :level, :password)
+            ");
+            }
+
+            $queryUser->bindValue(":password", $password);
+            $queryUser->bindValue(":username", $id);
+            $queryUser->bindValue(":level", $level);
+            $queryUser->execute();
+
+            // Pengecekan apakah id sudah ada di tabel Admin
+            $queryCheckAdmin = $this->db->prepare("SELECT COUNT(*) FROM Pengguna.Admin WHERE username = :username");
+            $queryCheckAdmin->bindValue(":username", $id);
+            $queryCheckAdmin->execute();
+            $existsAdmin = $queryCheckAdmin->fetchColumn() > 0;
+
+            if ($existsAdmin) {
+                // Jika id sudah ada, lakukan UPDATE pada tabel Admin
+                $queryAdmin = $this->db->prepare("
+                UPDATE Pengguna.Admin 
+                SET Nama = :nama, NIK = :nik, Tempat_lahir = :tempat_lahir,
+                    tanggal_lahir = :tanggal_lahir, Alamat = :alamat, 
+                    Nomor_telepon = :no_telp, Jenis_kelamin = :jenis_kelamin
+                WHERE NIDN = :nidn
+            ");
+            } else {
+                // Jika id belum ada, lakukan INSERT pada tabel Admin
+                $queryAdmin = $this->db->prepare("
+                INSERT INTO Pengguna.Admin 
+                (NIDN, Nama, NIK, Tempat_lahir, tanggal_lahir, Alamat,
+                Nomor_telepon, Jenis_kelamin, username)
+                VALUES (:nidn, :nama, :nik, :tempat_lahir, :tanggal_lahir,
+                :alamat, :no_telp, :jenis_kelamin, :username)
+            ");
+            }
+
+            $queryAdmin->bindValue(":nama", $nama);
+            $queryAdmin->bindValue(":nik", $nik);
+            $queryAdmin->bindValue(":tempat_lahir", $tempat_lahir);
+            $queryAdmin->bindValue(":tanggal_lahir", $tanggal_lahir);
+            $queryAdmin->bindValue(":alamat", $alamat);
+            $queryAdmin->bindValue(":no_telp", $no_telp);
+            $queryAdmin->bindValue(":jenis_kelamin", $jenis_kel);
+            $queryAdmin->bindValue(":username", $id);
+            $queryAdmin->bindValue(":nidn", $id);
+            $queryAdmin->execute();
+
+            // Commit transaksi
+            $this->db->commit();
+            return true;
+        } catch (PDOException $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            $this->db->rollBack();
+            throw new Exception("Gagal menyimpan data admin: " . $e->getMessage());
         }
-        $query->bindValue(":password", $password);
-        $query->bindValue(":username", $id);
-        $query->bindValue(":level", $level);
-        $query->execute();
     }
+
 }
