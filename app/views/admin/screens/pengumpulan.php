@@ -262,13 +262,6 @@ dialogYesNoCustom(
             }
         }
 
-        const searchInput = document.getElementById('search-input');
-        searchInput.addEventListener('input', function() {
-            let search = this.value.toLowerCase();
-            removeTableActive();
-            funSearch('tr #search-mahasiswa', search);
-        });
-
         function getRowsPerPage(value) {
             console.log(value);
             switch (value) {
@@ -395,6 +388,15 @@ dialogYesNoCustom(
                 }
             }
         }
+
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', function() {
+            let search = this.value.toLowerCase();
+            removeTableActive();
+            funSearch('tr #search-mahasiswa', search);
+            skipPagination = this.value != '';
+            renderPaggedTable();
+        });
 
         const iconAcc = '<?= SvgIcons::getIcon(Icons::Check) ?>';
         const iconDecl = '<?= SvgIcons::getIcon(Icons::Close) ?>';
