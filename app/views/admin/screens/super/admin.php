@@ -39,6 +39,21 @@ include_once VIEWS . 'component/btn-icon.php';
     }
 </style>
 
+
+<?php
+dialogYesNoCustom(
+    'btn-del',
+    '<h1 class="modal-title fs-5">Hapus Data?</h1>',
+    'Apakah anda yakin ingin menghapus data ini?',
+    '
+    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
+    <button class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-del" 
+    onclick="deleteAdminData();">' .
+        SvgIcons::getIcon(Icons::Trash) . 'Hapus
+    </button>',
+);
+?>
+
 <form id="form-dialog">
     <div class="modal fade" id="the-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 45vw;">
@@ -52,6 +67,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 <div class="modal-body">
                     <div class="d-flex flex-row align-items-start justify-content-start" style="gap: 24px; flex-wrap: wrap;">
                         <div class="d-flex flex-column align-items-start" style="gap: 4px; flex: 1;">
+                            <input type="text" class="d-none" name="id_admin_ori" id="input-id-admin-ori" readonly />
                             <label for="input-id-admin" class="form-label"><b>ID Admin</b></label>
                             <input type="text" class="form-control" name="id_admin" id="input-id-admin" required />
                             <label for="input-password" class="form-label"><b>Password</b></label>
@@ -102,11 +118,11 @@ include_once VIEWS . 'component/btn-icon.php';
                 </div>
                 <div class="modal-footer">
                     <div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;gap: 16px;flex-wrap: wrap;">
-                        <button type="button" class="btn btn-danger">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#btn-del" data-bs-dismiss="modal">
                             <?= SvgIcons::getIcon(Icons::Trash) ?> Hapus
                         </button>
                         <div class="d-flex flex-row align-items-center justify-content-between" style="gap: 8px;">
-                            <button type="button" class="btn btn-outline" data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-outline" data-bs-dismiss="modal" onclick="resetFormDialog(); ">
                                 <?= SvgIcons::getIcon(Icons::Close) ?> Ga Jadi
                             </button>
                             <button type="button" class="btn btn-primary" onclick="saveFormDialog();">
@@ -124,7 +140,11 @@ include_once VIEWS . 'component/btn-icon.php';
     <div id="page-content-top">
         <div class="d-flex flex-column align-items-start">
             <h1><strong>Data Admin</strong></h1>
-            <button class="btn btn-primary" id="btn-add-admin" data-bs-toggle="modal" data-bs-target="#the-dialog">
+            <button class="btn btn-primary" id="btn-add-admin" data-bs-toggle="modal" data-bs-target="#the-dialog" onclick="
+                resetFormDialog();
+                let btnDel = document.querySelector('#form-dialog .modal-footer .btn-danger');
+                btnDel.style.opacity = 0;
+                btnDel.style.pointerEvents = 'none';">
                 <?= SvgIcons::getIcon(Icons::Add) ?> Tambah Admin
             </button>
         </div>
@@ -168,9 +188,13 @@ include_once VIEWS . 'component/btn-icon.php';
             funSearch('tr #search-nama', search);
         });
 
-        document.getElementById('the-dialog').addEventListener('hidden.bs.modal', () => {
+        function resetFormDialog() {
             document.getElementById('form-dialog').reset();
-        });
+        }
+
+        // document.getElementById('the-dialog').addEventListener('hidden.bs.modal', () => {
+        //     resetFormDialog();
+        // });
 
         function openFormDialog(data) {
             let dialog = document.querySelector('#the-dialog .modal-dialog .modal-content');
@@ -213,8 +237,12 @@ include_once VIEWS . 'component/btn-icon.php';
                         element.checked = true;
                     }
                 });
-                id.value = data.id_admin;
+                body.querySelector('#input-id-admin-ori').value = data.id_admin;
                 title.textContent = `Edit [${data.id_admin}]`;
+
+                let btnDel = document.querySelector('#form-dialog .modal-footer .btn-danger');
+                btnDel.style.opacity = 1;
+                btnDel.style.pointerEvents = 'auto';
             }
         }
 
@@ -296,8 +324,26 @@ include_once VIEWS . 'component/btn-icon.php';
                     console.log(response);
                     getAdminList();
                     closeFormDialog();
+                    resetFormDialog();
                 }
             });
+        }
 
+        function deleteAdminData() {
+            // Biarkan seorang Inam yang melakukannya
+            // Id bisa diambil dari form dengan input id 'input-id-admin-ori'
+            console.log("UwU");
+
+            // $.ajax({
+            //     type: "POST",
+            //     url: "deleteAdminData",
+            //     data: {
+            //         id: id
+            //     },
+            //     success: function(response) {
+            //         console.log(response);
+            //         getAdminList();
+            //     }
+            // });
         }
     </script>
