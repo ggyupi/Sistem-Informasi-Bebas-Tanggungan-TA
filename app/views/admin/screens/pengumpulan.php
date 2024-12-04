@@ -37,7 +37,7 @@ include_once VIEWS . 'component/btn-icon.php';
         width: 90px;
         min-width: 90px;
         height: 90px;
-    }    
+    }
 </style>
 
 <form class="d-none" id="in-open-dokumen">
@@ -187,11 +187,11 @@ dialogYesNoCustom(
         </div>
         <div class="pagination">
             <div>&lt;</div>
-            <div class="pagination-active">1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>...</div>
-            <div>7</div>
+            <div class="pagination-number pagination-active">1</div>
+            <div class="pagination-number">2</div>
+            <div class="pagination-number">3</div>
+            <div class="pagination-number">...</div>
+            <div class="pagination-number">7</div>
             <div>></div>
         </div>
     </nav>
@@ -260,7 +260,6 @@ dialogYesNoCustom(
             }
         }
 
-
         const searchInput = document.getElementById('search-input');
         searchInput.addEventListener('input', function() {
             let search = this.value.toLowerCase();
@@ -269,6 +268,65 @@ dialogYesNoCustom(
         });
 
         let idTableExpand = -1;
+        let rowsPerPage = 0;
+        let currentPage = 1;
+
+        document.getElementById('pagination-settings').addEventListener('change', function() {
+            let val = this.value;
+            switch (val) {
+                case '0':
+                    rowsPerPage = 0;
+                    break
+                case '1':
+                    rowsPerPage = 10;
+                    break;
+                case '2':
+                    rowsPerPage = 25;
+                    break;
+                case '3':
+                    rowsPerPage = 50;
+                    break;
+                default:
+                    rowsPerPage = 0;
+                    break;
+            }
+            renderPaggedTable();
+        });
+
+        document.querySelectorAll('.pagination-number').forEach(function(paginationNumber) {
+            paginationNumber.addEventListener('click', function(e) {
+                let rows = document.querySelectorAll('tbody tr');
+                const totalPages = Math.ceil((rows.length / 2) / rowsPerPage);
+                
+                if (paginationNumber.classList.contains('pagination-active')) {
+                    return;
+                }
+                let pageNumber = parseInt(paginationNumber.innerHTML);
+                if (pageNumber > totalPages) {
+                    pageNumber = totalPages;
+                }
+                currentPage = pageNumber;
+                renderPaggedTable();
+                document.querySelectorAll('.pagination-number').forEach(function(pn) {
+                    pn.classList.remove('pagination-active');
+                });
+                paginationNumber.classList.add('pagination-active');
+            });
+        });
+
+        function renderPaggedTable() {
+            let rows = document.querySelectorAll('tbody tr');
+            let startIndex = (currentPage - 1) * rowsPerPage * 2;
+            let endIndex = (startIndex + rowsPerPage) * 2;
+            for (let i = 0; i < rows.length; i += 2) {
+                let row = rows[i];
+                if (i >= startIndex && i < endIndex || endIndex == 0) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
 
         const iconAcc = '<?= SvgIcons::getIcon(Icons::Check) ?>';
         const iconDecl = '<?= SvgIcons::getIcon(Icons::Close) ?>';
