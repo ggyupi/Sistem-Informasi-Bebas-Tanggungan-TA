@@ -15,7 +15,7 @@
  */
 function dialogYesNo($id = '', $title = 'Yes/No Dialog', $message = 'message', $textYes = 'Ya', $textNo = 'Tidak', $static = true, $btnYes = '', $btnNo = '', $maxWidth = '')
 {
-    echo '<div class="modal fade" id="'  . $id . '" ' . ($static ? 'data-bs-backdrop="static"' : '') . ' data-bs-keyboard="false" tabindex="-1" aria-hidden="false">';
+    echo '<div class="modal fade" id="'  . $id . '" ' . ($static ? 'data-bs-backdrop="static"' : '') . ' data-bs-keyboard="false" tabindex="-1" aria-hidden="true">';
     echo '<div class="modal-dialog modal-dialog-centered" ' .  ($maxWidth !== '' ? 'style="max-width: ' . $maxWidth . '"' : '') .'>';
     echo '<div class="modal-content">';
     echo '<div class="modal-header">';
@@ -35,7 +35,7 @@ function dialogYesNo($id = '', $title = 'Yes/No Dialog', $message = 'message', $
 
 function dialogYesNoCustom($id = '', $header = '', $body = '', $footer = '', $static = true, $maxWidth = '')
 {
-    echo '<div class="modal fade" id="'  . $id . '" ' . ($static ? 'data-bs-backdrop="static"' : '') . ' data-bs-keyboard="false" tabindex="-1">';
+    echo '<div class="modal fade" id="'  . $id . '" ' . ($static ? 'data-bs-backdrop="static"' : '') . ' data-bs-keyboard="false" tabindex="-1" aria-hidden="true">';
     echo '<div class="modal-dialog modal-dialog-centered" ' . ($maxWidth !== '' ? 'style="max-width: ' . $maxWidth . '"' : '') . '>';
     echo '<div class="modal-content">';
     echo '<div class="modal-header">';

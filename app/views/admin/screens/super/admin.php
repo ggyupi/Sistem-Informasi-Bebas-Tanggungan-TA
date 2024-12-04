@@ -25,11 +25,38 @@ include_once VIEWS . 'component/btn-icon.php';
         width: 16px;
         height: 16px;
     }
+
+    @media (max-width: 1200px) {
+        #form-dialog .modal .modal-dialog {
+            max-width: 53vw !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        #form-dialog .modal .modal-dialog {
+            max-width: unset !important;
+        }
+    }
 </style>
+
+
+<?php
+dialogYesNoCustom(
+    'btn-del',
+    '<h1 class="modal-title fs-5">Hapus Data?</h1>',
+    'Apakah anda yakin ingin menghapus data ini?',
+    '
+    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
+    <button class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-del" 
+    onclick="deleteAdminData();">' .
+        SvgIcons::getIcon(Icons::Trash) . 'Hapus
+    </button>',
+);
+?>
 
 <form id="form-dialog">
     <div class="modal fade" id="the-dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 45vw;">
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
@@ -38,59 +65,64 @@ include_once VIEWS . 'component/btn-icon.php';
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex flex-column align-items-start justify-content-center" style="gap: 4px;">
-                        <label for="input-id-admin" class="form-label"><b>ID Admin</b></label>
-                        <input type="text" class="form-control" name="id_admin" id="input-id-admin" required />
-                        <label for="input-password" class="form-label"><b>Password</b></label>
-                        <input type="password" class="form-control" value="" name="password" id="input-password"
-                            required />
-                        <label for="input-tingkat" class="form-label"><b>Tingkat Admin</b></label>
-                        <select name="level" class="form-select" id="input-tingkat">
-                            <option selected>Tingkat Admin</option>
-                            <?php foreach (TipeAdmin::cases() as $tipe): ?>
-                                <option value="<?= $tipe->name ?>"><?= ucwords($tipe->name) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <label for="input-nama" class="form-label"><b>Nama</b></label>
-                        <input type="text" class="form-control" value="" name="nama" id="input-nama" required />
-                        <label class="form-label"><b>Jenis Kelamin</b></label>
-                        <div class="d-flex flex-row align-items-stretch justify-content-evenly" style="gap: 32px;">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" value="Laki-laki" name="jenis_kel"
-                                    id="jenis-kel-laki">
-                                <label class="form-check-label" for="jenis-kel-laki">
-                                    Laki-Laki
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" value="Perempuan" name="jenis_kel"
-                                    id="jenis-kel-perempuan">
-                                <label class="form-check-label" for="jenis-kel-perempuan">
-                                    Perempuan
-                                </label>
-                            </div>
+                    <div class="d-flex flex-row align-items-start justify-content-start" style="gap: 24px; flex-wrap: wrap;">
+                        <div class="d-flex flex-column align-items-start" style="gap: 4px; flex: 1;">
+                            <input type="text" class="d-none" name="id_admin_ori" id="input-id-admin-ori" readonly />
+                            <label for="input-id-admin" class="form-label"><b>ID Admin</b></label>
+                            <input type="text" class="form-control" name="id_admin" id="input-id-admin" required />
+                            <label for="input-password" class="form-label"><b>Password</b></label>
+                            <input type="password" class="form-control" value="" name="password" id="input-password"
+                                required />
+                            <label for="input-tingkat" class="form-label"><b>Tingkat Admin</b></label>
+                            <select name="level" class="form-select" id="input-tingkat">
+                                <option selected>Tingkat Admin</option>
+                                <?php foreach (TipeAdmin::cases() as $tipe): ?>
+                                    <option value="<?= $tipe->name ?>"><?= ucwords($tipe->name) ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
-                        <label for="input-tanggal_lahir" class="form-label"><b>Tanggal Lahir</b></label>
-                        <input type="date" class="form-control" value="" name="tanggal_lahir" id="input-tanggal_lahir"
-                            required />
-                        <label for="input-lahir" class="form-label"><b>Tempat Lahir</b></label>
-                        <input type="text" class="form-control" value="" name="tempat_lahir" id="input-lahir"
-                            required />
-                        <label for="input-nik" class="form-label"><b>NIK</b></label>
-                        <input type="text" class="form-control" value="" name="nik" id="input-nik" required />
-                        <label for="input-alamat" class="form-label"><b>Alamat</b></label>
-                        <input type="text" class="form-control" value="" name="alamat" id="input-alamat" required />
-                        <label for="input-telp" class="form-label"><b>Nomor Telepon</b></label>
-                        <input type="text" class="form-control" value="" name="no_telp" id="input-telp" required />
+                        <div class="d-flex flex-column align-items-start" style="gap: 4px; flex: 1;">
+                            <label for="input-nama" class="form-label"><b>Nama</b></label>
+                            <input type="text" class="form-control" value="" name="nama" id="input-nama" required />
+                            <label class="form-label"><b>Jenis Kelamin</b></label>
+                            <div class="d-flex flex-row align-items-stretch justify-content-evenly" style="gap: 32px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" value="Laki-laki" name="jenis_kel"
+                                        id="jenis-kel-laki">
+                                    <label class="form-check-label" for="jenis-kel-laki">
+                                        Laki-Laki
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" value="Perempuan" name="jenis_kel"
+                                        id="jenis-kel-perempuan">
+                                    <label class="form-check-label" for="jenis-kel-perempuan">
+                                        Perempuan
+                                    </label>
+                                </div>
+                            </div>
+                            <label for="input-tanggal_lahir" class="form-label"><b>Tanggal Lahir</b></label>
+                            <input type="date" class="form-control" value="" name="tanggal_lahir" id="input-tanggal_lahir"
+                                required />
+                            <label for="input-lahir" class="form-label"><b>Tempat Lahir</b></label>
+                            <input type="text" class="form-control" value="" name="tempat_lahir" id="input-lahir"
+                                required />
+                            <label for="input-nik" class="form-label"><b>NIK</b></label>
+                            <input type="text" class="form-control" value="" name="nik" id="input-nik" required />
+                            <label for="input-alamat" class="form-label"><b>Alamat</b></label>
+                            <input type="text" class="form-control" value="" name="alamat" id="input-alamat" required />
+                            <label for="input-telp" class="form-label"><b>Nomor Telepon</b></label>
+                            <input type="text" class="form-control" value="" name="no_telp" id="input-telp" required />
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
-                        <button type="button" class="btn btn-danger">
+                    <div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;gap: 16px;flex-wrap: wrap;">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#btn-del" data-bs-dismiss="modal">
                             <?= SvgIcons::getIcon(Icons::Trash) ?> Hapus
                         </button>
                         <div class="d-flex flex-row align-items-center justify-content-between" style="gap: 8px;">
-                            <button type="button" class="btn btn-outline" data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-outline" data-bs-dismiss="modal" onclick="resetFormDialog(); ">
                                 <?= SvgIcons::getIcon(Icons::Close) ?> Ga Jadi
                             </button>
                             <button type="button" class="btn btn-primary" onclick="saveFormDialog();">
@@ -108,7 +140,11 @@ include_once VIEWS . 'component/btn-icon.php';
     <div id="page-content-top">
         <div class="d-flex flex-column align-items-start">
             <h1><strong>Data Admin</strong></h1>
-            <button class="btn btn-primary" id="btn-add-admin" data-bs-toggle="modal" data-bs-target="#the-dialog">
+            <button class="btn btn-primary" id="btn-add-admin" data-bs-toggle="modal" data-bs-target="#the-dialog" onclick="
+                resetFormDialog();
+                let btnDel = document.querySelector('#form-dialog .modal-footer .btn-danger');
+                btnDel.style.opacity = 0;
+                btnDel.style.pointerEvents = 'none';">
                 <?= SvgIcons::getIcon(Icons::Add) ?> Tambah Admin
             </button>
         </div>
@@ -147,14 +183,18 @@ include_once VIEWS . 'component/btn-icon.php';
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
         const searchInput = document.getElementById('search-input');
-        searchInput.addEventListener('input', function () {
+        searchInput.addEventListener('input', function() {
             let search = this.value.toLowerCase();
             funSearch('tr #search-nama', search);
         });
 
-        document.getElementById('the-dialog').addEventListener('hidden.bs.modal', () => {
+        function resetFormDialog() {
             document.getElementById('form-dialog').reset();
-        });
+        }
+
+        // document.getElementById('the-dialog').addEventListener('hidden.bs.modal', () => {
+        //     resetFormDialog();
+        // });
 
         function openFormDialog(data) {
             let dialog = document.querySelector('#the-dialog .modal-dialog .modal-content');
@@ -197,8 +237,12 @@ include_once VIEWS . 'component/btn-icon.php';
                         element.checked = true;
                     }
                 });
-                id.value = data.id_admin;
+                body.querySelector('#input-id-admin-ori').value = data.id_admin;
                 title.textContent = `Edit [${data.id_admin}]`;
+
+                let btnDel = document.querySelector('#form-dialog .modal-footer .btn-danger');
+                btnDel.style.opacity = 1;
+                btnDel.style.pointerEvents = 'auto';
             }
         }
 
@@ -213,7 +257,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 data: {
                     id: id
                 },
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
@@ -237,7 +281,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 `;
                 tr.dataset.bsToggle = "modal";
                 tr.dataset.bsTarget = "#the-dialog";
-                tr.onclick = function () {
+                tr.onclick = function() {
                     getAdminData(dataAdmin.id_admin);
                 };
                 tableBody.appendChild(tr);
@@ -252,7 +296,7 @@ include_once VIEWS . 'component/btn-icon.php';
             $.ajax({
                 type: "POST",
                 url: "getAdminList",
-                success: function (response) {
+                success: function(response) {
                     // console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
@@ -276,12 +320,30 @@ include_once VIEWS . 'component/btn-icon.php';
                 data: data,
                 contentType: false,
                 processData: false,
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                     getAdminList();
                     closeFormDialog();
+                    resetFormDialog();
                 }
             });
+        }
 
+        function deleteAdminData() {
+            // Biarkan seorang Inam yang melakukannya
+            // Id bisa diambil dari form dengan input id 'input-id-admin-ori'
+            console.log("UwU");
+
+            // $.ajax({
+            //     type: "POST",
+            //     url: "deleteAdminData",
+            //     data: {
+            //         id: id
+            //     },
+            //     success: function(response) {
+            //         console.log(response);
+            //         getAdminList();
+            //     }
+            // });
         }
     </script>
