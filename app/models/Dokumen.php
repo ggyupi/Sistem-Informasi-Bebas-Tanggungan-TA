@@ -184,5 +184,8 @@ class Dokumen extends Model
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getDocumentNotificationJurusan(){
+        
+    }
 
 }

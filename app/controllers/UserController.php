@@ -67,6 +67,29 @@ class UserController extends Controller
             echo json_encode($dokumenList);
         }
     }
+    public function getDataPengumpulanNotification()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $tingkatDokumen = TingkatDokumen::Jurusan;
+            $dokumenList = $this->dokumen->getDokumenList($tingkatDokumen);
+            $uploadList = $this->dokumen->getDokumenListUploadByNIM($tingkatDokumen, $this->mahasiswa->getPeopleId());
+            $uploadListWithIdKey = [];
+            foreach ($uploadList as $dokumen) {
+                $id = $dokumen['id'];
+                unset($dokumen['id']);
+                $uploadListWithIdKey[$id] = $dokumen;
+            }
+
+            foreach ($dokumenList as &$dokumen) {
+                if (isset($uploadListWithIdKey[$dokumen['id']])) {
+                    foreach ($uploadListWithIdKey[$dokumen['id']] as $key => $value) {
+                        $dokumen[$key] = $value;
+                    }
+                }
+            }
+            echo json_encode($dokumenList);
+        }
+    }
 
     public function uploadPengumpulan()
     {

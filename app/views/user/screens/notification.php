@@ -1,17 +1,17 @@
 <?php
 include_once VIEWS . 'component/btn-icon.php';
+
 ?>
 <style>
     #notification-item {
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
         gap: 16px;
         padding: 24px 24px;
         border-radius: 12px;
-        width: fit-content;
+        /* width: 1600; */
         height: fit-content;
         margin: 16px;
+        flex: 1;
 
     }
 
@@ -21,12 +21,10 @@ include_once VIEWS . 'component/btn-icon.php';
         background-color: var(--bs-body-bg);
         display: flex;
         flex-direction: column;
-        align-items: start;
-        justify-content: start;
         padding: 5px 5px;
         border-radius: 12px;
-        width: fit-content;
         margin: 8px;
+        flex: 1;
     }
 
     .status-badge-text {
@@ -38,27 +36,86 @@ include_once VIEWS . 'component/btn-icon.php';
         width: 16px;
     }
 </style>
-<div class="d-flex flex-column align-items-start justify-content-center" id="notification-wrapper">
+<div id="pengumpulan-page">
+    <div id="page-content-top">
+        <div id="total-tertanggung">5</div>
+        <h1>Dokumen <strong><?= $data['user']->getPeopleName() ?></strong></h1>
+    </div>
+</div>
+<div class=""></div>
+<div class="d-flex flex-column align-items-stretch justify-content-center" id="notification-wrapper">
     <div id="notification-content">
-        <div class="d-flex flex-row align-items-center justify-content-center danger-bg" id="notification-item">
+        <div class="d-flex flex-row align-items-center justify-content-start danger-bg" id="notification-item">
             <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
-            <div class="d-flex">
-                <div id="notification-document">
-                    Dokumen ditolak, silahkan perbaiki dokumen .....
-                </div>
+            <div style="flex: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" id="notification-document">
+                Dokumen ditolak, silahkan perbaiki dokumen .....
             </div>
             <?= iconButton('', Icons::OpenInNewTab, 'var(--bs-emphasis-color)') ?>
         </div>
     </div>
     <div id="notification-content">
-        <div class="d-flex flex-row align-items-center justify-content-center danger-bg" id="notification-item">
+        <div class="d-flex flex-row align-items-center justify-content-start danger-bg" id="notification-item">
             <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
-            <div class="d-flex">
-                <div id="notification-document">
-                    Dokumen ditolak, silahkan perbaiki dokumen .....
-                </div>
+            <div style="flex: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" id="notification-document">
+                Dokumen ditolak, silahkan perbaiki dokumen .....
             </div>
             <?= iconButton('', Icons::OpenInNewTab, 'var(--bs-emphasis-color)') ?>
         </div>
     </div>
 </div>
+<script>
+    function getDataPengumpulan(useUpdate = true) {
+            $.ajax({
+                type: "POST",
+                url: "getDataPengumpulan",
+                data: {
+                    tingkat_dokumen: "<?= $tingkat ?>"
+                },
+                success: function(response) {
+                    //console.log(response);
+                    let data = JSON.parse(response);
+                    console.log(data);
+                    if (useUpdate) {
+                        updatePageContent(data);
+                    } else {
+                        generatePageContent(data);
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+        getDataPengumpulan(false);
+        // funToCallEachInterval.push(getDataPengumpulan);
+    
+    function getDataPengumpulan(useUpdate = true) {
+            $.ajax({
+                type: "POST",
+                url: "getDataPengumpulan",
+                data: {
+                    tingkat_dokumen: "<?= $tingkat ?>"
+                },
+                success: function(response) {
+                    //console.log(response);
+                    let data = JSON.parse(response);
+                    console.log(data);
+                    if (useUpdate) {
+                        updatePageContent(data);
+                    } else {
+                        generatePageContent(data);
+                    }
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+        getDataPengumpulan(false);
+        // funToCallEachInterval.push(getDataPengumpulan);
+
+    
+    let countTertanggung = 0;
+    let totalTertanggung = document.getElementById('total-tertanggung');
+    totalTertanggung.querySelectorAll('#total-tertanggung').textContent = countTertanggung ;
+</script>
