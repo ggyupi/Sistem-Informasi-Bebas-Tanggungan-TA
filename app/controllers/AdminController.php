@@ -190,4 +190,18 @@ class AdminController extends Controller
             echo json_encode(["status" => "error", "message" => "Permintaan tidak valid."]);
         }
     }
+
+    public function getRecentDokumenGrouped()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'Jurusan' => $this->dokumen->getRecentDokumenByTingkat('Jurusan'),
+                'Pusat' => $this->dokumen->getRecentDokumenByTingkat('Pusat'),
+                'Keduanya' => $this->dokumen->getRecentDokumenByTingkat('Keduanya')
+            ];
+
+            echo json_encode($data);
+        }
+    }
+
 }

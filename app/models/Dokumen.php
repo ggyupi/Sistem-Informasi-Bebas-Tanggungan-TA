@@ -169,4 +169,20 @@ class Dokumen extends Model
         return $data;
     }
 
+    public function getRecentDokumenByTingkat($tingkat, $limit = 3)
+    {
+        $query = $this->db->prepare("
+        SELECT d.id, d.dokumen, d.tanggal_upload, m.Nama AS mahasiswa, m.NIM 
+        FROM Pengguna.Dokumen d
+        INNER JOIN Pengguna.Mahasiswa m ON d.nim = m.NIM
+        WHERE d.tingkat = :tingkat
+        ORDER BY d.tanggal_upload DESC
+        LIMIT :limit
+    ");
+        $query->bindValue(":tingkat", $tingkat, PDO::PARAM_STR);
+        $query->bindValue(":limit", $limit, PDO::PARAM_INT);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
