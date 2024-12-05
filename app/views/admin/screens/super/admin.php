@@ -49,7 +49,7 @@ dialogYesNoCustom(
     <button type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
     <button class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-del" 
     onclick="deleteAdminData();">' .
-        SvgIcons::getIcon(Icons::Trash) . 'Hapus
+    SvgIcons::getIcon(Icons::Trash) . 'Hapus
     </button>',
 );
 ?>
@@ -65,7 +65,8 @@ dialogYesNoCustom(
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex flex-row align-items-start justify-content-start" style="gap: 24px; flex-wrap: wrap;">
+                    <div class="d-flex flex-row align-items-start justify-content-start"
+                        style="gap: 24px; flex-wrap: wrap;">
                         <div class="d-flex flex-column align-items-start" style="gap: 4px; flex: 1;">
                             <input type="text" class="d-none" name="id_admin_ori" id="input-id-admin-ori" readonly />
                             <label for="input-id-admin" class="form-label"><b>ID Admin</b></label>
@@ -102,8 +103,8 @@ dialogYesNoCustom(
                                 </div>
                             </div>
                             <label for="input-tanggal_lahir" class="form-label"><b>Tanggal Lahir</b></label>
-                            <input type="date" class="form-control" value="" name="tanggal_lahir" id="input-tanggal_lahir"
-                                required />
+                            <input type="date" class="form-control" value="" name="tanggal_lahir"
+                                id="input-tanggal_lahir" required />
                             <label for="input-lahir" class="form-label"><b>Tempat Lahir</b></label>
                             <input type="text" class="form-control" value="" name="tempat_lahir" id="input-lahir"
                                 required />
@@ -117,12 +118,15 @@ dialogYesNoCustom(
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;gap: 16px;flex-wrap: wrap;">
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#btn-del" data-bs-dismiss="modal">
+                    <div class="d-flex flex-row align-items-center justify-content-between"
+                        style="flex: 1;gap: 16px;flex-wrap: wrap;">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#btn-del"
+                            data-bs-dismiss="modal">
                             <?= SvgIcons::getIcon(Icons::Trash) ?> Hapus
                         </button>
                         <div class="d-flex flex-row align-items-center justify-content-between" style="gap: 8px;">
-                            <button type="button" class="btn btn-outline" data-bs-dismiss="modal" onclick="resetFormDialog(); ">
+                            <button type="button" class="btn btn-outline" data-bs-dismiss="modal"
+                                onclick="resetFormDialog(); ">
                                 <?= SvgIcons::getIcon(Icons::Close) ?> Ga Jadi
                             </button>
                             <button type="button" class="btn btn-primary" onclick="saveFormDialog();">
@@ -140,7 +144,8 @@ dialogYesNoCustom(
     <div id="page-content-top">
         <div class="d-flex flex-column align-items-start">
             <h1><strong>Data Admin</strong></h1>
-            <button class="btn btn-primary" id="btn-add-admin" data-bs-toggle="modal" data-bs-target="#the-dialog" onclick="
+            <button class="btn btn-primary" id="btn-add-admin" data-bs-toggle="modal" data-bs-target="#the-dialog"
+                onclick="
                 resetFormDialog();
                 let btnDel = document.querySelector('#form-dialog .modal-footer .btn-danger');
                 btnDel.style.opacity = 0;
@@ -183,7 +188,7 @@ dialogYesNoCustom(
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
         const searchInput = document.getElementById('search-input');
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             let search = this.value.toLowerCase();
             funSearch('tr #search-nama', search);
         });
@@ -257,7 +262,7 @@ dialogYesNoCustom(
                 data: {
                     id: id
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
@@ -281,7 +286,7 @@ dialogYesNoCustom(
                 `;
                 tr.dataset.bsToggle = "modal";
                 tr.dataset.bsTarget = "#the-dialog";
-                tr.onclick = function() {
+                tr.onclick = function () {
                     getAdminData(dataAdmin.id_admin);
                 };
                 tableBody.appendChild(tr);
@@ -296,7 +301,7 @@ dialogYesNoCustom(
             $.ajax({
                 type: "POST",
                 url: "getAdminList",
-                success: function(response) {
+                success: function (response) {
                     // console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
@@ -320,7 +325,7 @@ dialogYesNoCustom(
                 data: data,
                 contentType: false,
                 processData: false,
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     getAdminList();
                     closeFormDialog();
@@ -330,20 +335,31 @@ dialogYesNoCustom(
         }
 
         function deleteAdminData() {
-            // Biarkan seorang Inam yang melakukannya
-            // Id bisa diambil dari form dengan input id 'input-id-admin-ori'
-            console.log("UwU");
+            let id = document.getElementById('input-id-admin-ori').value;
 
-            // $.ajax({
-            //     type: "POST",
-            //     url: "deleteAdminData",
-            //     data: {
-            //         id: id
-            //     },
-            //     success: function(response) {
-            //         console.log(response);
-            //         getAdminList();
-            //     }
-            // });
+            if (id) {
+                $.ajax({
+                    type: "POST",
+                    url: "deleteAdmin", // Endpoint untuk controller
+                    data: {
+                        id: id
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        let result = JSON.parse(response);
+                        if (result.status === "success") {
+                            getAdminList();
+                        } else {
+                            console.log(result.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error);
+                        alert("Gagal menghapus data admin.");
+                    }
+                });
+            } else {
+                alert("ID Admin tidak ditemukan.");
+            }
         }
     </script>

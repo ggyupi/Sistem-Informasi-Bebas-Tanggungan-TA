@@ -159,4 +159,17 @@ class Admin extends Model implements IUserApp
         $this->db->commit();
         return true;
     }
+
+    public function deleteAdminById($id_admin)
+    {
+        $query = "DELETE FROM Pengguna.Admin WHERE NIDN = :id_admin";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_admin', $id_admin, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return ["status" => "success", "message" => "Data admin berhasil dihapus."];
+        } else {
+            return ["status" => "error", "message" => "Gagal menghapus data admin."];
+        }
+    }
 }

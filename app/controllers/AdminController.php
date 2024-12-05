@@ -171,6 +171,23 @@ class AdminController extends Controller
         }
     }
 
+    public function deleteAdmin()
+    {
+        // Periksa apakah permintaan adalah POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+            $id_admin = $_POST['id'];
 
+            // Validasi ID admin
+            if (empty($id_admin)) {
+                echo json_encode(["status" => "error", "message" => "ID admin tidak valid."]);
+                return;
+            }
 
+            // Hapus data admin menggunakan model
+            $result = $this->admin->deleteAdminById($id_admin);
+            echo json_encode($result);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Permintaan tidak valid."]);
+        }
+    }
 }
