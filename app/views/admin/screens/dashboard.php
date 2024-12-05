@@ -3,8 +3,8 @@ include_once VIEWS . 'component/jam-card.php';
 ?>
 <h1>Selamat Datang, Admin <strong><?= ucwords($data['user']->adminApa->value) ?></strong></h1>
 <br>
-<div class="row">
-    <div class="col">
+<div class="d-flex flex-row" style="gap: 32px; flex-wrap: wrap;">
+    <div class="d-flex flex-column">
         <?php
         $adminTingkat = ucwords($data['user']->adminApa->value);
 
@@ -96,7 +96,7 @@ include_once VIEWS . 'component/jam-card.php';
         ?>
 
     </div>
-    <div class="col">
+    <div style="flex: 1;">
         <?= jamCard(
             'jam-card',
             '<span id="clock">Loading...</span>',
