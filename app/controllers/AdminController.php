@@ -24,6 +24,9 @@ class AdminController extends Controller
 
     public function index($screen = "dashboard")
     {
+        if ($screen == 'dashboard' && $this->admin->adminApa === TipeAdmin::Super) {
+            $screen = 'super/dashboard';
+        }
         $title = $screen;
         if (strpos($title, '/') !== false) {
             $title = explode('/', $title);
