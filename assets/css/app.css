@@ -531,6 +531,7 @@ td,
   align-items: center;
   justify-content: start;
   gap: 32px;
+  flex-wrap: wrap;
 }
 
 .card-status-content {
@@ -1066,14 +1067,14 @@ td,
   font-size: clamp(1rem, 3.5vw, 5rem);
   /* Responsif untuk title */
   margin: 0;
-  color: #333;
+  color: var(--bs-emphasis-color-rgb);
 }
 
 .jam-card-content h3 {
   font-size: clamp(0.5rem, 1.5vw, 4rem);
   /* Responsif untuk subtitle */
   margin: 0;
-  color: #666;
+  color: rgba(var(--bs-emphasis-color-rgb), 0.75);
 }
 
 .jam-card-content {
