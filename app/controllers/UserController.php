@@ -70,6 +70,32 @@ class UserController extends Controller
             echo json_encode($dokumenList);
         }
     }
+    public function getDataPengumpulanNotification()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // $tingkatDokumenJurusan = TingkatDokumen::Jurusan;
+            // $tingkatDokumenPusat = TingkatDokumen::Pusat;
+            // $dokumenList = array_merge(
+            //     $this->dokumen->getDokumenList($tingkatDokumenJurusan),
+            //     $this->dokumen->getDokumenList($tingkatDokumenPusat)
+            // );
+            // $uploadListJurusan = $this->dokumen->getDocumentNotification($tingkatDokumenJurusan, $this->mahasiswa->getPeopleId());
+            // $uploadListPusat = $this->dokumen->getDocumentNotification($tingkatDokumenPusat, $this->mahasiswa->getPeopleId());
+            // $uploadList = array_merge($uploadListJurusan, $uploadListPusat);
+            // foreach ($dokumenList as &$dokumen) {
+            //     foreach ($uploadList as $upload) {
+            //         if ($upload['id'] == $dokumen['id']) {
+            //             $dokumen['nama_dokumen'] = $upload['dokumen'];
+            //         }
+            //     }
+            // }
+            $result = $this->dokumen->getStatusDokumenByNIM($this->mahasiswa->getPeopleId());
+            $result = array_filter($result, function ($dokumen) {
+                return $dokumen['Status'] === StatusDokumen::Ditolak->value;
+            });
+            echo json_encode(array_values($result));
+        }
+    }
 
     public function uploadPengumpulan()
     {

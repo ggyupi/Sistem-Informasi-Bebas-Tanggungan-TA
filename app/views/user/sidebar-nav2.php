@@ -1,8 +1,8 @@
-<form class="side-bar-nav">
+<form class="side-bar-nav" action="screen" method="get">
     <button class="side-bar-btn" type="submit" name="screen" value="notification">
         <?= SvgIcons::getIcon(Icons::Notification) ?>
         <span></span>
-        <p>Notifications</p>
+        <p>Notification</p>
     </button>
     <button class="side-bar-btn" type="submit" name="screen" value="support">
         <?= SvgIcons::getIcon(Icons::About) ?>
