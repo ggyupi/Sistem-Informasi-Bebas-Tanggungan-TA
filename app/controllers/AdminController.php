@@ -12,6 +12,9 @@ class AdminController extends Controller
 
     public function __construct()
     {
+        if (!Session::exists('username')) {
+            $this->logout('login');
+        }
         $db = Database::getInstance(getDatabaseConfig(), [$this, 'error']);
         $this->mahasiswa = new Mahasiswa($db);
         $this->dokumen = new Dokumen($db);
@@ -207,5 +210,4 @@ class AdminController extends Controller
             echo json_encode($data);
         }
     }
-
 }
