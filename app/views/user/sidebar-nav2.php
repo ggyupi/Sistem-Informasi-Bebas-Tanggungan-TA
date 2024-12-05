@@ -9,7 +9,7 @@
         <span></span>
         <p>Support</p>
     </button>
-    <div class="side-bar-btn" name="screen" id="toggle-dark-mode" value="dark_mode">
+    <div class="side-bar-btn" id="toggle-dark-mode">
         <?= SvgIcons::getIcon(Icons::Bulb) ?>
         <span></span>
         <p id="dark-mode-text"><?= Session::get('theme_mode') === 'dark' ? 'Dark' : 'Light' ?> Mode</p>
