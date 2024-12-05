@@ -13,23 +13,24 @@ include_once VIEWS . 'component/jam-card.php';
                 'card-status-jurusan',
                 'Status Pengumpulan',
                 [
-                    [
-                        'type' => 'warning',
-                        'icon' => Icons::Document,
-                        'title' => '<span id="jurusan-status-menunggu">Loading...</span>',
-                        'subtitle' => 'Dokumen pending',
-                        'href' => ''
-                    ],
+
                     [
                         'type' => 'good',
-                        'icon' => Icons::Document,
+                        'icon' => Icons::Check,
                         'title' => '<span id="jurusan-status-diverifikasi">Loading...</span>',
                         'subtitle' => 'Dokumen diverifikasi',
                         'href' => ''
                     ],
                     [
+                        'type' => 'warning',
+                        'icon' => Icons::Question,
+                        'title' => '<span id="jurusan-status-menunggu">Loading...</span>',
+                        'subtitle' => 'Dokumen pending',
+                        'href' => ''
+                    ],
+                    [
                         'type' => 'bad',
-                        'icon' => Icons::Document,
+                        'icon' => Icons::Close,
                         'title' => '<span id="jurusan-status-ditolak">Loading...</span>',
                         'subtitle' => 'Dokumen ditolak',
                         'href' => ''
@@ -41,23 +42,24 @@ include_once VIEWS . 'component/jam-card.php';
                 'card-status-pusat',
                 'Status Pengumpulan',
                 [
-                    [
-                        'type' => 'warning',
-                        'icon' => Icons::Document,
-                        'title' => '<span id="pusat-status-menunggu">Loading...</span>',
-                        'subtitle' => 'Dokumen pending',
-                        'href' => ''
-                    ],
+
                     [
                         'type' => 'good',
-                        'icon' => Icons::Document,
+                        'icon' => Icons::Check,
                         'title' => '<span id="pusat-status-diverifikasi">Loading...</span>',
                         'subtitle' => 'Dokumen diverifikasi',
                         'href' => ''
                     ],
                     [
+                        'type' => 'warning',
+                        'icon' => Icons::Question,
+                        'title' => '<span id="pusat-status-menunggu">Loading...</span>',
+                        'subtitle' => 'Dokumen pending',
+                        'href' => ''
+                    ],
+                    [
                         'type' => 'bad',
-                        'icon' => Icons::Document,
+                        'icon' => Icons::Close,
                         'title' => '<span id="pusat-status-ditolak">Loading...</span>',
                         'subtitle' => 'Dokumen ditolak',
                         'href' => ''
