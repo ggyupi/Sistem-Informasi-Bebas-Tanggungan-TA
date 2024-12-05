@@ -134,7 +134,7 @@
             ?>
         </div>
         <div class="d-flex flex-row align-items-center justify-content-start" id="status-lulus">
-            <div >
+            <div>
                 <h2>Lulus</h2>
                 <ul>
                     <li>Surat Rekomendasi Ambil Ijasah</li>
@@ -146,6 +146,5 @@
     </div>
 </div>
 <script>
-    document.getElementById('status-skkm').classList.add('');
-    document.getElementById('status-perpus').classList.add('');
+
 </script>
