@@ -243,7 +243,12 @@ include_once VIEWS . 'component/btn-icon.php';
                 if (typeof dataItem.path_dokumen !== 'undefined') {
                     uploadWrapper.querySelector('#upload-terlampir p').textContent = getFileName(dataItem.path_dokumen);
                     formPengumpulanUpload.classList.add('has-file');
-                    uploadWrapper.querySelector('#upload-actions').innerHTML = btnUpload + btnDownload + btnOpenInNewTab;
+                    uploadWrapper.querySelector('#upload-actions').innerHTML = btnDownload + btnOpenInNewTab;
+                    if (dataItem.status !== '<?= StatusDokumen::Diverifikasi->value ?>') {
+                        uploadWrapper.querySelector('#upload-actions').innerHTML =
+                            btnUpload + uploadWrapper.querySelector('#upload-actions').innerHTML;
+                    }
+
 
                     formPengumpulanUpload.addEventListener('click', function(e) {
                         if (e.target.closest('#upload-actions button:nth-child(1)')) {
@@ -259,13 +264,25 @@ include_once VIEWS . 'component/btn-icon.php';
                             document.body.removeChild(link);
                         }
                         if (e.target.closest('#upload-actions button:nth-child(3)')) {
-                            window.open(`${pdfDatabasePrefix+dataItem.path_dokumen}`, '_blank');
+                            let link = document.createElement('a');
+                            link.href = pdfDatabasePrefix + dataItem.path_dokumen;
+                            link.setAttribute('target', '_blank');
+                            link.style.display = 'none';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
                         }
                         if (e.target.id === 'upload-terlampir-wrapper' ||
                             e.target.parentNode.id === 'upload-terlampir' ||
                             e.target.id === 'upload-terlampir') {
                             e.preventDefault();
-                            window.open(pdfDatabasePrefix + dataItem.path_dokumen, '_blank');
+                            let link = document.createElement('a');
+                            link.href = pdfDatabasePrefix + dataItem.path_dokumen;
+                            link.setAttribute('target', '_blank');
+                            link.style.display = 'none';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
                         }
                     });
                 }
@@ -331,6 +348,11 @@ include_once VIEWS . 'component/btn-icon.php';
                 let dokumenItem = listDocument.children[i];
                 let dokumenItemBadge = dokumenItem.querySelector('.status-badge-text');
 
+                if (dokumenItemBadge.classList.contains('success') && dataItem.status === '<?= StatusDokumen::Ditolak->value ?>') {
+                    generatePageContent(data);
+                    return;
+                }
+
                 dokumenItem.children[1].textContent = dataItem.dokumen;
                 let formPengumpulanItemHeader = formPengumpulanList.children[i].children[0];
                 formPengumpulanItemHeader.children[0].textContent = dataItem.dokumen;
@@ -378,7 +400,7 @@ include_once VIEWS . 'component/btn-icon.php';
                     komentarPeople.children[1].innerHTML = `${dataItem.nama_admin}`;
                     komentarPeople.children[3].textContent = formatDate(new Date(dataItem.tanggal_komentar));
                     komentarWrapper.children[1].children[0].textContent = dataItem.isi_komentar;
-                }else{
+                } else {
                     komentarToggle.classList.remove('komentar-expand');
                 }
             }
