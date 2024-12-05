@@ -1,5 +1,5 @@
 <form class="side-bar-nav" action="screen" method="get">
-    <button class="side-bar-btn" type="submit" name="screen" value="dashboard" checked>
+    <button class="side-bar-btn" type="submit" name="screen" value="super/dashboard" checked>
         <?= SvgIcons::getIcon(Icons::Dashboard) ?>
         <span></span>
         <p>Dashboard</p>

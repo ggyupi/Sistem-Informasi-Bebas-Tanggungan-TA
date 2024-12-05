@@ -24,6 +24,9 @@ class AdminController extends Controller
 
     public function index($screen = "dashboard")
     {
+        if ($screen == 'dashboard' && $this->admin->adminApa === TipeAdmin::Super) {
+            $screen = 'super/dashboard';
+        }
         $title = $screen;
         if (strpos($title, '/') !== false) {
             $title = explode('/', $title);
@@ -35,7 +38,8 @@ class AdminController extends Controller
         $this->view('admin/index', [
             "screen" => $screen,
             "title" => $title,
-            "user" => $this->admin
+            "user" => $this->admin,
+            "filter" => isset($_GET['filter']) ? $_GET['filter'] : ''
         ]);
     }
 

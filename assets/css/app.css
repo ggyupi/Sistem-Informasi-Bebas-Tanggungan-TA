@@ -571,6 +571,9 @@ td,
 
 .card-status-icon svg {
   fill: white;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
 }
 
 /* End card-status */
@@ -1085,6 +1088,7 @@ td,
   align-items: center;
   /* Pusatkan secara horizontal di dalam konten */
   gap: 16px;
+  padding: 0px 64px;
   /* Jarak antar elemen */
 }
 

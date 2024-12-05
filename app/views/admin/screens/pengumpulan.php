@@ -144,10 +144,10 @@ dialogYesNoCustom(
             <div class="w-100 input-group d-flex">
                 <label class="input-group-text rounded-start-pill" for="filter-data">Status</label>
                 <select class="form-select rounded-end-pill" id="filter-data">
-                    <option selected value="semua">Semua</option>
-                    <option value="baru">Baru</option>
-                    <option value="tertanggung">Tertanggung</option>
-                    <option value="selesai">Selesai</option>
+                    <option value="semua" <?= $data['filter'] == 'semua' ? 'selected' : '' ?>>Semua</option>
+                    <option value="baru" <?= $data['filter'] == 'baru' ? 'selected' : '' ?>>Baru</option>
+                    <option value="tertanggung" <?= $data['filter'] == 'tertanggung' ? 'selected' : '' ?>>Tertanggung</option>
+                    <option value="selesai" <?= $data['filter'] == 'selesai' ? 'selected' : '' ?>>Selesai</option>
                 </select>
             </div>
             <div style="width: 120%;" class="d-flex input-group" role="search">
@@ -625,7 +625,33 @@ dialogYesNoCustom(
             }
         }
 
+        function selectFilter(value) {
+            document.querySelectorAll('#table-body tr').forEach(function(row) {
+                console.log(value);
+                const statusCell = row.querySelector('td:nth-child(6)');
+                if (statusCell) {
+                    const statusText = statusCell.textContent.toLowerCase();
+                    skipPagination = true;
+                    if (value === 'semua') {
+                        skipPagination = false;
+                        row.style.display = '';
+                    } else if (value === 'baru') {
+                        row.style.display = statusCell.children[0].children[0].style.opacity == 1 ? '' : 'none';
+                    } else if (value === 'tertanggung') {
+                        row.style.display = statusText.includes('tertanggung') ? '' : 'none';
+                    } else if (value === 'selesai') {
+                        row.style.display = statusText.includes('selesai') ? '' : 'none';
+                    } else {
+                        row.style.display = '';
+                    }
+                    renderPaggedTable();
+                }
+            });
+        }
+
         var getDataPengumpulanInUpdate = false;
+
+        let callOnStart = true;
 
         function getDataPengumpulan(useUpdate = true) {
             if (getDataPengumpulanInUpdate) {
@@ -653,6 +679,10 @@ dialogYesNoCustom(
                     }
                     getDataPengumpulanInUpdate = false;
                     renderPaggedTable();
+                    if (callOnStart) {
+                        callOnStart = false;
+                        selectFilter("<?= $data['filter'] ?>");
+                    }
                 },
                 error: function(response) {
                     console.log(response);
@@ -731,28 +761,6 @@ dialogYesNoCustom(
             });
         });
 
-        function selectFilter(value) {
-            document.querySelectorAll('#table-body tr').forEach(function(row) {
-                const statusCell = row.querySelector('td:nth-child(6)');
-                if (statusCell) {
-                    const statusText = statusCell.textContent.toLowerCase();
-                    skipPagination = true;
-                    if (value === 'semua') {
-                        skipPagination = false;
-                        row.style.display = '';
-                    } else if (value === 'baru') {
-                        row.style.display = statusCell.children[0].children[0].style.opacity == 1 ? '' : 'none';
-                    } else if (value === 'tertanggung') {
-                        row.style.display = statusText.includes('tertanggung') ? '' : 'none';
-                    } else if (value === 'selesai') {
-                        row.style.display = statusText.includes('selesai') ? '' : 'none';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                    renderPaggedTable();
-                }
-            });
-        }
 
         document.getElementById('filter-data').addEventListener('change', function() {
             removeTableActive();

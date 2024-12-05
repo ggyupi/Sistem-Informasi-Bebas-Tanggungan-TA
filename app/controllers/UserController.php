@@ -95,11 +95,7 @@ class UserController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $dokumenList = [];
-            foreach (
-                $this->dokumen->getDokumenList(
-                    TingkatDokumen::from($_POST['tingkat_dokumen'])
-                ) as $dokumen
-            ) {
+            foreach ($this->dokumen->getDokumenList(TingkatDokumen::from($_POST['tingkat_dokumen'])) as $dokumen) {
                 $id = $dokumen['id'];
                 unset($dokumen['id']);
                 $dokumenList[$id] = str_replace('/', '-', $dokumen['dokumen']);
@@ -133,4 +129,26 @@ class UserController extends Controller
             // $upload->upload();
         }
     }
+
+    public function statusDokumen()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nim = $this->mahasiswa->getPeopleId();
+
+            // Ambil status dokumen berdasarkan NIM mahasiswa
+            $data = $this->dokumen->getStatusDokumenByNIM($nim);
+
+            // Kirimkan hanya data 'nama_dokumen' dan 'Status' ke view
+            $result = [];
+            foreach ($data as $dokumen) {
+                $result[] = [
+                    "nama_dokumen" => $dokumen['nama_dokumen'],
+                    "status" => $dokumen['Status']
+                ];
+            }
+
+            echo json_encode($result);
+        }
+    }
+
 }
