@@ -3,8 +3,8 @@ include_once VIEWS . 'component/jam-card.php';
 ?>
 <h1>Selamat Datang, Admin <strong><?= ucwords($data['user']->adminApa->value) ?></strong></h1>
 <br>
-<div class="d-flex flex-row" style="gap: 32px; flex-wrap: wrap;">
-    <div class="d-flex flex-column">
+<div class="d-flex flex-column" style="gap: 26px; overflow: auto;">
+    <div class="d-flex flex-row" style="gap: 32px; flex-wrap: wrap;">
         <?php
         $adminTingkat = ucwords($data['user']->adminApa->value);
 
@@ -64,39 +64,27 @@ include_once VIEWS . 'component/jam-card.php';
                     ]
                 ]
             );
-        } elseif ($adminTingkat === 'Super') {
-            echo statusCard(
-                'card-status-super',
-                'Status Pengumpulan',
-                [
-                    [
-                        'type' => 'warning',
-                        'icon' => Icons::Document,
-                        'title' => '<span id="super-status-menunggu">Loading...</span>',
-                        'subtitle' => 'Dokumen pending',
-                        'href' => ''
-                    ],
-                    [
-                        'type' => 'good',
-                        'icon' => Icons::Document,
-                        'title' => '<span id="super-status-diverifikasi">Loading...</span>',
-                        'subtitle' => 'Dokumen diverifikasi',
-                        'href' => ''
-                    ],
-                    [
-                        'type' => 'bad',
-                        'icon' => Icons::Document,
-                        'title' => '<span id="super-status-ditolak">Loading...</span>',
-                        'subtitle' => 'Dokumen ditolak',
-                        'href' => ''
-                    ]
-                ]
-            );
         }
+        include_once VIEWS . 'admin/template/jam-card.php';
         ?>
-
     </div>
-    <?php include_once VIEWS . 'admin/template/jam-card.php'; ?>
+    <h2><Strong>TOP 3</Strong> Dokumen Terbaru</h2>
+    <div id="table-wrapper">
+        <table class="table table-hover" style="overflow-y: auto;">
+            <thead>
+                <tr>
+                    <th scope="col">NO</th>
+                    <th scope="col" style="width: 10%;">NIM</th>
+                    <th scope="col" style="width: 35%;">NAMA</th>
+                    <th scope="col">JURUSAN</th>
+                    <th scope="col">PROGRAM STUDI</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle" id="table-body">
+
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <?php include_once VIEWS . 'admin/template/dashboard-script.php'; ?>
