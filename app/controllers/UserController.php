@@ -70,24 +70,27 @@ class UserController extends Controller
     public function getDataPengumpulanNotification()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $tingkatDokumen = TingkatDokumen::Jurusan;
-            $dokumenList = $this->dokumen->getDokumenList($tingkatDokumen);
-            $uploadList = $this->dokumen->getDokumenListUploadByNIM($tingkatDokumen, $this->mahasiswa->getPeopleId());
-            $uploadListWithIdKey = [];
-            foreach ($uploadList as $dokumen) {
-                $id = $dokumen['id'];
-                unset($dokumen['id']);
-                $uploadListWithIdKey[$id] = $dokumen;
-            }
-
-            foreach ($dokumenList as &$dokumen) {
-                if (isset($uploadListWithIdKey[$dokumen['id']])) {
-                    foreach ($uploadListWithIdKey[$dokumen['id']] as $key => $value) {
-                        $dokumen[$key] = $value;
-                    }
-                }
-            }
-            echo json_encode($dokumenList);
+            // $tingkatDokumenJurusan = TingkatDokumen::Jurusan;
+            // $tingkatDokumenPusat = TingkatDokumen::Pusat;
+            // $dokumenList = array_merge(
+            //     $this->dokumen->getDokumenList($tingkatDokumenJurusan),
+            //     $this->dokumen->getDokumenList($tingkatDokumenPusat)
+            // );
+            // $uploadListJurusan = $this->dokumen->getDocumentNotification($tingkatDokumenJurusan, $this->mahasiswa->getPeopleId());
+            // $uploadListPusat = $this->dokumen->getDocumentNotification($tingkatDokumenPusat, $this->mahasiswa->getPeopleId());
+            // $uploadList = array_merge($uploadListJurusan, $uploadListPusat);
+            // foreach ($dokumenList as &$dokumen) {
+            //     foreach ($uploadList as $upload) {
+            //         if ($upload['id'] == $dokumen['id']) {
+            //             $dokumen['nama_dokumen'] = $upload['dokumen'];
+            //         }
+            //     }
+            // }
+            $result = $this->dokumen->getStatusDokumenByNIM($this->mahasiswa->getPeopleId());
+            $result = array_filter($result, function ($dokumen) {
+                return $dokumen['Status'] === StatusDokumen::Ditolak->value;
+            });
+            echo json_encode(array_values($result));
         }
     }
 

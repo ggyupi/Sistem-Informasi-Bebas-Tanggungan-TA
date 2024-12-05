@@ -184,14 +184,22 @@ class Dokumen extends Model
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function getDocumentNotificationJurusan(){
-        
-    }
+    // public function getDocumentNotification($tingkatDokumen, $nim){
+    //     $query = $this->db->prepare("SELECT up.ID_Dokumen id, up.Status status,
+    //         FROM dokumen.Dokumen li 
+    //         LEFT JOIN dokumen.Upload_dokumen up 
+    //         ON li.ID = up.ID_dokumen
+    //         WHERE up.NIM = :nim AND li.Tingkat = :tingkatDokumen");
+    //     $query->bindValue(":tingkatDokumen", $tingkatDokumen->value);
+    //     $query->bindValue(":nim", $nim);
+    //     $query->execute();
+    //     return $query->fetchAll(PDO::FETCH_ASSOC);
+    // }
 
     public function getStatusDokumenByNIM($nim)
     {
         $query = $this->db->prepare("
-        SELECT d.nama_dokumen, u.Status
+        SELECT d.nama_dokumen, u.Status, d.tingkat
         FROM dokumen.Dokumen d 
         INNER JOIN dokumen.Upload_dokumen u ON d.id = u.ID_dokumen
         WHERE u.nim = :nim

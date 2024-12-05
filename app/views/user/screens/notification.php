@@ -35,87 +35,81 @@ include_once VIEWS . 'component/btn-icon.php';
         height: 16px;
         width: 16px;
     }
-</style>
-<div id="pengumpulan-page">
-    <div id="page-content-top">
-        <div id="total-tertanggung">5</div>
-        <h1>Dokumen <strong><?= $data['user']->getPeopleName() ?></strong></h1>
-    </div>
-</div>
-<div class=""></div>
-<div class="d-flex flex-column align-items-stretch justify-content-center" id="notification-wrapper">
-    <div id="notification-content">
-        <div class="d-flex flex-row align-items-center justify-content-start danger-bg" id="notification-item">
-            <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
-            <div style="flex: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" id="notification-document">
-                Dokumen ditolak, silahkan perbaiki dokumen .....
-            </div>
-            <?= iconButton('', Icons::OpenInNewTab, 'var(--bs-emphasis-color)') ?>
-        </div>
-    </div>
-    <div id="notification-content">
-        <div class="d-flex flex-row align-items-center justify-content-start danger-bg" id="notification-item">
-            <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
-            <div style="flex: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" id="notification-document">
-                Dokumen ditolak, silahkan perbaiki dokumen .....
-            </div>
-            <?= iconButton('', Icons::OpenInNewTab, 'var(--bs-emphasis-color)') ?>
-        </div>
-    </div>
-</div>
-<script>
-    function getDataPengumpulan(useUpdate = true) {
-            $.ajax({
-                type: "POST",
-                url: "getDataPengumpulan",
-                data: {
-                    tingkat_dokumen: "<?= $tingkat ?>"
-                },
-                success: function(response) {
-                    //console.log(response);
-                    let data = JSON.parse(response);
-                    console.log(data);
-                    if (useUpdate) {
-                        updatePageContent(data);
-                    } else {
-                        generatePageContent(data);
-                    }
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            });
-        }
-        getDataPengumpulan(false);
-        // funToCallEachInterval.push(getDataPengumpulan);
-    
-    function getDataPengumpulan(useUpdate = true) {
-            $.ajax({
-                type: "POST",
-                url: "getDataPengumpulan",
-                data: {
-                    tingkat_dokumen: "<?= $tingkat ?>"
-                },
-                success: function(response) {
-                    //console.log(response);
-                    let data = JSON.parse(response);
-                    console.log(data);
-                    if (useUpdate) {
-                        updatePageContent(data);
-                    } else {
-                        generatePageContent(data);
-                    }
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            });
-        }
-        getDataPengumpulan(false);
-        // funToCallEachInterval.push(getDataPengumpulan);
 
-    
-    let countTertanggung = 0;
-    let totalTertanggung = document.getElementById('total-tertanggung');
-    totalTertanggung.querySelectorAll('#total-tertanggung').textContent = countTertanggung ;
+    #total-tertanggung {
+        font-weight: 600;
+        font-size: 96px;
+        line-height: 24px;
+        color: var(--bs-danger);
+
+
+
+    }
+</style>
+<div class="d-flex flex-column" id="pengumpulan-page" style="gap: 24px;">
+    <div id="page-content-top">
+        <div class="d-flex flex-row align-items-center justify-content-end">
+            <div id="total-tertanggung">5</div>
+            <h1>Notifikasi Baru</h1>
+        </div>
+    </div>
+    <div class="d-flex flex-column align-items-stretch justify-content-center" id="notification-wrapper">
+        <div id="notification-content">
+            <div class="d-flex flex-row align-items-center justify-content-start danger-bg" id="notification-item">
+                <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
+                <div style="flex: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" id="notification-document">
+                    Dokumen ditolak, silahkan perbaiki dokumen .....
+                </div>
+                <?= iconButton('', Icons::OpenInNewTab, 'var(--bs-emphasis-color)') ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateNotification(data) {
+        let notificationItems = document.getElementById('notification-wrapper');
+        notificationItems.innerHTML = '';
+        document.getElementById('total-tertanggung').textContent = data.length;
+        data.forEach(notification => {
+            let notificationContent = document.createElement('div');
+            notificationContent.id = 'notification-content';
+            let notificationItem = document.createElement('div');
+            notificationItem.classList.add('d-flex', 'flex-row', 'align-items-center', 'justify-content-start', 'danger-bg');
+            notificationItem.id = 'notification-item';
+            let statusBadge = document.createElement('div');
+            statusBadge.classList.add('status-badge-text', 'danger');
+            statusBadge.innerHTML = '<?= SvgIcons::getIconWithColor(Icons::Close, "white") ?>';
+            let notificationDocument = document.createElement('div');
+            notificationDocument.style.flex = '1';
+            notificationDocument.style.textOverflow = 'ellipsis';
+            notificationDocument.style.overflow = 'hidden';
+            notificationDocument.style.whiteSpace = 'nowrap';
+            notificationDocument.id = 'notification-document';
+            notificationDocument.textContent = notification.nama_dokumen;
+            let openInNewTab = `<?= iconButton('', Icons::OpenInNewTab, 'var(--bs-emphasis-color)', 'window.location.href=\`screen?screen=pengumpulan_${notification.tingkat}\`;') ?>`;
+            notificationItem.appendChild(statusBadge);
+            notificationItem.appendChild(notificationDocument);
+            notificationItem.innerHTML += (openInNewTab);
+            notificationContent.appendChild(notificationItem);
+            notificationItems.appendChild(notificationContent);
+        });
+    }
+
+    function getDataPengumpulan(useUpdate = true) {
+        $.ajax({
+            type: "POST",
+            url: "getDataPengumpulanNotification",
+            success: function(response) {
+                // console.log(response);
+                let data = JSON.parse(response);
+                generateNotification(data);
+                console.log(data);
+            },
+            error: function(response) {
+                console.log(response);
+            }
+        });
+    }
+    getDataPengumpulan(false);
 </script>
