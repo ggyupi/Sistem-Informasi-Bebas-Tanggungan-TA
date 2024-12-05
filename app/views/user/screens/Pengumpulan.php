@@ -439,7 +439,7 @@ include_once VIEWS . 'component/btn-icon.php';
                 success: function(response) {
                     // console.log('response');
                     // console.log(response);
-                    getDataPengumpulan();
+                    getDataPengumpulan(false);
                     pageContentBottom.children[0].innerHTML = 'Upload Berhasil';
                     pageContentBottom.children[1].removeAttribute('disabled');
                 },
