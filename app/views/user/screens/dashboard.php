@@ -37,13 +37,15 @@
         statusCard(
             'status-toeic',
             'Status Toeic',
-            [[
-                'type' => 'good',
-                'icon' => Icons::Close,
-                'title' => ' ',
-                'subtitle' => 'Terverifikasi',
-                'href' => ''
-            ]]
+            [
+                [
+                    'type' => 'good',
+                    'icon' => Icons::Close,
+                    'title' => ' ',
+                    'subtitle' => '<p id="dokumen-upload-scan-toeic">',
+                    'href' => ''
+                ]
+            ]
         );
         ?>
 
@@ -51,53 +53,61 @@
         statusCard(
             'status-kompen',
             'Status Kompen',
-            [[
-                'type' => 'good',
-                'icon' => Icons::Check,
-                'title' => ' ',
-                'subtitle' => 'Terverifikasi',
-                'href' => ''
-            ]]
+            [
+                [
+                    'type' => 'good',
+                    'icon' => Icons::Check,
+                    'title' => ' ',
+                    'subtitle' => '<p id="dokumen-surat-bebas-kompen">',
+                    'href' => ''
+                ]
+            ]
         );
         ?>
         <?php
         statusCard(
             'status-ukt',
-            'Status UKT',
-            [[
-                'type' => 'good',
-                'icon' => Icons::Check,
-                'title' => ' ',
-                'subtitle' => 'Terverifikasi',
-                'href' => ''
-            ]]
+            'Status Akademik',
+            [
+                [
+                    'type' => 'good',
+                    'icon' => Icons::Check,
+                    'title' => ' ',
+                    'subtitle' => '<p id="dokumen-surat-bebas-tanggungan-akademik-pusat">',
+                    'href' => ''
+                ]
+            ]
         );
 
         ?>
         <?php
         statusCard(
-            'status-skkm',
-            'Status SKKM',
-            [[
-                'type' => 'good',
-                'icon' => Icons::Check,
-                'title' => ' ',
-                'subtitle' => 'Terverifikasi',
-                'href' => ''
-            ]]
+            'status-ta',
+            'Status Tugas Akhir',
+            [
+                [
+                    'type' => 'good',
+                    'icon' => Icons::Check,
+                    'title' => ' ',
+                    'subtitle' => '<p id="dokumen-laporan-skripsi-/-tugas-akhir">',
+                    'href' => ''
+                ]
+            ]
         );
         ?>
         <?php
         statusCard(
             'status-perpus',
-            'Perpustakaan',
-            [[
-                'type' => 'good',
-                'icon' => Icons::Check,
-                'title' => ' ',
-                'subtitle' => 'Terverifikasi',
-                'href' => ''
-            ]]
+            'Status Perpustakaan',
+            [
+                [
+                    'type' => 'good',
+                    'icon' => Icons::Check,
+                    'title' => ' ',
+                    'subtitle' => '<p id="dokumen-surat-bebas-pustaka-dari-perpustakaan-polinema">',
+                    'href' => ''
+                ]
+            ]
         );
         ?>
     </div>
@@ -106,7 +116,7 @@
             <?php
             statusCard(
                 'status-perpus',
-                'Status Perpustakaan',
+                'Status Dokumen',
                 [
                     [
                         'type' => 'good',
@@ -146,5 +156,38 @@
     </div>
 </div>
 <script>
+    function updateDokumenStatus() {
+        $.ajax({
+            type: "POST",
+            url: "statusDokumen", // Sesuaikan URL dengan controller Anda
+            success: function (response) {
+                const data = JSON.parse(response);
+                // console.log(data)
+                // Perbarui status dokumen berdasarkan nama
+                data.forEach(dokumen => {
+                    const id = `dokumen-${dokumen.nama_dokumen.replace(/\s+/g, '-').toLowerCase()}`;
+                    const element = document.getElementById(id);
 
+                    if (element) {
+                        // Hanya tampilkan status
+                        element.innerText = dokumen.status;
+
+                        // Tambahkan kelas CSS berdasarkan status
+                        element.classList.remove('status-good', 'status-warning', 'status-bad');
+                        element.classList.add(`status-${dokumen.status.toLowerCase()}`);
+                    }
+                    // else {
+                    //     console.warn(`Element with ID "${id}" not found.`);
+                    // }
+                });
+            },
+            error: function (response) {
+                console.error("Error fetching dokumen status: ", response);
+            }
+        });
+    }
+
+    // Panggil fungsi pertama kali dan ulangi setiap 60 detik
+    updateDokumenStatus();
+    setInterval(updateDokumenStatus, 60000);
 </script>

@@ -185,4 +185,17 @@ class Dokumen extends Model
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getStatusDokumenByNIM($nim)
+    {
+        $query = $this->db->prepare("
+        SELECT d.nama_dokumen, u.Status
+        FROM dokumen.Dokumen d 
+        INNER JOIN dokumen.Upload_dokumen u ON d.id = u.ID_dokumen
+        WHERE u.nim = :nim
+    ");
+        $query->bindValue(":nim", $nim, PDO::PARAM_STR);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
