@@ -38,7 +38,8 @@ class AdminController extends Controller
         $this->view('admin/index', [
             "screen" => $screen,
             "title" => $title,
-            "user" => $this->admin
+            "user" => $this->admin,
+            "filter" => isset($_GET['filter']) ? $_GET['filter'] : ''
         ]);
     }
 

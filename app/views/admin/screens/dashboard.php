@@ -8,32 +8,35 @@ include_once VIEWS . 'component/jam-card.php';
         <?php
         $adminTingkat = ucwords($data['user']->adminApa->value);
 
+        $urlSuccess = 'screen?screen=pengumpulan&filter=selesai';
+        $urlPending = 'screen?screen=pengumpulan&filter=baru';
+        $urlDanger = 'screen?screen=pengumpulan&filter=tertanggung';
+
         if ($adminTingkat === 'Jurusan') {
             echo statusCard(
                 'card-status-jurusan',
                 'Status Pengumpulan',
                 [
-
                     [
                         'type' => 'good',
                         'icon' => Icons::Check,
                         'title' => '<span id="jurusan-status-diverifikasi">Loading...</span>',
                         'subtitle' => 'Dokumen diverifikasi',
-                        'href' => ''
+                        'href' =>  $urlSuccess 
                     ],
                     [
                         'type' => 'warning',
                         'icon' => Icons::Question,
                         'title' => '<span id="jurusan-status-menunggu">Loading...</span>',
                         'subtitle' => 'Dokumen pending',
-                        'href' => ''
+                        'href' => $urlPending
                     ],
                     [
                         'type' => 'bad',
                         'icon' => Icons::Close,
                         'title' => '<span id="jurusan-status-ditolak">Loading...</span>',
                         'subtitle' => 'Dokumen ditolak',
-                        'href' => ''
+                        'href' => $urlDanger
                     ]
                 ]
             );
@@ -48,21 +51,21 @@ include_once VIEWS . 'component/jam-card.php';
                         'icon' => Icons::Check,
                         'title' => '<span id="pusat-status-diverifikasi">Loading...</span>',
                         'subtitle' => 'Dokumen diverifikasi',
-                        'href' => ''
+                        'href' => $urlSuccess 
                     ],
                     [
                         'type' => 'warning',
                         'icon' => Icons::Question,
                         'title' => '<span id="pusat-status-menunggu">Loading...</span>',
                         'subtitle' => 'Dokumen pending',
-                        'href' => ''
+                        'href' => $urlPending
                     ],
                     [
                         'type' => 'bad',
                         'icon' => Icons::Close,
                         'title' => '<span id="pusat-status-ditolak">Loading...</span>',
                         'subtitle' => 'Dokumen ditolak',
-                        'href' => ''
+                        'href' => $urlDanger
                     ]
                 ]
             );
