@@ -184,17 +184,6 @@ class Dokumen extends Model
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
-    // public function getDocumentNotification($tingkatDokumen, $nim){
-    //     $query = $this->db->prepare("SELECT up.ID_Dokumen id, up.Status status,
-    //         FROM dokumen.Dokumen li 
-    //         LEFT JOIN dokumen.Upload_dokumen up 
-    //         ON li.ID = up.ID_dokumen
-    //         WHERE up.NIM = :nim AND li.Tingkat = :tingkatDokumen");
-    //     $query->bindValue(":tingkatDokumen", $tingkatDokumen->value);
-    //     $query->bindValue(":nim", $nim);
-    //     $query->execute();
-    //     return $query->fetchAll(PDO::FETCH_ASSOC);
-    // }
 
     public function getStatusDokumenByNIM($nim)
     {
@@ -207,5 +196,11 @@ class Dokumen extends Model
         $query->bindValue(":nim", $nim, PDO::PARAM_STR);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function setAdminNull($id){
+        $query = $this->db->prepare("UPDATE dokumen.Upload_dokumen SET NIDN = NULL WHERE NIDN = :id");
+        $query->bindValue(":id", $id);
+        $query->execute();
     }
 }

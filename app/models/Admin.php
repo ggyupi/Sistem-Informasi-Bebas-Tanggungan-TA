@@ -25,11 +25,16 @@ class Admin extends Model implements IUserApp
     public function __construct($db, $username, $adminApa)
     {
         parent::__construct($db);
-        $output = $this->getAdminInformation($username);
-        $this->NIDN = $output['NIDN'];
-        $this->nama = $output['Nama'];
-        $adminApa = self::parseAdminApa($adminApa);
-        $this->adminApa = TipeAdmin::from($adminApa);
+        try {
+            $output = $this->getAdminInformation($username);
+            if(isset($output['NIDN']) === false) throw new Exception('Data admin tidak ditemukan.');
+            $this->NIDN = $output['NIDN'];
+            $this->nama = $output['Nama'];
+            $adminApa = self::parseAdminApa($adminApa);
+            $this->adminApa = TipeAdmin::from($adminApa);
+        } catch (Throwable $th) {
+            throw $th;
+        }
     }
 
     public function getPeopleId()
@@ -162,11 +167,13 @@ class Admin extends Model implements IUserApp
 
     public function deleteAdminById($id_admin)
     {
-        $query = "DELETE FROM Pengguna.Admin WHERE NIDN = :id_admin";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':id_admin', $id_admin, PDO::PARAM_STR);
+        $query = $this->db->prepare("DELETE FROM Pengguna.Admin WHERE NIDN = :id_admin");
+        $query->bindParam(':id_admin', $id_admin, PDO::PARAM_STR);
+        $query->execute();
+        $query = $this->db->prepare("DELETE FROM Pengguna.[User] WHERE username = :id_admin");
+        $query->bindParam(':id_admin', $id_admin, PDO::PARAM_STR);
 
-        if ($stmt->execute()) {
+        if ($query->execute()) {
             return ["status" => "success", "message" => "Data admin berhasil dihapus."];
         } else {
             return ["status" => "error", "message" => "Gagal menghapus data admin."];
