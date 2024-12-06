@@ -53,6 +53,37 @@
         }
     }
 
+    function changeSidebarNav2NotificationIcon(data) {
+        let icon = document.getElementById('nav2-notification-icon');
+        if (data.length > 0) {
+            icon.innerHTML = '<?= SvgIcons::getIcon(Icons::NotificationWithDot) ?>';
+        } else {
+            icon.innerHTML = '<?= SvgIcons::getIcon(Icons::Notification) ?>';
+        }
+    }
+
+
+    function getDataNotification() {
+        $.ajax({
+            type: "POST",
+            url: "getDataPengumpulanNotification",
+            success: function(response) {
+                // console.log(response);
+                let data = JSON.parse(response);
+                if (typeof generateNotificationItem === 'function') {
+                    generateNotificationItem(data);
+                }
+                // console.log(data);
+                changeSidebarNav2NotificationIcon(data);
+            },
+            error: function(response) {
+                console.log(response);
+            }
+        });
+    }
+    getDataNotification();
+    funToCallEachInterval.push(getDataNotification);
+
     setInterval(function() {
         if (funToCallEachInterval) {
             for (let i = 0; i < funToCallEachInterval.length; i++) {
