@@ -523,6 +523,7 @@ td,
 
 .card-status h2 {
   font-size: 20px;
+  font-weight: 700;
 }
 
 .card-status-content-wrapper {
@@ -549,6 +550,7 @@ td,
 
 .card-status-content h1 {
   font-size: 24px;
+  min-height: 29px;
 }
 
 .card-status-content h3 {

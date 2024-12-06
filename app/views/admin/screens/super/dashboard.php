@@ -27,7 +27,7 @@ include_once VIEWS . 'component/jam-card.php';
             'Status Pengumpulan Jurusan',
             [
                 [
-                    'type' => 'good',
+                    'type' => 'success',
                     'icon' => Icons::Check,
                     'title' => '<span id="jurusan-status-diverifikasi">Loading...</span>',
                     'subtitle' => 'Dokumen diverifikasi',
@@ -41,7 +41,7 @@ include_once VIEWS . 'component/jam-card.php';
                     'href' => $urlJurusanPending
                 ],
                 [
-                    'type' => 'bad',
+                    'type' => 'danger',
                     'icon' => Icons::Close,
                     'title' => '<span id="jurusan-status-ditolak">Loading...</span>',
                     'subtitle' => 'Dokumen ditolak',
@@ -55,7 +55,7 @@ include_once VIEWS . 'component/jam-card.php';
             'Status Pengumpulan Pusat',
             [
                 [
-                    'type' => 'good',
+                    'type' => 'success',
                     'icon' => Icons::Check,
                     'title' => '<span id="pusat-status-diverifikasi">Loading...</span>',
                     'subtitle' => 'Dokumen diverifikasi',
@@ -69,7 +69,7 @@ include_once VIEWS . 'component/jam-card.php';
                     'href' => $urlPusatPending
                 ],
                 [
-                    'type' => 'bad',
+                    'type' => 'danger',
                     'icon' => Icons::Close,
                     'title' => '<span id="pusat-status-ditolak">Loading...</span>',
                     'subtitle' => 'Dokumen ditolak',
