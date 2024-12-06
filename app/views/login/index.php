@@ -51,6 +51,7 @@
             class="form-control pt-2 pb-2 mb-1"
             id="input-username"
             placeholder="username"
+            autocomplete="on"
             name="username" value="<?= isset($data['username']) ? $data['username'] : '' ?>" />
           <label for="input-password" class="form-label form-text-input">Password</label>
           <input

@@ -12,7 +12,6 @@ include_once VIEWS . 'component/btn-icon.php';
         height: fit-content;
         margin: 16px;
         flex: 1;
-
     }
 
     /* bg item*/
@@ -41,16 +40,22 @@ include_once VIEWS . 'component/btn-icon.php';
         font-size: 96px;
         line-height: 24px;
         color: var(--bs-danger);
+        margin: auto;
+    }
 
-
-
+    #total-tertanggung + div h1{
+        margin: 0px;
+        font-size: 32px;
     }
 </style>
 <div class="d-flex flex-column" id="pengumpulan-page" style="gap: 24px;">
     <div id="page-content-top">
         <div class="d-flex flex-row align-items-center justify-content-end">
-            <div id="total-tertanggung">5</div>
-            <h1>Notifikasi Baru</h1>
+            <p id="total-tertanggung">X</p>
+            <div class="d-flex flex-column align-items-start justify-content-end">
+                <h1>Notifikasi</h1>
+                <h1>Baru</h1>
+            </div>
         </div>
     </div>
     <div class="d-flex flex-column align-items-stretch justify-content-center" id="notification-wrapper">
