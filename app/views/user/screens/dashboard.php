@@ -15,15 +15,25 @@
     }
 
     #status-lulus {
-        background-color: var(--bs-body-bg);
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 32px;
-        padding: 24px 50px;
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0px;
+        flex: 1;
+        height: 100%;
         border-radius: 12px;
-        width: fit-content;
-        height: 300px;
+        display: none;
+    }
+
+    #status-lulus h2 {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0px;
+    }
+
+
+    #status-lulus svg {
+        width: 50%;
+        height: 50%;
     }
 </style>
 <div class="d-flex flex-column align-items-center justify-content-center">
@@ -136,20 +146,79 @@
                 );
                 ?>
             </div>
-            <div class="d-flex flex-row align-items-center justify-content-start" id="status-lulus">
-                <div>
-                    <h2>Lulus</h2>
-                    <ul>
-                        <li>Surat Rekomendasi Ambil Ijasah</li>
-                        <li>lengkap</li>
-                        <li>ambil</li>
-                    </ul>
+
+            <div class="flex-row align-items-center justify-content-center" id="status-lulus">
+                <div class="flex-column align-items-center justify-content-center" style="gap: 16px; display: flex;">
+                    <div class="status-badge-text success"><?= SvgIcons::getIconWithColor(Icons::Check, "white") ?></div>
+                    <h2>Anda Sudah Lulus</h2>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
+    function setDokumenStatusUI(data) {
+        let countSelesai = 0;
+        let countPending = 0;
+        let countTertanggung = 0;
+        data.forEach(dokumen => {
+            let statusCard = document.querySelector(`#dokumen-${dokumen.id}`);
+            if (statusCard) {
+                statusCard.querySelector('h3').innerText = dokumen.status;
+                let cardContent = statusCard.querySelector('.card-status-content');
+                cardContent.classList.remove('success-bg', 'warning-bg', 'danger-bg');
+                let cardIcon = statusCard.querySelector('.card-status-icon');
+                cardIcon.classList.remove('success', 'warning', 'danger');
+                if (dokumen.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
+                    cardContent.classList.add('success-bg');
+                    cardIcon.classList.add('success');
+                    cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Check) ?>';
+                } else if (dokumen.status === '<?= StatusDokumen::Menunggu->value ?>') {
+                    cardContent.classList.add('warning-bg');
+                    cardIcon.classList.add('warning');
+                    cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Question) ?>';
+                } else if (dokumen.status === '<?= StatusDokumen::Ditolak->value ?>') {
+                    cardContent.classList.add('danger-bg');
+                    cardIcon.classList.add('danger');
+                    cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Close) ?>';
+                } else {
+                    cardContent.classList.add('danger-bg');
+                    cardIcon.classList.add('danger');
+                    cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Question) ?>';
+                }
+            }
+            if (dokumen.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
+                countSelesai += 1;
+            } else if (dokumen.status === '<?= StatusDokumen::Menunggu->value ?>') {
+                countPending += 1;
+            } else {
+                countTertanggung += 1;
+            }
+        });
+
+        let statusTotalDokumen = document.querySelector('#status-total-dokumen .card-status-content-wrapper');
+        statusTotalDokumen.children[0].querySelector('h1').innerText = countSelesai;
+        statusTotalDokumen.children[1].querySelector('h1').innerText = countPending;
+        statusTotalDokumen.children[2].querySelector('h1').innerText = countTertanggung;
+
+        let statusLulus = document.querySelector('#status-lulus');
+        if (countSelesai >= data.length) {
+            statusLulus.classList.add('success-bg');
+            statusLulus.children[0].innerHTML = `
+                <div class="status-badge-text success"><?= SvgIcons::getIconWithColor(Icons::Check, "white") ?></div>
+                <h2>Anda Sudah Lulus</h2>
+            `;
+        }
+        else{
+            statusLulus.classList.add('danger-bg');
+            statusLulus.children[0].innerHTML = `
+                <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
+                <h2>Anda Masih Memiliki Tanggungan</h2>
+            `;
+        }
+        statusLulus.style.display = 'flex';
+    }
+
     function updateDokumenStatus() {
         $.ajax({
             type: "POST",
@@ -158,48 +227,7 @@
                 // console.log(response);
                 const data = JSON.parse(response);
                 console.log(data)
-                let countSelesai = 0;
-                let countPending = 0;
-                let countTertanggung = 0;
-                data.forEach(dokumen => {
-                    let statusCard = document.querySelector(`#dokumen-${dokumen.id}`);
-                    if (statusCard) {
-                        statusCard.querySelector('h3').innerText = dokumen.status;
-                        let cardContent = statusCard.querySelector('.card-status-content');
-                        cardContent.classList.remove('success-bg', 'warning-bg', 'danger-bg');
-                        let cardIcon = statusCard.querySelector('.card-status-icon');
-                        cardIcon.classList.remove('success', 'warning', 'danger');
-                        if (dokumen.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
-                            cardContent.classList.add('success-bg');
-                            cardIcon.classList.add('success');
-                            cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Check) ?>';
-                        } else if (dokumen.status === '<?= StatusDokumen::Menunggu->value ?>') {
-                            cardContent.classList.add('warning-bg');
-                            cardIcon.classList.add('warning');
-                            cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Question) ?>';
-                        } else if (dokumen.status === '<?= StatusDokumen::Ditolak->value ?>') {
-                            cardContent.classList.add('danger-bg');
-                            cardIcon.classList.add('danger');
-                            cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Close) ?>';
-                        } else {
-                            cardContent.classList.add('danger-bg');
-                            cardIcon.classList.add('danger');
-                            cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Question) ?>';
-                        }
-                    }
-                    if (dokumen.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
-                        countSelesai += 1;
-                    } else if (dokumen.status === '<?= StatusDokumen::Menunggu->value ?>') {
-                        countPending += 1;
-                    } else {
-                        countTertanggung += 1;
-                    }
-                });
-
-                let statusTotalDokumen = document.querySelector('#status-total-dokumen .card-status-content-wrapper');
-                statusTotalDokumen.children[0].querySelector('h1').innerText = countSelesai;
-                statusTotalDokumen.children[1].querySelector('h1').innerText = countPending;
-                statusTotalDokumen.children[2].querySelector('h1').innerText = countTertanggung;
+                setDokumenStatusUI(data);
             },
             error: function(response) {
                 console.error("Error fetching dokumen status: ", response);
