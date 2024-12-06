@@ -43,6 +43,29 @@
         <form>
 </body>
 
+<script>
+    function getDataNotification() {
+        $.ajax({
+            type: "POST",
+            url: "getDataPengumpulanNotification",
+            success: function(response) {
+                // console.log(response);
+                let data = JSON.parse(response);
+                if (typeof generateNotificationItem === 'function') {
+                    generateNotificationItem(data);
+                }
+                // console.log(data);
+                changeSidebarNav2NotificationIcon(data);
+            },
+            error: function(response) {
+                console.log(response);
+            }
+        });
+    }
+    getDataNotification();
+    funToCallEachInterval.push(getDataNotification);
+</script>
+
 <?php include_once VIEWS . "template/footer.php"; ?>
 
 </html>
