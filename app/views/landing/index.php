@@ -6,6 +6,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="<?= JS; ?>jquery-3.7.1.js"></script>
+    <link rel="icon" href="<?= IMGS; ?>KawaiiLogoV1.svg" type="image/x-icon">
+
     <link
         rel="stylesheet"
         type="text/css"
@@ -128,7 +130,7 @@
         <h1 class="fw-bolder">What they can do?</h1>
         <div class="container-fluid" id="what-they-card-wrapper">
             <div class="card">
-                <h3 class="fw-bold">User</h3>
+                <h3 class="fw-bold">Mahasiswa</h3>
                 <ul>
                     <li>Login</li>
                     <li>
@@ -149,7 +151,7 @@
             </div>
 
             <div class="card">
-                <h3 class="fw-bold">Admin</h3>
+                <h3 class="fw-bold">Admin Super</h3>
                 <ul>
                     <li>Login</li>
                     <li>
@@ -163,6 +165,23 @@
                     <li>Pengelolaan Berkas Mahasiswa</li>
                     <li>Pengelolaan Dokumen Bebas Tanggungan</li>
                     <li>Manajemen Akun Admin</li>
+                    <li>Integrasi Data dan Notifikasi</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3 class="fw-bold">Admin Jurusan & Pusat</h3>
+                <ul>
+                    <li>Login</li>
+                    <li>
+                        Manajemen Data Tanggungan, Mengelola data:
+                        <ul>
+                            <li>Laporan Tugas Akhir dan magang</li>
+                            <li>Data Sertifikat TOEIC</li>
+                        </ul>
+                    </li>
+                    <li>Verifikasi Pengajuan Surat Bebas Tanggungan</li>
+                    <li>Pengelolaan Berkas Mahasiswa</li>
+                    <li>Pengelolaan Dokumen Bebas Tanggungan</li>
                     <li>Integrasi Data dan Notifikasi</li>
                 </ul>
             </div>
