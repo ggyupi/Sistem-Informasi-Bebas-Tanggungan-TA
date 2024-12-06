@@ -12,17 +12,21 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        if (!Session::exists('username')) {
+        if (!Session::exists('username') || !in_array(Admin::parseAdminApa(Session::get('level')), array_column(TipeAdmin::cases(), 'value'))) {
             $this->logout('login');
         }
-        $db = Database::getInstance(getDatabaseConfig(), [$this, 'error']);
-        $this->mahasiswa = new Mahasiswa($db);
-        $this->dokumen = new Dokumen($db);
-        $this->admin = new Admin(
-            $db,
-            Session::get('username'),
-            Session::get('level'),
-        );
+        try {
+            $db = Database::getInstance(getDatabaseConfig(), [$this, 'error']);
+            $this->mahasiswa = new Mahasiswa($db);
+            $this->dokumen = new Dokumen($db);
+            $this->admin = new Admin(
+                $db,
+                Session::get('username'),
+                Session::get('level'),
+            );
+        } catch (Throwable $th) {
+            $this->logout('login');
+        }
     }
 
     public function index($screen = "dashboard")
@@ -191,6 +195,7 @@ class AdminController extends Controller
             }
 
             // Hapus data admin menggunakan model
+            $this->dokumen->setAdminNull($id_admin);
             $result = $this->admin->deleteAdminById($id_admin);
             echo json_encode($result);
         } else {
