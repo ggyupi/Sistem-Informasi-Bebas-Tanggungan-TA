@@ -45,23 +45,7 @@ function statusCard($id, $title, $content)
     echo '<div class="card-status-content-wrapper">';
     foreach ($content as $c) {
         $hrefId = $c['id'] ?? "";
-        $color = "";
-        switch ($c['type']) {
-            case 'bad':
-                $color = 'danger';
-                break;
-            case 'warning':
-                $color = 'warning';
-                break;
-            case 'good':
-                $color = 'success';
-                break;
-            case 'putih':
-                $color = 'light';
-                break;
-            default:
-                break;
-        }
+        $color = $c['type'];
         echo '<div class="card-status-content ' . $color . '-bg" >';
         echo '<div class="card-status-icon ' . $color . '">';
         echo SvgIcons::getIcon($c['icon']);

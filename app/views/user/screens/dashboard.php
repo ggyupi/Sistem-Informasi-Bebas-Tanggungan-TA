@@ -39,7 +39,7 @@
             'Status Toeic',
             [
                 [
-                    'type' => 'good',
+                    'type' => 'success',
                     'icon' => Icons::Close,
                     'title' => ' ',
                     'subtitle' => '<p id="dokumen-upload-scan-toeic">',
@@ -55,7 +55,7 @@
             'Status Kompen',
             [
                 [
-                    'type' => 'good',
+                    'type' => 'success',
                     'icon' => Icons::Check,
                     'title' => ' ',
                     'subtitle' => '<p id="dokumen-surat-bebas-kompen">',
@@ -70,7 +70,7 @@
             'Status Akademik',
             [
                 [
-                    'type' => 'good',
+                    'type' => 'success',
                     'icon' => Icons::Check,
                     'title' => ' ',
                     'subtitle' => '<p id="dokumen-surat-bebas-tanggungan-akademik-pusat">',
@@ -86,7 +86,7 @@
             'Status Tugas Akhir',
             [
                 [
-                    'type' => 'good',
+                    'type' => 'success',
                     'icon' => Icons::Check,
                     'title' => ' ',
                     'subtitle' => '<p id="dokumen-laporan-skripsi-/-tugas-akhir">',
@@ -101,7 +101,7 @@
             'Status Perpustakaan',
             [
                 [
-                    'type' => 'good',
+                    'type' => 'success',
                     'icon' => Icons::Check,
                     'title' => ' ',
                     'subtitle' => '<p id="dokumen-surat-bebas-pustaka-dari-perpustakaan-polinema">',
@@ -119,7 +119,7 @@
                 'Status Dokumen',
                 [
                     [
-                        'type' => 'good',
+                        'type' => 'success',
                         'icon' => Icons::Document,
                         'title' => 'Dokumen',
                         'subtitle' => 'terverifikasi',
@@ -133,7 +133,7 @@
                         'href' => ''
                     ],
                     [
-                        'type' => 'bad',
+                        'type' => 'danger',
                         'icon' => Icons::Document,
                         'title' => 'Dokumen',
                         'subtitle' => 'Ditolak',
@@ -173,7 +173,7 @@
                         element.innerText = dokumen.status;
 
                         // Tambahkan kelas CSS berdasarkan status
-                        element.classList.remove('status-good', 'status-warning', 'status-bad');
+                        element.classList.remove('status-success', 'status-warning', 'status-danger');
                         element.classList.add(`status-${dokumen.status.toLowerCase()}`);
                     }
                     // else {
