@@ -53,6 +53,15 @@
         }
     }
 
+    function changeSidebarNav2NotificationIcon(data) {
+        let icon = document.getElementById('nav2-notification-icon');
+        if (data.length > 0) {
+            icon.innerHTML = '<?= SvgIcons::getIcon(Icons::NotificationWithDot) ?>';
+        } else {
+            icon.innerHTML = '<?= SvgIcons::getIcon(Icons::Notification) ?>';
+        }
+    }
+
     setInterval(function() {
         if (funToCallEachInterval) {
             for (let i = 0; i < funToCallEachInterval.length; i++) {

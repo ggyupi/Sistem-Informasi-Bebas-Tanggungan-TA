@@ -11,20 +11,10 @@ abstract class Controller
         }
     }
 
-    public function model($model)
-    {
-        if (file_exists("../app/models/" . $model . ".php")) {
-            require_once "../app/models/" . $model . ".php";
-            return new $model();
-        } else {
-            die("Model does not exist.");
-        }
-    }
-
-    public function logout()
+    public function logout($location = '')
     {
         Session::destroy();
-        header("Location: " . BASE_URL);
+        header("Location: " . BASE_URL . $location);
         exit();
     }
 

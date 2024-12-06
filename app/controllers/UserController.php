@@ -11,6 +11,9 @@ class UserController extends Controller
 
     function __construct()
     {
+        if (!Session::exists('username')) {
+            $this->logout('login');
+        }
         $db = Database::getInstance(getDatabaseConfig(), [$this, 'error']);
         $this->dokumen = new Dokumen($db);
         $this->mahasiswa = new Mahasiswa(
@@ -153,5 +156,4 @@ class UserController extends Controller
             echo json_encode($result);
         }
     }
-
 }

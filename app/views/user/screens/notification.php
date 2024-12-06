@@ -12,7 +12,6 @@ include_once VIEWS . 'component/btn-icon.php';
         height: fit-content;
         margin: 16px;
         flex: 1;
-
     }
 
     /* bg item*/
@@ -41,33 +40,52 @@ include_once VIEWS . 'component/btn-icon.php';
         font-size: 96px;
         line-height: 24px;
         color: var(--bs-danger);
+        margin: auto;
+    }
+
+    #total-tertanggung+div h1 {
+        margin: 0px;
+        font-size: 32px;
+    }
 
 
+    .page-content-top-title:not(.ada-notif) #tidak-ada-notifikasi,
+    .page-content-top-title.ada-notif #ada-notifikasi {
+        display: flex;
+    }
 
+    .page-content-top-title.ada-notif #tidak-ada-notifikasi,
+    .page-content-top-title:not(.ada-notif) #ada-notifikasi {
+        display: none;
     }
 </style>
 <div class="d-flex flex-column" id="pengumpulan-page" style="gap: 24px;">
     <div id="page-content-top">
-        <div class="d-flex flex-row align-items-center justify-content-end">
-            <div id="total-tertanggung">5</div>
-            <h1>Notifikasi Baru</h1>
+        <div class="page-content-top-title d-flex flex-row align-items-center justify-content-end">
+            <h1 id="tidak-ada-notifikasi">Tidak Ada Notifikasi Baru</h1>
+            <div id="ada-notifikasi">
+                <p id="total-tertanggung">X</p>
+                <div class="d-flex flex-column align-items-start justify-content-end">
+                    <h1>Notifikasi</h1>
+                    <h1>Baru</h1>
+                </div>
+            </div>
         </div>
     </div>
     <div class="d-flex flex-column align-items-stretch justify-content-center" id="notification-wrapper">
-        <div id="notification-content">
-            <div class="d-flex flex-row align-items-center justify-content-start danger-bg" id="notification-item">
-                <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
-                <div style="flex: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" id="notification-document">
-                    Dokumen ditolak, silahkan perbaiki dokumen .....
-                </div>
-                <?= iconButton('', Icons::OpenInNewTab, 'var(--bs-emphasis-color)') ?>
-            </div>
-        </div>
     </div>
 </div>
 
 <script>
-    function generateNotification(data) {
+    function generateNotificationItem(data) {
+        let topTitle = document.getElementsByClassName('page-content-top-title')[0];
+        if (data.length > 0) {
+
+            topTitle.classList.add('ada-notif');
+        } else {
+
+            topTitle.classList.remove('ada-notif');
+        }
         let notificationItems = document.getElementById('notification-wrapper');
         notificationItems.innerHTML = '';
         document.getElementById('total-tertanggung').textContent = data.length;
@@ -95,21 +113,4 @@ include_once VIEWS . 'component/btn-icon.php';
             notificationItems.appendChild(notificationContent);
         });
     }
-
-    function getDataPengumpulan(useUpdate = true) {
-        $.ajax({
-            type: "POST",
-            url: "getDataPengumpulanNotification",
-            success: function(response) {
-                // console.log(response);
-                let data = JSON.parse(response);
-                generateNotification(data);
-                console.log(data);
-            },
-            error: function(response) {
-                console.log(response);
-            }
-        });
-    }
-    getDataPengumpulan(false);
 </script>
