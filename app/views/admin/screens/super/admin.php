@@ -362,4 +362,21 @@ dialogYesNoCustom(
                 alert("ID Admin tidak ditemukan.");
             }
         }
+        function selectFilter(value) {
+            document.querySelectorAll('#table-body tr').forEach(function(row) {
+                console.log(value);
+                const statusCell = row.querySelector('td:nth-child(4)');
+                if (statusCell) {
+                    const statusText = statusCell.textContent.toLowerCase();
+                    if (value === 'semua') {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = statusText.includes(value.toLowerCase()) ? '' : 'none';
+                    }
+                }
+            });
+        }
+        document.getElementById('filter-data').addEventListener('change', function() {
+            selectFilter(this.value);
+        });
     </script>
