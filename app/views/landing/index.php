@@ -22,8 +22,8 @@
     <title>Landing Page</title>
 </head>
 
-<body class="custom-container" style="padding: 24px 0px">
-    <div id="banner-wrapper">
+<body  style="padding: 24px 0px">
+    <div class="custom-container" id="banner-wrapper">
         <div id="baner-bg-top">
             <div class="banner-bg"></div>
         </div>
@@ -126,9 +126,9 @@
         </div>
     </div>
 
-    <div class="container" id="what-they-can-do">
+    <div id="what-they-can-do">
         <h1 class="fw-bolder">What they can do?</h1>
-        <div class="container-fluid" id="what-they-card-wrapper">
+        <div id="what-they-card-wrapper">
             <div class="card">
                 <h3 class="fw-bold">Mahasiswa</h3>
                 <ul>

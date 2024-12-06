@@ -62,7 +62,7 @@ body {
   /* margin-bottom: 5vh; */
 }
 #code-on-github:hover {
-  color: var(--bs-secondary);
+  color: var(--bs-body-bg);
 }
 #code-on-github svg {
   margin: 12px;
@@ -275,6 +275,7 @@ body {
   gap: 24px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  width: 100%;
 }
 
 #what-they-card-wrapper .card:first-child {
@@ -303,6 +304,12 @@ body {
   border: 1px solid var(--bs-primary);
 }
 
+#what-they-card-wrapper .card:hover:nth-child(2) {
+  background-color: var(--bs-body-bg);
+  border: 1px solid var(--bs-danger);
+}
+
+
 #what-they-card-wrapper .card:hover:last-child {
   background-color: var(--bs-body-bg);
   border: 1px solid var(--bs-secondary);
@@ -311,6 +318,11 @@ body {
 #what-they-card-wrapper .card:hover:first-child h3 {
   background-color: var(--bs-primary);
 }
+
+#what-they-card-wrapper .card:hover:nth-child(2) h3 {
+  background-color: var(--bs-danger);
+}
+
 
 #what-they-card-wrapper .card:hover:last-child h3 {
   background-color: var(--bs-secondary);
