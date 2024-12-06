@@ -37,8 +37,57 @@ include_once VIEWS . 'component/btn-icon.php';
             max-width: unset !important;
         }
     }
+
+    /* popup dialog acc / decl / tambah */
+    #result-content h2 {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0px;
+    }
+
+    #result-content {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0px;
+        width: 630px;
+        height: 350px;
+        border-radius: 12px;
+        opacity: 0;
+    }
+
+    #result-content svg {
+        width: 50%;
+        height: 50%;
+    }
+
+    #result-content .status-badge-text {
+        width: 90px;
+        min-width: 90px;
+        height: 90px;
+    }
 </style>
 
+<div class="modal fade" id="result-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">;
+        <div class="d-flex flex-row align-items-center justify-content-center success-bg" id="result-content">
+            <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
+                <div class="status-badge-text success"><?= SvgIcons::getIconWithColor(Icons::Check, "white") ?></div>
+                <h2>Data Berhasil Disimpan</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="result-del" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">;
+        <div class="d-flex flex-row align-items-center justify-content-center success-bg" id="result-content">
+            <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
+                <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Trash, "white") ?></div>
+                <h2>Data Berhasil Dihapus</h2>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 dialogYesNoCustom(
@@ -49,7 +98,7 @@ dialogYesNoCustom(
     <button type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
     <button class="btn btn-danger" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-del" 
     onclick="deleteAdminData();">' .
-    SvgIcons::getIcon(Icons::Trash) . 'Hapus
+        SvgIcons::getIcon(Icons::Trash) . 'Hapus
     </button>',
 );
 ?>
@@ -70,13 +119,12 @@ dialogYesNoCustom(
                         <div class="d-flex flex-column align-items-start" style="gap: 4px; flex: 1;">
                             <input type="text" class="d-none" name="id_admin_ori" id="input-id-admin-ori" readonly />
                             <label for="input-id-admin" class="form-label"><b>ID Admin</b></label>
-                            <input type="text" class="form-control" name="id_admin" id="input-id-admin" required />
+                            <input type="text" class="form-control" name="id_admin" id="input-id-admin" required maxlength="10" />
                             <label for="input-password" class="form-label"><b>Password</b></label>
                             <input type="password" class="form-control" value="" name="password" id="input-password"
                                 required />
                             <label for="input-tingkat" class="form-label"><b>Tingkat Admin</b></label>
                             <select name="level" class="form-select" id="input-tingkat">
-                                <option selected>Tingkat Admin</option>
                                 <?php foreach (TipeAdmin::cases() as $tipe): ?>
                                     <option value="<?= $tipe->name ?>"><?= ucwords($tipe->name) ?></option>
                                 <?php endforeach; ?>
@@ -147,6 +195,7 @@ dialogYesNoCustom(
             <button class="btn btn-primary" id="btn-add-admin" data-bs-toggle="modal" data-bs-target="#the-dialog"
                 onclick="
                 resetFormDialog();
+                openFormDialog();
                 let btnDel = document.querySelector('#form-dialog .modal-footer .btn-danger');
                 btnDel.style.opacity = 0;
                 btnDel.style.pointerEvents = 'none';">
@@ -188,7 +237,7 @@ dialogYesNoCustom(
     <?php include_once VIEWS . "template/script-helper.php"; ?>
     <script>
         const searchInput = document.getElementById('search-input');
-        searchInput.addEventListener('input', function () {
+        searchInput.addEventListener('input', function() {
             let search = this.value.toLowerCase();
             funSearch('tr #search-nama', search);
         });
@@ -208,11 +257,12 @@ dialogYesNoCustom(
             let footer = dialog.querySelector('.modal-footer');
             let title = header.querySelector('#dialog-title');
 
+            let id = body.querySelector('#input-id-admin');
             if (!data) {
                 title.textContent = 'Tambah Admin';
+                id.readOnly = false;
                 return;
             } else {
-                let id = body.querySelector('#input-id-admin');
                 let password = body.querySelector("#input-password");
                 let name = body.querySelector('#input-nama');
                 let tanggal_lahir = body.querySelector('#input-tanggal_lahir');
@@ -230,6 +280,7 @@ dialogYesNoCustom(
                         element.selected = true;
                     }
                 }
+                id.readOnly = true;
                 password.value = data.password;
                 name.value = data.nama;
                 tanggal_lahir.value = data.tanggal_lahir;
@@ -262,7 +313,7 @@ dialogYesNoCustom(
                 data: {
                     id: id
                 },
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
@@ -286,7 +337,7 @@ dialogYesNoCustom(
                 `;
                 tr.dataset.bsToggle = "modal";
                 tr.dataset.bsTarget = "#the-dialog";
-                tr.onclick = function () {
+                tr.onclick = function() {
                     getAdminData(dataAdmin.id_admin);
                 };
                 tableBody.appendChild(tr);
@@ -301,7 +352,7 @@ dialogYesNoCustom(
             $.ajax({
                 type: "POST",
                 url: "getAdminList",
-                success: function (response) {
+                success: function(response) {
                     // console.log(response);
                     let data = JSON.parse(response);
                     console.log(data);
@@ -314,6 +365,7 @@ dialogYesNoCustom(
         getAdminList();
 
         function saveFormDialog() {
+            showResultEdit();
             let data = new FormData(document.getElementById('form-dialog'));
             for (var pair of data.entries()) {
                 console.log(pair[0] + ': ' + pair[1]);
@@ -325,18 +377,20 @@ dialogYesNoCustom(
                 data: data,
                 contentType: false,
                 processData: false,
-                success: function (response) {
+                success: function(response) {
+                    showResultEdit(true);
                     console.log(response);
                     getAdminList();
                     closeFormDialog();
                     resetFormDialog();
                 }
             });
+
         }
 
         function deleteAdminData() {
             let id = document.getElementById('input-id-admin-ori').value;
-
+            showResultDel();
             if (id) {
                 $.ajax({
                     type: "POST",
@@ -344,16 +398,17 @@ dialogYesNoCustom(
                     data: {
                         id: id
                     },
-                    success: function (response) {
+                    success: function(response) {
                         console.log(response);
                         let result = JSON.parse(response);
                         if (result.status === "success") {
                             getAdminList();
+                            showResultDel(true);
                         } else {
                             console.log(result.message);
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error("Error:", error);
                         alert("Gagal menghapus data admin.");
                     }
@@ -362,6 +417,7 @@ dialogYesNoCustom(
                 alert("ID Admin tidak ditemukan.");
             }
         }
+
         function selectFilter(value) {
             document.querySelectorAll('#table-body tr').forEach(function(row) {
                 console.log(value);
@@ -379,4 +435,31 @@ dialogYesNoCustom(
         document.getElementById('filter-data').addEventListener('change', function() {
             selectFilter(this.value);
         });
+
+        function showResultEdit(showResult = false) {
+            if (!showResult) {
+                $('#result-edit').modal('show');
+            } else {
+                let result = document.querySelector('#result-edit #result-content');
+                result.style.opacity = '1';
+                setTimeout(function() {
+                    $('#result-edit').modal('hide');
+                    result.style.opacity = '1';
+                }, 1000);
+            }
+
+        }
+
+        function showResultDel(showResult = false) {
+            if (!showResult) {
+                $('#result-del').modal('show');
+            } else {
+                let result = document.querySelector('#result-del #result-content');
+                result.style.opacity = '1';
+                setTimeout(function() {
+                    $('#result-del').modal('hide');
+                    result.style.opacity = '1';
+                }, 1000);
+            }
+        }
     </script>

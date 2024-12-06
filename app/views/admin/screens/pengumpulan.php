@@ -257,6 +257,11 @@ dialogYesNoCustom(
                     Tolong isi alasan penolakan 
                 </div>                
                 `;
+            let inputKomentar = modalBody.querySelector('#komentar-tolak');
+            setTimeout(function() {
+                inputKomentar.focus();
+            }, 500);
+            
             } else {
                 modalBody.innerHTML = message;
             }
