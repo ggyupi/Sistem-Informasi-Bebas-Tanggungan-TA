@@ -91,7 +91,7 @@ class UserController extends Controller
             // }
             $result = $this->dokumen->getStatusDokumenByNIM($this->mahasiswa->getPeopleId());
             $result = array_filter($result, function ($dokumen) {
-                return $dokumen['Status'] === StatusDokumen::Ditolak->value;
+                return $dokumen['status'] === StatusDokumen::Ditolak->value;
             });
             echo json_encode(array_values($result));
         }
@@ -142,18 +142,26 @@ class UserController extends Controller
             $nim = $this->mahasiswa->getPeopleId();
 
             // Ambil status dokumen berdasarkan NIM mahasiswa
-            $data = $this->dokumen->getStatusDokumenByNIM($nim);
-
-            // Kirimkan hanya data 'nama_dokumen' dan 'Status' ke view
-            $result = [];
-            foreach ($data as $dokumen) {
-                $result[] = [
-                    "nama_dokumen" => $dokumen['nama_dokumen'],
-                    "status" => $dokumen['Status']
-                ];
+            $tingkatDokumenJurusan = TingkatDokumen::Jurusan;
+            $tingkatDokumenPusat = TingkatDokumen::Pusat;
+            $dokumenListJurusan = $this->dokumen->getDokumenList($tingkatDokumenJurusan);
+            $dokumenListPusat = $this->dokumen->getDokumenList($tingkatDokumenPusat);
+            $dokumenList = array_merge($dokumenListJurusan, $dokumenListPusat);
+            $dataStatus = [];
+            foreach ($this->dokumen->getStatusDokumenByNIM($nim) as $dokumen) {
+                $dataStatus[$dokumen['id']] = $dokumen['status'];
             }
 
-            echo json_encode($result);
+
+            foreach ($dokumenList as &$dokumen) {
+                if (isset($dataStatus[$dokumen['id']])) {
+                    $dokumen['status'] = $dataStatus[$dokumen['id']];
+                }
+                else{
+                    $dokumen['status'] = 'Tidak Ada';
+                }
+            }
+            echo json_encode($dokumenList);
         }
     }
 }

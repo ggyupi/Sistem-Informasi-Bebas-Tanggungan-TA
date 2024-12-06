@@ -7,7 +7,7 @@
  * @param string $title
  * @param array $content [ 
  *  [
- *      'type' => 'good|bad|warning',
+ *      'type' => 'success|danger|warning',
  *      'icon' => string,
  *      'title' => string,
  *      'subtitle' => string,
@@ -22,14 +22,14 @@
  *      'test-card',
  *      'Test',
  *      [[
- *          'type' => 'good',
+ *          'type' => 'success',
  *          'icon' => Icons::Close,
  *          'title' => '1 Buku',
  *          'subtitle' => 'Terpinjam',
  *          'href' => '',
  *          'id' => 'test'
  *      ], [
- *          'type' => 'bad',
+ *          'type' => 'danger',
  *          'icon' => Icons::Logout,
  *          'title' => '1 Buku',
  *          'subtitle' => 'Terpinjam',
@@ -52,7 +52,9 @@ function statusCard($id, $title, $content)
         echo '</div>';
         echo '<h1>' . $c['title'] . '</h1>';
         echo '<h3>' . $c['subtitle'] . '</h3>';
-        echo '<a type="submit" id="' . $hrefId . '" href="' . $c['href'] . '">Klik lebih lanjut</a>';
+        if ($c['href'] !== 'null') {
+            echo '<a type="submit" id="' . $hrefId . '" href="' . $c['href'] . '">Klik lebih lanjut</a>';
+        }
         echo '</div>';
     }
     echo '</div>';

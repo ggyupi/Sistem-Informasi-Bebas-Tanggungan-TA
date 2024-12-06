@@ -1,21 +1,16 @@
 <style>
-    #page-content-atas {
-        gap: 24px;
-        margin-bottom: 30px;
-        display: flex;
-        flex-direction: row;
+    #page-content-wrapper {
+        gap: 32px;
         align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        justify-content: center;
     }
 
-    #page-content-bawah {
-        gap: 24px;
-        margin-bottom: 30px;
-        display: flex;
+    .page-content {
+        gap: 16px;
+        width: 100%;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        /* justify-content: start; */
         flex-wrap: wrap;
     }
 
@@ -31,126 +26,125 @@
         height: 300px;
     }
 </style>
-<div class="d-flex flex-column align-items-start justify-content-center">
-    <div class="d-flex flex-row align-items-center justify-content-start" id="page-content-atas">
-        <?php
-        statusCard(
-            'status-toeic',
-            'Status Toeic',
-            [
-                [
-                    'type' => 'success',
-                    'icon' => Icons::Close,
-                    'title' => ' ',
-                    'subtitle' => '<p id="dokumen-upload-scan-toeic">',
-                    'href' => ''
-                ]
-            ]
-        );
-        ?>
-
-        <?php
-        statusCard(
-            'status-kompen',
-            'Status Kompen',
-            [
-                [
-                    'type' => 'success',
-                    'icon' => Icons::Check,
-                    'title' => ' ',
-                    'subtitle' => '<p id="dokumen-surat-bebas-kompen">',
-                    'href' => ''
-                ]
-            ]
-        );
-        ?>
-        <?php
-        statusCard(
-            'status-ukt',
-            'Status Akademik',
-            [
-                [
-                    'type' => 'success',
-                    'icon' => Icons::Check,
-                    'title' => ' ',
-                    'subtitle' => '<p id="dokumen-surat-bebas-tanggungan-akademik-pusat">',
-                    'href' => ''
-                ]
-            ]
-        );
-
-        ?>
-        <?php
-        statusCard(
-            'status-ta',
-            'Status Tugas Akhir',
-            [
-                [
-                    'type' => 'success',
-                    'icon' => Icons::Check,
-                    'title' => ' ',
-                    'subtitle' => '<p id="dokumen-laporan-skripsi-/-tugas-akhir">',
-                    'href' => ''
-                ]
-            ]
-        );
-        ?>
-        <?php
-        statusCard(
-            'status-perpus',
-            'Status Perpustakaan',
-            [
-                [
-                    'type' => 'success',
-                    'icon' => Icons::Check,
-                    'title' => ' ',
-                    'subtitle' => '<p id="dokumen-surat-bebas-pustaka-dari-perpustakaan-polinema">',
-                    'href' => ''
-                ]
-            ]
-        );
-        ?>
-    </div>
-    <div class="d-flex flex-row align-items-center justify-content-start" id="page-content-bawah">
-        <div class="d-flex flex-row align-items-center justify-content-start" id="status-perpus">
+<div class="d-flex flex-column align-items-center justify-content-center">
+    <div class="d-flex flex-column" id="page-content-wrapper">
+        <div class="w-100 d-flex flex-row align-items-center justify-content-start">
+            <h1>Overview <strong><?= $data['user']->getPeopleName() ?></strong></h1>
+        </div>
+        <div class="d-flex flex-row page-content">
             <?php
             statusCard(
-                'status-perpus',
-                'Status Dokumen',
+                'dokumen-7',
+                'Status Toeic',
                 [
                     [
                         'type' => 'success',
-                        'icon' => Icons::Document,
-                        'title' => 'Dokumen',
-                        'subtitle' => 'terverifikasi',
-                        'href' => ''
-                    ],
+                        'icon' => Icons::Close,
+                        'title' => ' ',
+                        'subtitle' => '',
+                        'href' => 'screen?screen=pengumpulan_jurusan'
+                    ]
+                ]
+            );
+
+            statusCard(
+                'dokumen-6',
+                'Status Kompen',
+                [
                     [
-                        'type' => 'warning',
-                        'icon' => Icons::Document,
-                        'title' => 'Dokumen',
-                        'subtitle' => 'Pending',
-                        'href' => ''
-                    ],
+                        'type' => 'success',
+                        'icon' => Icons::Check,
+                        'title' => ' ',
+                        'subtitle' => '',
+                        'href' => 'screen?screen=pengumpulan_jurusan'
+                    ]
+                ]
+            );
+
+            statusCard(
+                'dokumen-9',
+                'Status Akademik',
+                [
                     [
-                        'type' => 'danger',
-                        'icon' => Icons::Document,
-                        'title' => 'Dokumen',
-                        'subtitle' => 'Ditolak',
-                        'href' => ''
+                        'type' => 'success',
+                        'icon' => Icons::Check,
+                        'title' => ' ',
+                        'subtitle' => '',
+                        'href' => 'screen?screen=pengumpulan_pusat'
+                    ]
+                ]
+            );
+
+            statusCard(
+                'dokumen-1',
+                'Status Tugas Akhir',
+                [
+                    [
+                        'type' => 'success',
+                        'icon' => Icons::Check,
+                        'title' => ' ',
+                        'subtitle' => '',
+                        'href' => 'screen?screen=pengumpulan_jurusan'
+                    ]
+                ]
+            );
+
+            statusCard(
+                'dokumen-10',
+                'Status Perpustakaan',
+                [
+                    [
+                        'type' => 'success',
+                        'icon' => Icons::Check,
+                        'title' => '',
+                        'subtitle' => '',
+                        'href' => 'screen?screen=pengumpulan_pusat'
                     ]
                 ]
             );
             ?>
         </div>
-        <div class="d-flex flex-row align-items-center justify-content-start" id="status-lulus">
-            <div>
-                <h2>Lulus</h2>
-                <ul>
-                    <li>Surat Rekomendasi Ambil Ijasah</li>
-                    <li>lengkap</li>
-                    <li>ambil</li>
-                </ul>
+        <div class="d-flex flex-row page-content">
+            <div class="d-flex flex-row align-items-center justify-content-start" id="status-perpus">
+                <?php
+                statusCard(
+                    'status-total-dokumen',
+                    'Status Dokumen',
+                    [
+                        [
+                            'type' => 'success',
+                            'icon' => Icons::Check,
+                            'title' => '',
+                            'subtitle' => 'Terverifikasi',
+                            'href' => 'null'
+                        ],
+                        [
+                            'type' => 'warning',
+                            'icon' => Icons::Question,
+                            'title' => '',
+                            'subtitle' => 'Pending',
+                            'href' => 'null'
+                        ],
+                        [
+                            'type' => 'danger',
+                            'icon' => Icons::Close,
+                            'title' => '',
+                            'subtitle' => 'Tertanggung',
+                            'href' => 'null'
+                        ]
+                    ]
+                );
+                ?>
+            </div>
+            <div class="d-flex flex-row align-items-center justify-content-start" id="status-lulus">
+                <div>
+                    <h2>Lulus</h2>
+                    <ul>
+                        <li>Surat Rekomendasi Ambil Ijasah</li>
+                        <li>lengkap</li>
+                        <li>ambil</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -160,28 +154,54 @@
         $.ajax({
             type: "POST",
             url: "statusDokumen", // Sesuaikan URL dengan controller Anda
-            success: function (response) {
+            success: function(response) {
+                // console.log(response);
                 const data = JSON.parse(response);
-                // console.log(data)
-                // Perbarui status dokumen berdasarkan nama
+                console.log(data)
+                let countSelesai = 0;
+                let countPending = 0;
+                let countTertanggung = 0;
                 data.forEach(dokumen => {
-                    const id = `dokumen-${dokumen.nama_dokumen.replace(/\s+/g, '-').toLowerCase()}`;
-                    const element = document.getElementById(id);
-
-                    if (element) {
-                        // Hanya tampilkan status
-                        element.innerText = dokumen.status;
-
-                        // Tambahkan kelas CSS berdasarkan status
-                        element.classList.remove('status-success', 'status-warning', 'status-danger');
-                        element.classList.add(`status-${dokumen.status.toLowerCase()}`);
+                    let statusCard = document.querySelector(`#dokumen-${dokumen.id}`);
+                    if (statusCard) {
+                        statusCard.querySelector('h3').innerText = dokumen.status;
+                        let cardContent = statusCard.querySelector('.card-status-content');
+                        cardContent.classList.remove('success-bg', 'warning-bg', 'danger-bg');
+                        let cardIcon = statusCard.querySelector('.card-status-icon');
+                        cardIcon.classList.remove('success', 'warning', 'danger');
+                        if (dokumen.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
+                            cardContent.classList.add('success-bg');
+                            cardIcon.classList.add('success');
+                            cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Check) ?>';
+                        } else if (dokumen.status === '<?= StatusDokumen::Menunggu->value ?>') {
+                            cardContent.classList.add('warning-bg');
+                            cardIcon.classList.add('warning');
+                            cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Question) ?>';
+                        } else if (dokumen.status === '<?= StatusDokumen::Ditolak->value ?>') {
+                            cardContent.classList.add('danger-bg');
+                            cardIcon.classList.add('danger');
+                            cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Close) ?>';
+                        } else {
+                            cardContent.classList.add('danger-bg');
+                            cardIcon.classList.add('danger');
+                            cardIcon.innerHTML = '<?= SvgIcons::getIcon(Icons::Question) ?>';
+                        }
                     }
-                    // else {
-                    //     console.warn(`Element with ID "${id}" not found.`);
-                    // }
+                    if (dokumen.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
+                        countSelesai += 1;
+                    } else if (dokumen.status === '<?= StatusDokumen::Menunggu->value ?>') {
+                        countPending += 1;
+                    } else {
+                        countTertanggung += 1;
+                    }
                 });
+
+                let statusTotalDokumen = document.querySelector('#status-total-dokumen .card-status-content-wrapper');
+                statusTotalDokumen.children[0].querySelector('h1').innerText = countSelesai;
+                statusTotalDokumen.children[1].querySelector('h1').innerText = countPending;
+                statusTotalDokumen.children[2].querySelector('h1').innerText = countTertanggung;
             },
-            error: function (response) {
+            error: function(response) {
                 console.error("Error fetching dokumen status: ", response);
             }
         });
@@ -189,5 +209,5 @@
 
     // Panggil fungsi pertama kali dan ulangi setiap 60 detik
     updateDokumenStatus();
-    setInterval(updateDokumenStatus, 60000);
+    funToCallEachInterval.push(updateDokumenStatus);
 </script>
