@@ -619,6 +619,7 @@ dialogYesNoCustom(
                     tableExpandItem.children[0].children[1].textContent = dataDetail.dokumen;
 
                     if (getFileName(pdfFileUrl) != '') {
+                        tableExpandItem.children[1].style = '';
                         tableExpandItem.children[1].innerHTML = actions.join('');
                         tableExpandItem.onclick = function() {
                             setDokumenInOpen(dataDetail.id, dataDetail.dokumen, dataMahasiswa.nama, dataMahasiswa.nim);
@@ -628,6 +629,8 @@ dialogYesNoCustom(
                         tableExpandItem.dataset.bsTarget = "#btn-see";
                         tableExpandItem.classList.add('table-expand-item-hoverable');
                     } else {
+                        tableExpandItem.children[1].style.opacity = '0';
+                        tableExpandItem.children[1].style.pointerEvents = 'none';
                         tableExpandItem.onclick = null;
                         delete tableExpandItem.dataset.bsToggle;
                         delete tableExpandItem.dataset.bsTarget;
