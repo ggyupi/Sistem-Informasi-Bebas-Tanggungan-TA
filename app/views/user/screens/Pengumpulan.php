@@ -357,8 +357,15 @@ include_once VIEWS . 'component/btn-icon.php';
                 let formPengumpulanItemHeader = formPengumpulanList.children[i].children[0];
                 formPengumpulanItemHeader.children[0].textContent = dataItem.dokumen;
                 if (typeof dataItem.tanggal_upload !== 'undefined') {
-                    formPengumpulanItemHeader.children[1].children[0].textContent = formatDate(
-                        new Date(dataItem.tanggal_upload));
+                    const date = new Date(dataItem.tanggal_upload);
+                    if (lastestDate === '') {
+                        lastestDate = date;
+                    }
+                    if (date.getTime() > lastestDate.getTime()) {
+                        lastestDate = date;
+                    }
+                    formPengumpulanItemHeader.children[1].children[0].textContent =
+                        formatDate(date);
                 }
                 let formPengumpulanItemHBadge = formPengumpulanItemHeader.children[1].children[1];
 
