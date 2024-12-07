@@ -220,10 +220,6 @@ class AdminController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result = $this->dokumen->getAllDocumentStatusByTingkat('Jurusan');
-            // $result = array_filter($result, function ($dokumen) {
-            //     return $dokumen['tingkat'] === TingkatDokumen::Jurusan->value &&
-            //         $dokumen['status'] === StatusDokumen::Menunggu->value;
-            // });
             echo json_encode(array_values($result));
         }
     }
@@ -232,6 +228,16 @@ class AdminController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result = $this->dokumen->getAllDocumentStatusByTingkat('Pusat');
+            echo json_encode($result);
+        }
+    }
+
+    public function getDataDokumenSuper()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $resultPusat = $this->dokumen->getAllDocumentStatusByTingkat('Pusat');
+            $resultJurusan = $this->dokumen->getAllDocumentStatusByTingkat('Jurusan');
+            $result = array_merge($resultPusat, $resultJurusan);
             echo json_encode($result);
         }
     }
