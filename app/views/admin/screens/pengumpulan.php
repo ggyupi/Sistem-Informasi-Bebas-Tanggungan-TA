@@ -288,6 +288,7 @@ dialogYesNoCustom(
         let currentPage = 1;
 
         function nextprevPagination(value) {
+            removeTableActive();
             document.querySelectorAll('.pagination-number').forEach(function(paginationNum) {
                 paginationNum.classList.remove('pagination-active');
             });
@@ -330,6 +331,7 @@ dialogYesNoCustom(
                     pageNumber = totalPages;
                 }
                 currentPage = pageNumber;
+                removeTableActive();
                 renderPaggedTable();
             });
         });
