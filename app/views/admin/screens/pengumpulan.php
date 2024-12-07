@@ -338,8 +338,13 @@ dialogYesNoCustom(
 
         function renderPaggedTable() {
             if (skipPagination) {
-                document.querySelector('.pagination').style.display = 'none';
+                document.querySelector('.pagination').classList.add('d-none');
+                document.getElementById('nav-pagination').classList.add('d-none');
                 return;
+            }
+            else{
+                document.querySelector('.pagination').classList.remove('d-none');
+                document.getElementById('nav-pagination').classList.remove('d-none');
             }
             let rows = document.querySelectorAll('tbody tr');
             let startIndex = Math.max(0, (currentPage - 1) * rowsPerPage * 2);
@@ -639,15 +644,16 @@ dialogYesNoCustom(
                     skipPagination = true;
                     if (value === 'semua') {
                         skipPagination = false;
-                        row.style.display = '';
+                        row.classList.remove('d-none');
                     } else if (value === 'baru') {
-                        row.style.display = statusCell.children[0].children[0].style.opacity == 1 ? '' : 'none';
+                        row.classList.toggle('d-none', statusCell.children[0].children[0].style.opacity != 1);
                     } else if (value === 'tertanggung') {
-                        row.style.display = statusText.includes('tertanggung') ? '' : 'none';
+                        row.classList.toggle('d-none', !statusText.includes('tertanggung'));
                     } else if (value === 'selesai') {
-                        row.style.display = statusText.includes('selesai') ? '' : 'none';
+                        row.classList.toggle('d-none', !statusText.includes('selesai'));
                     } else {
-                        row.style.display = '';
+                        row.classList.remove('d-none');
+                        skipPagination = false;
                     }
                     renderPaggedTable();
                 }
