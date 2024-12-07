@@ -243,10 +243,9 @@ include_once VIEWS . 'component/btn-icon.php';
                 if (typeof dataItem.path_dokumen !== 'undefined') {
                     uploadWrapper.querySelector('#upload-terlampir p').textContent = getFileName(dataItem.path_dokumen);
                     formPengumpulanUpload.classList.add('has-file');
-                    uploadWrapper.querySelector('#upload-actions').innerHTML = btnDownload + btnOpenInNewTab;
-                    if (dataItem.status !== '<?= StatusDokumen::Diverifikasi->value ?>') {
-                        uploadWrapper.querySelector('#upload-actions').innerHTML =
-                            btnUpload + uploadWrapper.querySelector('#upload-actions').innerHTML;
+                    uploadWrapper.querySelector('#upload-actions').innerHTML = btnUpload + btnDownload + btnOpenInNewTab;
+                    if (dataItem.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
+                        uploadWrapper.querySelector('#upload-actions button:nth-child(1)').classList.add('d-none');
                     }
 
 
@@ -368,10 +367,12 @@ include_once VIEWS . 'component/btn-icon.php';
                         formatDate(date);
                 }
                 let formPengumpulanItemHBadge = formPengumpulanItemHeader.children[1].children[1];
+                let btnUpload = document.querySelector('#form-pengumpulan-upload-wrapper #upload-actions button:nth-child(1)');
 
                 dokumenItemBadge.classList.remove('success', 'warning', 'danger');
                 if (dataItem.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
                     dokumenItemBadge.classList.add('success');
+                    btnUpload.classList.add('d-none');
                     dokumenItemBadge.innerHTML = statusBadgeIconVerified;
                     formPengumpulanItemHBadge.outerHTML = statusBadgeVerified;
                     countVerifikasi += 1;
@@ -384,11 +385,13 @@ include_once VIEWS . 'component/btn-icon.php';
                     dokumenItemBadge.classList.add('danger');
                     dokumenItemBadge.innerHTML = statusBadgeIconTertanggung;
                     formPengumpulanItemHBadge.outerHTML = statusBadgeTertanggung;
+                    btnUpload.classList.remove('d-none');
                     countTertanggung += 1;
                 } else {
                     dokumenItemBadge.classList.add('danger');
                     dokumenItemBadge.innerHTML = statusBadgeIconPending;
                     formPengumpulanItemHBadge.outerHTML = statusBadgeKosong;
+                    btnUpload.classList.remove('d-none');
                     countTertanggung += 1;
                 }
 
