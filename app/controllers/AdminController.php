@@ -83,7 +83,7 @@ class AdminController extends Controller
                     'data_mahasiswa' => $mahasiswa,
                 ];
                 foreach ($dokumenList as $dokumen) {
-                    $temp['data_detail'][] = [
+                        $temp['data_detail'][$dokumen['id']] = [
                         'dokumen' => $dokumen['dokumen'],
                         'id' => $dokumen['id'],
                         'status' => ''
@@ -91,10 +91,11 @@ class AdminController extends Controller
                 }
                 if (isset($everToSubmit[$mahasiswa['nim']])) {
                     $dokumenMahasiswaNim = $everToSubmit[$mahasiswa['nim']];
-                    foreach ($dokumenMahasiswaNim as $key => $value) {
-                        $temp['data_detail'][$key] = $value;
+                    foreach ($dokumenMahasiswaNim as $value) {
+                        $temp['data_detail'][$value['id']] = $value;
                     }
                 }
+                $temp['data_detail'] = array_values($temp['data_detail']);
                 $data[] = $temp;
             }
         }

@@ -95,6 +95,20 @@ include_once VIEWS . 'component/btn-icon.php';
         const statusBadgeTertanggung = `<?= statusBadge('danger', Icons::Close, 'Tertanggung') ?>`;
         const statusBadgeKosong = `<?= statusBadge('danger', Icons::Question, 'Kosong') ?>`;
 
+        function refreshUploadSection() {
+            let readyToUpload = Array.from(document.querySelectorAll('.form-pengumpulan-upload')).every(function(formPengumpulanUpload) {
+                return formPengumpulanUpload.classList.contains('has-file');
+            });
+            let pageContentBottom = document.getElementById('page-content-bottom');
+            if (readyToUpload) {
+                pageContentBottom.children[0].innerHTML = 'Silahkan Upload';
+                pageContentBottom.children[1].removeAttribute('disabled');
+            } else {
+                pageContentBottom.children[0].innerHTML = 'Silahkan Lengkapi Dokumen Terlebih Dahulu';
+                pageContentBottom.children[1].setAttribute('disabled', 'true');
+            }
+        }
+
         function generatePageContent(data) {
             const btnUpload = ' <?= iconButton('', Icons::Upload, 'var(--bs-emphasis-color)', ' ') ?>';
             const btnDownload = ' <?= iconButton('', Icons::Download, 'var(--bs-emphasis-color)', ' ') ?>';
@@ -208,6 +222,14 @@ include_once VIEWS . 'component/btn-icon.php';
                 let formPengumpulanUpload = uploadWrapper.getElementsByClassName('form-pengumpulan-upload')[0];
 
                 uploadWrapper.querySelector(`#file-input${i}`).addEventListener('change', function(context) {
+                    if (!context.target.files.length || context.target.value === '') {
+                        // console.log('tidak ada file atau dialog dibatalkan');
+                        formPengumpulanUpload.classList.remove('has-file');
+                        uploadWrapper.querySelector('#upload-terlampir-wrapper').classList.add('d-none');
+                        uploadWrapper.querySelector('#upload-placeholder').classList.remove('d-none');
+                        refreshUploadSection();
+                        return;
+                    }
                     const cloneFormPengumpulanUpload = formPengumpulanUpload.cloneNode(true);
                     formPengumpulanUpload.parentNode.replaceChild(cloneFormPengumpulanUpload, formPengumpulanUpload);
                     formPengumpulanUpload = cloneFormPengumpulanUpload;
@@ -230,23 +252,15 @@ include_once VIEWS . 'component/btn-icon.php';
                     formPengumpulanUpload.classList.add('has-file');
                     uploadWrapper.querySelector('#upload-actions').innerHTML = btnUpload + btnOpenInNewTab;
                     uploadWrapper.querySelector('#upload-terlampir p').textContent = context.target.files[0].name;
-                    let readyToUpload = Array.from(document.querySelectorAll('.form-pengumpulan-upload')).every(function(formPengumpulanUpload) {
-                        return formPengumpulanUpload.classList.contains('has-file');
-                    });
-                    if (readyToUpload) {
-                        let pageContentBottom = document.getElementById('page-content-bottom');
-                        pageContentBottom.children[0].innerHTML = 'Silahkan Upload';
-                        pageContentBottom.children[1].removeAttribute('disabled');
-                    }
+                    refreshUploadSection();
                 });
 
                 if (typeof dataItem.path_dokumen !== 'undefined') {
                     uploadWrapper.querySelector('#upload-terlampir p').textContent = getFileName(dataItem.path_dokumen);
                     formPengumpulanUpload.classList.add('has-file');
-                    uploadWrapper.querySelector('#upload-actions').innerHTML = btnDownload + btnOpenInNewTab;
-                    if (dataItem.status !== '<?= StatusDokumen::Diverifikasi->value ?>') {
-                        uploadWrapper.querySelector('#upload-actions').innerHTML =
-                            btnUpload + uploadWrapper.querySelector('#upload-actions').innerHTML;
+                    uploadWrapper.querySelector('#upload-actions').innerHTML = btnUpload + btnDownload + btnOpenInNewTab;
+                    if (dataItem.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
+                        uploadWrapper.querySelector('#upload-actions button:nth-child(1)').classList.add('d-none');
                     }
 
 
@@ -368,10 +382,12 @@ include_once VIEWS . 'component/btn-icon.php';
                         formatDate(date);
                 }
                 let formPengumpulanItemHBadge = formPengumpulanItemHeader.children[1].children[1];
+                let btnUpload = document.querySelector('#form-pengumpulan-upload-wrapper #upload-actions button:nth-child(1)');
 
                 dokumenItemBadge.classList.remove('success', 'warning', 'danger');
                 if (dataItem.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
                     dokumenItemBadge.classList.add('success');
+                    btnUpload.classList.add('d-none');
                     dokumenItemBadge.innerHTML = statusBadgeIconVerified;
                     formPengumpulanItemHBadge.outerHTML = statusBadgeVerified;
                     countVerifikasi += 1;
@@ -384,11 +400,13 @@ include_once VIEWS . 'component/btn-icon.php';
                     dokumenItemBadge.classList.add('danger');
                     dokumenItemBadge.innerHTML = statusBadgeIconTertanggung;
                     formPengumpulanItemHBadge.outerHTML = statusBadgeTertanggung;
+                    btnUpload.classList.remove('d-none');
                     countTertanggung += 1;
                 } else {
                     dokumenItemBadge.classList.add('danger');
                     dokumenItemBadge.innerHTML = statusBadgeIconPending;
                     formPengumpulanItemHBadge.outerHTML = statusBadgeKosong;
+                    btnUpload.classList.remove('d-none');
                     countTertanggung += 1;
                 }
 
