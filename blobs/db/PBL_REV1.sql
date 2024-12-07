@@ -132,6 +132,7 @@ VALUES
   ('2341720236', '123', 'mahasiswa'),
   ('2341720237', '123', 'mahasiswa'),
   ('2341720212', '123', 'mahasiswa')
+  
 GO
 
 INSERT INTO pengguna.Admin
@@ -176,8 +177,79 @@ VALUES
   ('20230006', 'Andi Wijaya', '3211234567890128', 'Medan', '2004-10-25', 'Jl. Dahlia 6', '081234567895', 'Laki-laki', 6, '20230006'),
   ('20230007', 'Rizky Putra', '3211234567890129', 'Palembang', '2002-09-09', 'Jl. Melur 7', '081234567896', 'Laki-laki', 7, '20230007'),
   ('20230008', 'Nina Astuti', '3211234567890130', 'Makassar', '2003-12-01', 'Jl. Teratai 8', '081234567897', 'Perempuan', 8, '20230008')
+
+GO
+INSERT INTO pengguna.[User]
+  (username, password, level)
+VALUES
+  ('20230009', 'password11', 'mahasiswa'),
+  ('20230010', 'password12', 'mahasiswa'),
+  ('20230011', 'password13', 'mahasiswa'),
+  ('20230012', 'password14', 'mahasiswa'),
+  ('20230013', 'password15', 'mahasiswa'),
+  ('20230014', 'password16', 'mahasiswa'),
+  ('20230015', 'password17', 'mahasiswa'),
+  ('20230016', 'password18', 'mahasiswa'),
+  ('20230017', 'password19', 'mahasiswa'),
+  ('20230018', 'password20', 'mahasiswa'),
+  ('20230019', 'password21', 'mahasiswa'),
+  ('20230020', 'password22', 'mahasiswa'),
+  ('20230021', 'password23', 'mahasiswa'),
+  ('20230022', 'password24', 'mahasiswa'),
+  ('20230023', 'password25', 'mahasiswa'),
+  ('20230024', 'password26', 'mahasiswa'),
+  ('20230025', 'password27', 'mahasiswa'),
+  ('20230026', 'password28', 'mahasiswa'),
+  ('20230027', 'password29', 'mahasiswa'),
+  ('20230028', 'password30', 'mahasiswa'),
+  ('20230029', 'password31', 'mahasiswa'),
+  ('20230030', 'password32', 'mahasiswa'),
+  ('20230031', 'password33', 'mahasiswa'),
+  ('20230032', 'password34', 'mahasiswa'),
+  ('20230033', 'password35', 'mahasiswa'),
+  ('20230034', 'password36', 'mahasiswa'),
+  ('20230035', 'password37', 'mahasiswa'),
+  ('20230036', 'password38', 'mahasiswa'),
+  ('20230037', 'password39', 'mahasiswa'),
+  ('20230038', 'password40', 'mahasiswa'),
+  ('20230039', 'password41', 'mahasiswa');
+
 GO
 
+INSERT INTO pengguna.Mahasiswa
+  (NIM, Nama, NIK, Tempat_lahir, tanggal_lahir, Alamat, Nomor_telepon, Jenis_kelamin, ID_prodi, username)
+VALUES
+  ('20230009', 'Takahashi Kenji', '3211234567890131', 'Makassar', '2003-07-15', 'Jl. Mawar 1', '081234567898', 'Laki-laki', 1, '20230009'),
+  ('20230010', 'Kim Minseo', '3211234567890132', 'Surabaya', '2003-03-23', 'Jl. Melati 2', '081234567899', 'Perempuan', 2, '20230010'),
+  ('20230011', 'Li Wei', '3211234567890133', 'Jakarta', '2004-01-12', 'Jl. Anggrek 3', '081234567800', 'Laki-laki', 1, '20230011'),
+  ('20230012', 'Emily Watson', '3211234567890134', 'Bandung', '2002-02-25', 'Jl. Kamboja 4', '081234567801', 'Perempuan', 2, '20230012'),
+  ('20230013', 'Hiroshi Tanaka', '3211234567890135', 'Semarang', '2003-11-18', 'Jl. Cempaka 5', '081234567802', 'Laki-laki', 1, '20230013'),
+  ('20230014', 'Park Jisoo', '3211234567890136', 'Malang', '2004-05-21', 'Jl. Dahlia 6', '081234567803', 'Perempuan', 2, '20230014'),
+  ('20230015', 'Chen Xiaolong', '3211234567890137', 'Medan', '2002-09-09', 'Jl. Melur 7', '081234567804', 'Laki-laki', 1, '20230015'),
+  ('20230016', 'Sophia Brown', '3211234567890138', 'Palembang', '2003-12-01', 'Jl. Teratai 8', '081234567805', 'Perempuan', 2, '20230016'),
+  ('20230017', 'Yamada Taro', '3211234567890139', 'Makassar', '2003-07-15', 'Jl. Mawar 1', '081234567806', 'Laki-laki', 1, '20230017'),
+  ('20230018', 'Lee Hana', '3211234567890140', 'Surabaya', '2003-03-23', 'Jl. Melati 2', '081234567807', 'Perempuan', 2, '20230018'),
+  ('20230019', 'Wang Lei', '3211234567890141', 'Jakarta', '2004-01-12', 'Jl. Anggrek 3', '081234567808', 'Laki-laki', 1, '20230019'),
+  ('20230020', 'Emma Johnson', '3211234567890142', 'Bandung', '2002-02-25', 'Jl. Kamboja 4', '081234567809', 'Perempuan', 2, '20230020'),
+  ('20230021', 'Kobayashi Ryota', '3211234567890143', 'Semarang', '2003-11-18', 'Jl. Cempaka 5', '081234567810', 'Laki-laki', 1, '20230021'),
+  ('20230022', 'Choi Hyejin', '3211234567890144', 'Malang', '2004-05-21', 'Jl. Dahlia 6', '081234567811', 'Perempuan', 2, '20230022'),
+  ('20230023', 'Zhang Ming', '3211234567890145', 'Medan', '2002-09-09', 'Jl. Melur 7', '081234567812', 'Laki-laki', 1, '20230023'),
+  ('20230024', 'Olivia Miller', '3211234567890146', 'Palembang', '2003-12-01', 'Jl. Teratai 8', '081234567813', 'Perempuan', 2, '20230024'),
+  ('20230025', 'Sato Haruki', '3211234567890147', 'Makassar', '2003-07-15', 'Jl. Mawar 1', '081234567814', 'Laki-laki', 1, '20230025'),
+  ('20230026', 'Kang Seoyeon', '3211234567890148', 'Surabaya', '2003-03-23', 'Jl. Melati 2', '081234567815', 'Perempuan', 2, '20230026'),
+  ('20230027', 'Liu Yong', '3211234567890149', 'Jakarta', '2004-01-12', 'Jl. Anggrek 3', '081234567816', 'Laki-laki', 1, '20230027'),
+  ('20230028', 'Isabella Taylor', '3211234567890150', 'Bandung', '2002-02-25', 'Jl. Kamboja 4', '081234567817', 'Perempuan', 2, '20230028'),
+  ('20230029', 'Yamamoto Kenta', '3211234567890151', 'Semarang', '2003-11-18', 'Jl. Cempaka 5', '081234567818', 'Laki-laki', 1, '20230029'),
+  ('20230030', 'Jeong Sumin', '3211234567890152', 'Malang', '2004-05-21', 'Jl. Dahlia 6', '081234567819', 'Perempuan', 2, '20230030'),
+  ('20230031', 'Zhao Liang', '3211234567890153', 'Medan', '2002-09-09', 'Jl. Melur 7', '081234567820', 'Laki-laki', 1, '20230031'),
+  ('20230032', 'Charlotte White', '3211234567890154', 'Palembang', '2003-12-01', 'Jl. Teratai 8', '081234567821', 'Perempuan', 2, '20230032'),
+  ('20230033', 'Nakagawa Shota', '3211234567890155', 'Makassar', '2003-07-15', 'Jl. Mawar 1', '081234567822', 'Laki-laki', 1, '20230033'),
+  ('20230034', 'Shin Jihyun', '3211234567890156', 'Surabaya', '2003-03-23', 'Jl. Melati 2', '081234567823', 'Perempuan', 2, '20230034'),
+  ('20230035', 'Ma Jun', '3211234567890157', 'Jakarta', '2004-01-12', 'Jl. Anggrek 3', '081234567824', 'Laki-laki', 1, '20230035'),
+  ('20230036', 'Grace Davis', '3211234567890158', 'Bandung', '2002-02-25', 'Jl. Kamboja 4', '081234567825', 'Perempuan', 2, '20230036'),
+  ('20230037', 'Fujimoto Akira', '3211234567890159', 'Semarang', '2003-11-18', 'Jl. Cempaka 5', '081234567826', 'Laki-laki', 1, '20230037'),
+  ('20230038', 'Song Yejin', '3211234567890160', 'Malang', '2004-05-21', 'Jl. Dahlia 6', '081234567827', 'Perempuan', 2, '20230038'),
+  ('20230039', 'Huang Zhiqiang', '3211234567890161', 'Medan', '2002-09-09', 'Jl. Melur 7', '081234567828', 'Laki-laki', 1, '20230039');
 INSERT INTO dokumen.Dokumen
   (Nama_dokumen, Tingkat)
 VALUES
