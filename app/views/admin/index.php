@@ -1,6 +1,6 @@
 <?php
 include_once VIEWS . "component/status-card.php";
-include_once VIEWS . "component/dialog-yes-no.php"; 
+include_once VIEWS . "component/dialog-yes-no.php";
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +13,8 @@ include_once VIEWS . "component/dialog-yes-no.php";
 
 <body>
     <input type="checkbox" id="toggle-side-bar" <?= Session::get('toggle_sidebar') === 'true' ? 'checked' : '' ?> />
-    <div class="dropend offcanvas-md offcanvas-start <?= Session::get('toggle_sidebar') === 'true' ? '' : 'show' ?>" id="side-bar">
+    <div class="dropend offcanvas-md offcanvas-start <?= Session::get('toggle_sidebar') === 'true' ? '' : 'show' ?>"
+        id="side-bar">
         <?php include_once VIEWS . "template/sidebar/sidebar-top.php"; ?>
 
         <div id="side-bar-menu">
@@ -47,6 +48,29 @@ include_once VIEWS . "component/dialog-yes-no.php";
         ?>
         <form>
 </body>
+
+<script>
+    function getDataNotificationPusat() {
+        $.ajax({
+            type: "POST",
+            url: "getDataDokumenPusat",
+            success: function (response) {
+                console.log(response);
+                let data = JSON.parse(response);
+                if (typeof generateNotificationItem === 'function') {
+                    generateNotificationItem(data);
+                }
+                // console.log(data);
+                changeSidebarNav2NotificationIcon(data);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    }
+    getDataNotificationPusat();
+    // funToCallEachInterval.push(getDataNotificationPusat);
+</script>
 
 <?php include_once VIEWS . "template/footer.php"; ?>
 

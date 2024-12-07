@@ -215,4 +215,24 @@ class AdminController extends Controller
             echo json_encode($data);
         }
     }
+
+    public function getDataDokumenJurusan()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $result = $this->dokumen->getAllDocumentStatusByTingkat('Jurusan');
+            // $result = array_filter($result, function ($dokumen) {
+            //     return $dokumen['tingkat'] === TingkatDokumen::Jurusan->value &&
+            //         $dokumen['status'] === StatusDokumen::Menunggu->value;
+            // });
+            echo json_encode(array_values($result));
+        }
+    }
+
+    public function getDataDokumenPusat()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $result = $this->dokumen->getAllDocumentStatusByTingkat('Pusat');
+            echo json_encode($result);
+        }
+    }
 }
