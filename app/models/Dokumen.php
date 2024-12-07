@@ -198,9 +198,25 @@ class Dokumen extends Model
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function setAdminNull($id){
+    public function setAdminNull($id)
+    {
         $query = $this->db->prepare("UPDATE dokumen.Upload_dokumen SET NIDN = NULL WHERE NIDN = :id");
         $query->bindValue(":id", $id);
         $query->execute();
+    }
+
+    public function getAllDocumentStatusByTingkat($tingkat)
+    {
+        $query = $this->db->prepare("
+        SELECT up.Status, d.tingkat, m.Nama, d.Nama_dokumen
+        FROM dokumen.Upload_dokumen up
+        JOIN dokumen.Dokumen d ON up.ID_dokumen = d.ID
+		JOIN pengguna.Mahasiswa m ON up.nim = m.nim
+        WHERE d.tingkat = :tingkat 
+        AND up.Status = 'Menunggu'
+        ");
+        $query->bindValue(":tingkat", $tingkat);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -62,13 +62,17 @@
 <body>
     <div id="support-section">
         <h1>Hubungi Kami</h1>
-        <a href="https://wa.me/+6289517032681" class="contact-item">
+        <a href="https://wa.me/+6281245678901" class="contact-item">
             <img src="https://www.cdnlogo.com/logos/w/29/whatsapp-icon.svg" alt="WhatsApp Icon">
-            <span>WhatsApp - Admin Candra</span>
+            <span>WhatsApp - Admin Supardiaawaaaa</span>
         </a>
-        <a href="https://wa.me/+6281456010040" class="contact-item">
+        <a href="https://wa.me/+6281245678901" class="contact-item">
             <img src="https://www.cdnlogo.com/logos/w/29/whatsapp-icon.svg" alt="WhatsApp Icon">
-            <span>WhatsApp - Admin Beryl</span>
+            <span>WhatsApp - Admin Sulistiyowati</span>
+        </a>
+        <a href="https://wa.me/+6281245678901" class="contact-item">
+            <img src="https://www.cdnlogo.com/logos/w/29/whatsapp-icon.svg" alt="WhatsApp Icon">
+            <span>WhatsApp - Admin Sudirman Dyayadiningrat</span>
         </a>
         <a href="mailto:polinema@ac.id" class="contact-item">
             <img src="https://mailmeteor.com/logos/assets/PNG/Gmail_Logo_512px.png" alt="Email Icon">
