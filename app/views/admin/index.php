@@ -51,26 +51,45 @@ include_once VIEWS . "component/dialog-yes-no.php";
 
 <script>
     function getDataNotificationPusat() {
-        $.ajax({
-            type: "POST",
-            url: "getDataDokumenPusat",
-            success: function (response) {
-                console.log(response);
-                let data = JSON.parse(response);
-                if (typeof generateNotificationItem === 'function') {
-                    generateNotificationItem(data);
+        const adminRole = "<?= ucwords($data['user']->adminApa->value) ?>";
+
+        let ajaxUrl;
+        if (adminRole === "Super") {
+            ajaxUrl = "getDataDokumenSuper";
+        } else if (adminRole === "Pusat") {
+            ajaxUrl = "getDataDokumenPusat";
+        } else if (adminRole === "Jurusan") {
+            ajaxUrl = "getDataDokumenJurusan";
+        } else {
+            console.error("Role admin tidak dikenali.");
+            ajaxUrl = "";
+        }
+
+        if (ajaxUrl) {
+            $.ajax({
+                type: "POST",
+                url: ajaxUrl,
+                success: function (response) {
+                    // console.log(response);
+                    let data = JSON.parse(response);
+
+                    if (typeof generateNotificationItem === 'function') {
+                        generateNotificationItem(data);
+                    }
+                    changeSidebarNav2NotificationIcon(data);
+                },
+                error: function (response) {
+                    console.log(response);
                 }
-                // console.log(data);
-                changeSidebarNav2NotificationIcon(data);
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        });
+            });
+        }
     }
+
     getDataNotificationPusat();
-    // funToCallEachInterval.push(getDataNotificationPusat);
+
+    funToCallEachInterval.push(getDataNotificationPusat);
 </script>
+
 
 <?php include_once VIEWS . "template/footer.php"; ?>
 
