@@ -425,9 +425,9 @@ dialogYesNoCustom(
                 if (statusCell) {
                     const statusText = statusCell.textContent.toLowerCase();
                     if (value === 'semua') {
-                        row.style.display = '';
+                        row.classList.remove('d-none');
                     } else {
-                        row.style.display = statusText.includes(value.toLowerCase()) ? '' : 'none';
+                        row.classList.toggle('d-none', !statusText.includes(value.toLowerCase()));
                     }
                 }
             });
