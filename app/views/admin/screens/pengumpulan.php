@@ -257,11 +257,11 @@ dialogYesNoCustom(
                     Tolong isi alasan penolakan 
                 </div>                
                 `;
-            let inputKomentar = modalBody.querySelector('#komentar-tolak');
-            setTimeout(function() {
-                inputKomentar.focus();
-            }, 500);
-            
+                let inputKomentar = modalBody.querySelector('#komentar-tolak');
+                setTimeout(function() {
+                    inputKomentar.focus();
+                }, 500);
+
             } else {
                 modalBody.innerHTML = message;
             }
@@ -336,15 +336,31 @@ dialogYesNoCustom(
             });
         });
 
-        let skipPagination = false;
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', function() {
+            removeTableActive();
+            renderTableWithTweaks();
+        });
 
-        function renderPaggedTable() {
+        let filterData = document.getElementById('filter-data');
+        filterData.addEventListener('change', function() {
+            removeTableActive();
+            renderTableWithTweaks();
+        });
+
+        function renderTableWithTweaks() {
+            let search = searchInput.value.toLowerCase();
+            let skipByFilter = selectFilter(filterData.value);
+            funSearch('tr #search-mahasiswa', search);
+            renderPaggedTable(search != '' || skipByFilter);
+        }
+
+        function renderPaggedTable(skipPagination = false) {
             if (skipPagination) {
                 document.querySelector('.pagination').classList.add('d-none');
                 document.getElementById('nav-pagination').classList.add('d-none');
                 return;
-            }
-            else{
+            } else {
                 document.querySelector('.pagination').classList.remove('d-none');
                 document.getElementById('nav-pagination').classList.remove('d-none');
             }
@@ -360,10 +376,10 @@ dialogYesNoCustom(
                 }
             }
             if (rowsPerPage == 0) {
-                document.querySelector('.pagination').style.display = 'none';
+                document.querySelector('.pagination').classList.add('d-none');
                 return;
             } else {
-                document.querySelector('.pagination').style.display = '';
+                document.querySelector('.pagination').classList.remove('d-none');
             }
 
             const totalPages = Math.ceil((rows.length / 2) / rowsPerPage);
@@ -400,15 +416,6 @@ dialogYesNoCustom(
                 }
             }
         }
-
-        const searchInput = document.getElementById('search-input');
-        searchInput.addEventListener('input', function() {
-            let search = this.value.toLowerCase();
-            removeTableActive();
-            funSearch('tr #search-mahasiswa', search);
-            skipPagination = this.value != '';
-            renderPaggedTable();
-        });
 
         const iconAcc = '<?= SvgIcons::getIcon(Icons::Check) ?>';
         const iconDecl = '<?= SvgIcons::getIcon(Icons::Close) ?>';
@@ -641,12 +648,11 @@ dialogYesNoCustom(
         }
 
         function selectFilter(value) {
+            let skipPagination = true;
             document.querySelectorAll('#table-body tr').forEach(function(row) {
-                console.log(value);
                 const statusCell = row.querySelector('td:nth-child(6)');
                 if (statusCell) {
                     const statusText = statusCell.textContent.toLowerCase();
-                    skipPagination = true;
                     if (value === 'semua') {
                         skipPagination = false;
                         row.classList.remove('d-none');
@@ -660,9 +666,9 @@ dialogYesNoCustom(
                         row.classList.remove('d-none');
                         skipPagination = false;
                     }
-                    renderPaggedTable();
                 }
             });
+            return skipPagination;
         }
 
         var getDataPengumpulanInUpdate = false;
@@ -691,10 +697,10 @@ dialogYesNoCustom(
                         let tableBody = document.getElementById('table-body');
                         tableBody.innerHTML = '';
                         tableBody.append(...generateTableBodyItems(data).children);
-                        funSearch('tr #search-mahasiswa', searchInput.value);
+                        renderTableWithTweaks(searchInput.value.toLowerCase());
                     }
                     getDataPengumpulanInUpdate = false;
-                    renderPaggedTable();
+
                     if (callOnStart) {
                         callOnStart = false;
                         selectFilter("<?= $data['filter'] ?>");
@@ -775,12 +781,6 @@ dialogYesNoCustom(
                     console.log(response);
                 }
             });
-        });
-
-
-        document.getElementById('filter-data').addEventListener('change', function() {
-            removeTableActive();
-            selectFilter(this.value);
         });
     </script>
 
