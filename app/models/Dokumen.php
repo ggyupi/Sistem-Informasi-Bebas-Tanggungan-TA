@@ -207,15 +207,20 @@ class Dokumen extends Model
 
     public function getAllDocumentStatusByTingkat($tingkat)
     {
+        $inQuery = implode(',', array_fill(0, count($tingkat), '?'));
         $query = $this->db->prepare("
         SELECT up.Status, d.tingkat, m.Nama, d.Nama_dokumen
         FROM dokumen.Upload_dokumen up
         JOIN dokumen.Dokumen d ON up.ID_dokumen = d.ID
 		JOIN pengguna.Mahasiswa m ON up.nim = m.nim
-        WHERE d.tingkat = :tingkat 
+        WHERE d.tingkat IN ($inQuery)
         AND up.Status = 'Menunggu'
+        ORDER BY up.tanggal DESC
         ");
-        $query->bindValue(":tingkat", $tingkat);
+
+        foreach ($tingkat as $index => $value) {
+            $query->bindValue($index + 1, $value);
+        }
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
