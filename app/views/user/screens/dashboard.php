@@ -125,21 +125,21 @@
                             'type' => 'success',
                             'icon' => Icons::Check,
                             'title' => '',
-                            'subtitle' => 'Terverifikasi',
+                            'subtitle' => 'Dokumen<br>Terverifikasi',
                             'href' => 'null'
                         ],
                         [
                             'type' => 'warning',
                             'icon' => Icons::Question,
                             'title' => '',
-                            'subtitle' => 'Pending',
+                            'subtitle' => 'Dokumen<br>Pending',
                             'href' => 'null'
                         ],
                         [
                             'type' => 'danger',
                             'icon' => Icons::Close,
                             'title' => '',
-                            'subtitle' => 'Tertanggung',
+                            'subtitle' => 'Dokumen<br>Tertanggung',
                             'href' => 'null'
                         ]
                     ]

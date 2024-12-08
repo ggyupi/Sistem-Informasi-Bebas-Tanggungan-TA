@@ -24,21 +24,21 @@ include_once VIEWS . 'admin/template/pengumpulan-modal.php';
                         'type' => 'success',
                         'icon' => Icons::Check,
                         'title' => '<span id="jurusan-status-diverifikasi">Loading...</span>',
-                        'subtitle' => 'Dokumen diverifikasi',
+                        'subtitle' => 'Dokumen<br>diverifikasi',
                         'href' => $urlSuccess
                     ],
                     [
                         'type' => 'warning',
                         'icon' => Icons::Question,
                         'title' => '<span id="jurusan-status-menunggu">Loading...</span>',
-                        'subtitle' => 'Dokumen pending',
+                        'subtitle' => 'Dokumen<br>pending',
                         'href' => $urlPending
                     ],
                     [
                         'type' => 'danger',
                         'icon' => Icons::Close,
                         'title' => '<span id="jurusan-status-ditolak">Loading...</span>',
-                        'subtitle' => 'Dokumen ditolak',
+                        'subtitle' => 'Dokumen<br>ditolak',
                         'href' => $urlDanger
                     ]
                 ]
@@ -53,21 +53,21 @@ include_once VIEWS . 'admin/template/pengumpulan-modal.php';
                         'type' => 'success',
                         'icon' => Icons::Check,
                         'title' => '<span id="pusat-status-diverifikasi">Loading...</span>',
-                        'subtitle' => 'Dokumen diverifikasi',
+                        'subtitle' => 'Dokumen<br>diverifikasi',
                         'href' => $urlSuccess
                     ],
                     [
                         'type' => 'warning',
                         'icon' => Icons::Question,
                         'title' => '<span id="pusat-status-menunggu">Loading...</span>',
-                        'subtitle' => 'Dokumen pending',
+                        'subtitle' => 'Dokumen<br>pending',
                         'href' => $urlPending
                     ],
                     [
                         'type' => 'danger',
                         'icon' => Icons::Close,
                         'title' => '<span id="pusat-status-ditolak">Loading...</span>',
-                        'subtitle' => 'Dokumen ditolak',
+                        'subtitle' => 'Dokumen<br>ditolak',
                         'href' => $urlDanger
                     ]
                 ]
