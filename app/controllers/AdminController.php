@@ -83,7 +83,7 @@ class AdminController extends Controller
                     'data_mahasiswa' => $mahasiswa,
                 ];
                 foreach ($dokumenList as $dokumen) {
-                        $temp['data_detail'][$dokumen['id']] = [
+                    $temp['data_detail'][$dokumen['id']] = [
                         'dokumen' => $dokumen['dokumen'],
                         'id' => $dokumen['id'],
                         'status' => ''
@@ -220,7 +220,9 @@ class AdminController extends Controller
     public function getDataDokumenJurusan()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $result = $this->dokumen->getAllDocumentStatusByTingkat('Jurusan');
+            $result = $this->dokumen->getAllDocumentStatusByTingkat([
+                TingkatDokumen::Jurusan->value
+            ]);
             echo json_encode(array_values($result));
         }
     }
@@ -228,7 +230,9 @@ class AdminController extends Controller
     public function getDataDokumenPusat()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $result = $this->dokumen->getAllDocumentStatusByTingkat('Pusat');
+            $result = $this->dokumen->getAllDocumentStatusByTingkat([
+                TingkatDokumen::Pusat->value
+            ]);
             echo json_encode($result);
         }
     }
@@ -236,9 +240,10 @@ class AdminController extends Controller
     public function getDataDokumenSuper()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $resultPusat = $this->dokumen->getAllDocumentStatusByTingkat('Pusat');
-            $resultJurusan = $this->dokumen->getAllDocumentStatusByTingkat('Jurusan');
-            $result = array_merge($resultPusat, $resultJurusan);
+            $result = $this->dokumen->getAllDocumentStatusByTingkat([
+                TingkatDokumen::Jurusan->value,
+                TingkatDokumen::Pusat->value
+            ]);
             echo json_encode($result);
         }
     }
