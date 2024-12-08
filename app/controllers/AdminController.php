@@ -62,7 +62,6 @@ class AdminController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mahasiswaList = $this->mahasiswa->getAllMahasiswaInformation();
-
             $tingkatDokumen = $this->admin->adminApa;
             if ($tingkatDokumen === TipeAdmin::Super) {
                 $tingkatDokumen = TingkatDokumen::from($_POST['super_tingkat']);
@@ -207,11 +206,32 @@ class AdminController extends Controller
     public function getRecentDokumenGrouped()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'Jurusan' => $this->dokumen->getRecentDokumenByTingkat('Jurusan'),
-                'Pusat' => $this->dokumen->getRecentDokumenByTingkat('Pusat'),
-                'Keduanya' => $this->dokumen->getRecentDokumenByTingkat('Keduanya')
-            ];
+            $tingkatDokumen = TingkatDokumen::from(ucwords($this->admin->adminApa->value));
+            $top3Nim = $this->dokumen->getTop3Pengumpulan($tingkatDokumen->value);
+            $dokumenList = $this->dokumen->getDokumenList($tingkatDokumen);
+
+            $data = [];
+            foreach ($top3Nim as $nim) {
+                $dataMahasiswa = $this->mahasiswa->getMahasiswaInformation($nim['nim']);
+                $mahasiswaDokumen = [];
+                foreach ($this->dokumen->getDokumenListUploadByNIM($tingkatDokumen, $nim['nim']) as $dokumen) {
+                    $id = $dokumen['id'];
+                    unset($dokumen['id']);
+                    $mahasiswaDokumen[$id] = $dokumen;
+                }
+
+                $temp = [];
+                $temp['data_mahasiswa'] = $dataMahasiswa;
+                foreach ($dokumenList as $dokumen) {
+                    $temp['data_detail'][] = [
+                        'dokumen' => $dokumen['dokumen'],
+                        'id' => $dokumen['id'],
+                        'status' => $mahasiswaDokumen[$dokumen['id']]['status'],
+                        'path_dokumen' => $mahasiswaDokumen[$dokumen['id']]['path_dokumen'],
+                    ];
+                }
+                $data[] = $temp;
+            }
 
             echo json_encode($data);
         }
