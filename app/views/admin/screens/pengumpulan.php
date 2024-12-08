@@ -11,127 +11,10 @@ include_once VIEWS . 'component/btn-icon.php';
         flex: 1;
         overflow-y: auto;
     }
-
-    #result-content h2 {
-        font-size: 24px;
-        font-weight: 600;
-        margin: 0px;
-    }
-
-    #result-content {
-        font-size: 24px;
-        font-weight: 600;
-        margin: 0px;
-        width: 630px;
-        height: 350px;
-        border-radius: 12px;
-        opacity: 0;
-    }
-
-    #result-content svg {
-        width: 50%;
-        height: 50%;
-    }
-
-    #result-content .status-badge-text {
-        width: 90px;
-        min-width: 90px;
-        height: 90px;
-    }
 </style>
 
-<form class="d-none" id="in-open-dokumen">
-    <input type="text" name="id_dokumen" id="id_dokumen" />
-    <input type="text" name="nama_dokumen" id="nama_dokumen" />
-    <input type="text" name="nama_mahasiswa" id="nama_mahasiswa" />
-    <input type="text" name="nim" id="nim" />
-</form>
-
-<form id="dialog-acc">
-    <?=
-    dialogYesNo(
-        'btn-acc',
-        'Acc?',
-        'Acc',
-        SvgIcons::getIcon(Icons::Check) . 'Acc kan min',
-        SvgIcons::getIcon(Icons::Close) . 'Ga Jadi',
-        true,
-        'btn-success'
-    );
-    ?>
-</form>
-
-<form class="needs-validation was-validated" id="dialog-decl">
-    <?=
-    dialogYesNoCustom(
-        'btn-decl',
-        '<h1 class="modal-title fs-5">Tolak?</h1>',
-        'Decl',
-        '<button type="button" class="btn btn-outline'
-            . '" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) .
-            'Ga jadi</button>
-        <button type="submit" class="btn btn-danger'
-            . '" >' . SvgIcons::getIcon(Icons::Check) .
-            'Tolak saja min</button>',
-        true,
-        maxWidth: '30vw'
-    );
-    ?>
-</form>
-
-<div class="modal fade" id="result-acc" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">;
-        <div class="d-flex flex-row align-items-center justify-content-center success-bg" id="result-content">
-            <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
-                <div class="status-badge-text success"><?= SvgIcons::getIconWithColor(Icons::Check, "white") ?></div>
-                <h2>Dokumen Berhasil Diverifikasi</h2>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="result-decl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">;
-        <div class="d-flex flex-row align-items-center justify-content-center danger-bg" id="result-content">
-            <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
-                <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
-                <h2>Dokumen Berhasil Ditolak</h2>
-            </div>
-        </div>
-    </div>
-</div>
-<?=
-dialogYesNoCustom(
-    'btn-see',
-    '<div class="d-flex flex-row align-items-center justify-content-between" style="flex: 1;">
-        ' . iconButton('', Icons::Close, 'white') . '
-        <h1 class="modal-title fs-5" id="pdf-viewer-title"></h1>
-        ' . iconButton('', Icons::OpenInNewTab, 'white', 'window.open(document.getElementById(`pdf-viewer`).getAttribute(`src`), `_blank`);') . '
-    </div>',
-    '<div id="pdf-viewer-wrapper">
-    </div>',
-    '<div class="d-flex flex-row align-items-center" id="pdf-viewer-footer">
-        <button style="padding: 14px 12px; margin: 0px 8px" type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
-        <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-decl" 
-        onclick="
-            changeModalDialogMessage(`dialog-decl`, 
-                `Tolak <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
-                ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
-                ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
-                ' . statusBadge('danger', Icons::Close, 'Tolak') . '
-        </button>
-        <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-acc"
-        onclick="
-            changeModalDialogMessage(`dialog-acc`, 
-                `Acc <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
-                ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
-                ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
-         ' . statusBadge('success', Icons::Check, 'Terima') . '
-         </button>
-    </div>',
-    true,
-    '70vw'
-)
+<?php
+include_once VIEWS . 'admin/template/pengumpulan-modal.php';
 ?>
 
 <div id="pengumpulan-page">
@@ -198,77 +81,12 @@ dialogYesNoCustom(
         </div>
     </nav>
 
-    <?php include_once VIEWS . "template/script-helper.php"; ?>
-    <script>
-        function resetDialogSee() {
-            document.querySelectorAll('#btn-see #pdf-viewer-footer button').forEach(function(button) {
-                button.style.display = '';
-            });
-        }
-
-        function pdfViewerLoadPdf(url, status) {
-            resetDialogSee();
-            let pdfViewerFooter = document.querySelector('#btn-see #pdf-viewer-footer');
-            if (status === '<?= StatusDokumen::Diverifikasi->value ?>') {
-                pdfViewerFooter.children[2].style.display = 'none';
-            } else if (status === '<?= StatusDokumen::Ditolak->value ?>') {
-                pdfViewerFooter.children[1].style.display = 'none';
-            }
-            document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
-            document.getElementById('pdf-viewer-wrapper').innerHTML = `
-            <iframe src="${url}?t=${new Date().getTime()}" data="" id="pdf-viewer" style="width: 100%; height: 70vh;">
-                Loading...
-            </iframe>`;
-        }
-
-        function setDokumenInOpen(idDokumen, namaDokumen, namaMahasiswa, nim) {
-            console.log('setDokumenInOpen');
-            document.getElementById('id_dokumen').value = idDokumen;
-            document.getElementById('nama_dokumen').value = namaDokumen;
-            document.getElementById('nama_mahasiswa').value = namaMahasiswa;
-            document.getElementById('nim').value = nim;
-        }
-
-        function clearDokumenInOpen() {
-            console.log('clearDokumenInOpen');
-            document.getElementById('id_dokumen').value = '';
-            document.getElementById('nim').value = '';
-        }
-
-        document.getElementById('btn-acc').addEventListener('hidden.bs.modal', clearDokumenInOpen);
-        document.getElementById('btn-decl').addEventListener('hidden.bs.modal', clearDokumenInOpen);
-        document.getElementById('btn-see').addEventListener('hidden.bs.modal', resetDialogSee);
-
-        function removeTableActive() {
-            document.querySelectorAll('tbody tr').forEach(function(row) {
-                row.classList.remove('table-active');
-            });
-        }
-
-        function changeModalDialogMessage(id, message) {
-            let dialog = document.getElementById(id);
-            let modalBody = dialog.getElementsByClassName('modal-body')[0];
-            if (id == 'dialog-decl') {
-                modalBody.innerHTML = `
-                ${message}<br><br>
-                <label for="komentar-tolak" class="form-label">Masukkan alasan penolakan</label>
-                <input type="text" class="form-control" value="" name="komentar" id="komentar-tolak" required />
-                <div class="invalid-feedback">
-                    Tolong isi alasan penolakan 
-                </div>                
-                `;
-                let inputKomentar = modalBody.querySelector('#komentar-tolak');
-                setTimeout(function() {
-                    inputKomentar.focus();
-                }, 500);
-
-            } else {
-                modalBody.innerHTML = message;
-            }
-        }
-
+    <?php 
+    include_once VIEWS . "template/script-helper.php";
+    include_once VIEWS . 'admin/template/pengumpulan-modal-script.php';
+    ?>
+    <script>       
         function getRowsPerPage(value) {
-            console.log(value);
             switch (value) {
                 case '0':
                     return 0;
@@ -717,71 +535,6 @@ dialogYesNoCustom(
         getDataPengumpulan(false);
         funToCallEachInterval.push(getDataPengumpulan);
 
-        function showResultAcc(showResult = false) {
-            if (!showResult) {
-                $('#result-acc').modal('show');
-            } else {
-                let result = document.querySelector('#result-acc #result-content');
-                result.style.opacity = '1';
-                setTimeout(function() {
-                    $('#result-acc').modal('hide');
-                    result.style.opacity = '1';
-                }, 1000);
-            }
-
-        }
-
-        function showResultDecl(showResult = false) {
-            if (!showResult) {
-                $('#result-decl').modal('show');
-            } else {
-                let result = document.querySelector('#result-decl #result-content');
-                result.style.opacity = '1';
-                setTimeout(function() {
-                    $('#result-decl').modal('hide');
-                    result.style.opacity = '1';
-                }, 1000);
-            }
-        }
-
-        document.getElementById('dialog-acc').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showResultAcc();
-            $.ajax({
-                type: "POST",
-                url: "updateDataPengumpulan",
-                data: $('#in-open-dokumen').serialize() + '&acc=true',
-                success: function(response) {
-                    console.log(response);
-                    getDataPengumpulan();
-                    showResultAcc(true);
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            });
-        });
-
-        // let dialogDecl = document.getElementById('dialog-decl');
-        document.getElementById('dialog-decl').addEventListener('submit', function(e) {
-            e.preventDefault();
-            document.querySelector('#btn-decl .btn-outline').click();
-            showResultDecl();
-            $.ajax({
-                type: "POST",
-                url: "updateDataPengumpulan",
-                data: $('#in-open-dokumen').serialize() + '&acc=false&komentar=' +
-                    document.getElementById('komentar-tolak').value,
-                success: function(response) {
-                    console.log(response);
-                    getDataPengumpulan();
-                    showResultDecl(true);
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            });
-        });
     </script>
-
+    <?php include_once VIEWS . 'admin/template/pengumpulan-update-script.php';?>
 </div>

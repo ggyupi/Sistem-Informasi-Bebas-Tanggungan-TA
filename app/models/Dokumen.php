@@ -169,22 +169,6 @@ class Dokumen extends Model
         return $data;
     }
 
-    public function getRecentDokumenByTingkat($tingkat, $limit = 3)
-    {
-        $query = $this->db->prepare("
-        SELECT d.id, d.dokumen, d.tanggal_upload, m.Nama AS mahasiswa, m.NIM 
-        FROM Pengguna.Dokumen d
-        INNER JOIN Pengguna.Mahasiswa m ON d.nim = m.NIM
-        WHERE d.tingkat = :tingkat
-        ORDER BY d.tanggal_upload DESC
-        LIMIT :limit
-    ");
-        $query->bindValue(":tingkat", $tingkat, PDO::PARAM_STR);
-        $query->bindValue(":limit", $limit, PDO::PARAM_INT);
-        $query->execute();
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function getStatusDokumenByNIM($nim)
     {
         $query = $this->db->prepare("
@@ -221,6 +205,27 @@ class Dokumen extends Model
         foreach ($tingkat as $index => $value) {
             $query->bindValue($index + 1, $value);
         }
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTop3Pengumpulan($tingkat)
+    {
+        $query = $this->db->prepare("
+            SELECT TOP (3) NIM nim
+            FROM (
+                SELECT 
+                    up.NIM,
+                    MAX(up.tanggal) AS MaxTanggal
+                FROM dokumen.Upload_dokumen up
+                JOIN dokumen.Dokumen d ON up.ID_dokumen = d.ID
+                WHERE d.tingkat = :tingkat AND up.Status = :status
+                GROUP BY up.NIM
+            ) AS grouped
+            ORDER BY grouped.MaxTanggal DESC;
+        ");
+        $query->bindValue(":tingkat", $tingkat);
+        $query->bindValue(":status", StatusDokumen::Menunggu->value);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }

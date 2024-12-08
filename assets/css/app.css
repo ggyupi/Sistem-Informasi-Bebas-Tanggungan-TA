@@ -708,7 +708,7 @@ td,
   fill: var(--bs-tertiary-color);
 }
 
-.input-group{
+.input-group {
   flex-wrap: nowrap;
 }
 
@@ -1145,3 +1145,34 @@ td,
 }
 
 /* End Pagination */
+
+/* Start Result */
+
+#result-content h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0px;
+}
+
+#result-content {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0px;
+  width: 630px;
+  height: 350px;
+  border-radius: 12px;
+  opacity: 0;
+}
+
+#result-content svg {
+  width: 50%;
+  height: 50%;
+}
+
+#result-content .status-badge-text {
+  width: 90px;
+  min-width: 90px;
+  height: 90px;
+}
+
+/* End Result */

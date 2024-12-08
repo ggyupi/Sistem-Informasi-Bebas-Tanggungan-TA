@@ -34,7 +34,12 @@ class Mahasiswa extends Model implements IUserApp
 
     public function getMahasiswaInformation($username)
     {
-        $query = $this->db->prepare("SELECT NIM, Nama, ID_prodi FROM Pengguna.Mahasiswa WHERE username = :username");
+        $query = $this->db->prepare("SELECT 
+        m.NIM nim, m.Nama nama,
+        p.Nama_Prodi program_studi, p.Jurusan jurusan
+        FROM Pengguna.Mahasiswa m
+        INNER JOIN prodi.Prodi p ON m.ID_prodi = p.ID
+        WHERE username = :username");
         $query->bindValue(":username", $username);
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC);
