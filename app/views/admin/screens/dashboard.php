@@ -22,7 +22,7 @@ include_once VIEWS . 'component/jam-card.php';
                         'icon' => Icons::Check,
                         'title' => '<span id="jurusan-status-diverifikasi">Loading...</span>',
                         'subtitle' => 'Dokumen diverifikasi',
-                        'href' =>  $urlSuccess 
+                        'href' => $urlSuccess
                     ],
                     [
                         'type' => 'warning',
@@ -51,7 +51,7 @@ include_once VIEWS . 'component/jam-card.php';
                         'icon' => Icons::Check,
                         'title' => '<span id="pusat-status-diverifikasi">Loading...</span>',
                         'subtitle' => 'Dokumen diverifikasi',
-                        'href' => $urlSuccess 
+                        'href' => $urlSuccess
                     ],
                     [
                         'type' => 'warning',
