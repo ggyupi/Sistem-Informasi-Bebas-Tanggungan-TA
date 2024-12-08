@@ -7,7 +7,6 @@ class Mahasiswa extends Model implements IUserApp
 {
     public $NIM;
     public $nama;
-    public $idProdi;
     public $username;
 
 
@@ -16,9 +15,8 @@ class Mahasiswa extends Model implements IUserApp
         parent::__construct($db);
         if ($username !== null) {
             $output = $this->getMahasiswaInformation($username);
-            $this->NIM = $output['NIM'];
-            $this->nama = $output['Nama'];
-            $this->idProdi = $output['ID_prodi'];
+            $this->NIM = $output['nim'];
+            $this->nama = $output['nama'];
         }
     }
 
