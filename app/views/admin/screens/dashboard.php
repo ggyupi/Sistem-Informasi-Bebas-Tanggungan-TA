@@ -230,6 +230,12 @@ include_once VIEWS . 'admin/template/pengumpulan-modal-script.php';
 
     function updateTableBodyItems(data) {
         let tableBody = document.getElementById('table-body');
+        if (tableBody.children.length / 2 != data.length) {
+            generateTableBodyItems(data);
+            tableBody.innerHTML = '';
+            tableBody.append(...generateTableBodyItems(data).children);
+            return;
+        }
         for (let i = 0; i < tableBody.children.length; i += 2) {
             let dataMahasiswa = data[i / 2].data_mahasiswa;
             let dataDetails = data[i / 2].data_detail;
@@ -292,9 +298,9 @@ include_once VIEWS . 'admin/template/pengumpulan-modal-script.php';
     var getDataPengumpulanInUpdate = false;
 
     function getDataPengumpulan(useUpdate = true) {
-        // if (getDataPengumpulanInUpdate) {
-        //     return;
-        // }
+        if (getDataPengumpulanInUpdate) {
+            return;
+        }
         getDataPengumpulanInUpdate = true;
         $.ajax({
             type: "POST",
@@ -308,7 +314,7 @@ include_once VIEWS . 'admin/template/pengumpulan-modal-script.php';
                 } else {
                     let tableBody = document.getElementById('table-body');
                     tableBody.innerHTML = '';
-                    tableBody.append(...generateTableBodyItems(data).children);                  
+                    tableBody.append(...generateTableBodyItems(data).children);
                 }
                 getDataPengumpulanInUpdate = false;
             },
@@ -316,7 +322,6 @@ include_once VIEWS . 'admin/template/pengumpulan-modal-script.php';
                 console.log(response);
                 getDataPengumpulanInUpdate = false;
             }
-
         });
 
     }
