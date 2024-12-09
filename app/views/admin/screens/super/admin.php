@@ -68,7 +68,7 @@ include_once VIEWS . 'component/btn-icon.php';
 </style>
 
 <div class="modal fade" id="result-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">;
+    <div class="modal-dialog modal-dialog-centered">
         <div class="d-flex flex-row align-items-center justify-content-center success-bg" id="result-content">
             <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
                 <div class="status-badge-text success"><?= SvgIcons::getIconWithColor(Icons::Check, "white") ?></div>
@@ -79,7 +79,7 @@ include_once VIEWS . 'component/btn-icon.php';
 </div>
 
 <div class="modal fade" id="result-del" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">;
+    <div class="modal-dialog modal-dialog-centered">
         <div class="d-flex flex-row align-items-center justify-content-center success-bg" id="result-content">
             <div class="d-flex flex-column align-items-center justify-content-center " style="gap: 16px;">
                 <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Trash, "white") ?></div>
@@ -157,11 +157,11 @@ dialogYesNoCustom(
                             <input type="text" class="form-control" value="" name="tempat_lahir" id="input-lahir"
                                 required />
                             <label for="input-nik" class="form-label"><b>NIK</b></label>
-                            <input type="text" class="form-control" value="" name="nik" id="input-nik" required />
+                            <input type="number" class="form-control" value="" name="nik" id="input-nik" required pattern="[0-9]+" />
                             <label for="input-alamat" class="form-label"><b>Alamat</b></label>
                             <input type="text" class="form-control" value="" name="alamat" id="input-alamat" required />
                             <label for="input-telp" class="form-label"><b>Nomor Telepon</b></label>
-                            <input type="text" class="form-control" value="" name="no_telp" id="input-telp" required />
+                            <input type="number" class="form-control" value="" name="no_telp" id="input-telp" required pattern="[0-9]+" />
                         </div>
                     </div>
                 </div>
