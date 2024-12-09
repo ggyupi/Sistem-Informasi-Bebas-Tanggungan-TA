@@ -150,7 +150,7 @@
             <div class="flex-row align-items-center justify-content-center" id="status-lulus">
                 <div class="flex-column align-items-center justify-content-center" style="gap: 16px; display: flex;">
                     <div class="status-badge-text success"><?= SvgIcons::getIconWithColor(Icons::Check, "white") ?></div>
-                    <h2>Anda Sudah Lulus</h2>
+                    <h2>Anda Sudah Memenuhi Persyaratan</h2>
                 </div>
             </div>
         </div>
