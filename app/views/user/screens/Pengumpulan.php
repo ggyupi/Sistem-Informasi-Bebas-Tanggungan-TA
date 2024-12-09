@@ -48,7 +48,7 @@ include_once VIEWS . 'component/btn-icon.php';
             <div id="total-tanggungan">
                 <div class="d-flex flex-row align-items-center justify-content-between" id="total-tanggungan-top">
                     <div class="d-flex flex-row align-items-center">
-                        <h2>Tanggungan Jurusan</h2>
+                        <h2>Tanggungan <?= $tingkat?></h2>
                         <div class="status-badge-text slim primary" id="total-dokumen">3</div>
                     </div>
                     <p id="last-update">12 Desember 2024</p>
@@ -70,7 +70,7 @@ include_once VIEWS . 'component/btn-icon.php';
             </div>
 
             <div id="list-dokumen-wrapper">
-                <h2>Daftar Dokumen Jurusan</h2>
+                <h2>Daftar Dokumen <?= $tingkat?></h2>
                 <div class="d-flex flex-column" id="list-dokumen">
                 </div>
             </div>
@@ -382,10 +382,10 @@ include_once VIEWS . 'component/btn-icon.php';
                         formatDate(date);
                 }
                 let formPengumpulanItemHBadge = formPengumpulanItemHeader.children[1].children[1];
-                let btnUpload = document.querySelector('#form-pengumpulan-upload-wrapper #upload-actions button:nth-child(1)');
+                let btnUpload = document.querySelectorAll('#form-pengumpulan-upload-wrapper #upload-actions button:nth-child(1)')[i];
 
                 dokumenItemBadge.classList.remove('success', 'warning', 'danger');
-                if (dataItem.status === '<?= StatusDokumen::Diverifikasi->value ?>') {
+                if (dataItem.status === '<?= StatusDokumen::Diverifikasi->value ?>') {                
                     dokumenItemBadge.classList.add('success');
                     btnUpload.classList.add('d-none');
                     dokumenItemBadge.innerHTML = statusBadgeIconVerified;
