@@ -119,8 +119,8 @@ include_once VIEWS . 'component/btn-icon.php';
                 '',
                 Icons::OpenInNewTab,
                 'var(--bs-emphasis-color)',
-                $data['user']->adminApa === TipeAdmin::Super ? 'window.location.href=\`screen?screen=super%2Fpengumpulan_${notification.tingkat}\`;' : 
-                'window.location.href=\'screen?screen=pengumpulan\';'
+                $data['user']->adminApa === TipeAdmin::Super ? 'window.location.href=\`screen?screen=super%2Fpengumpulan_${notification.tingkat}&search=${notification.Nama}\`;' : 
+                'window.location.href=\'screen?screen=pengumpulan&search=${notification.Nama}\';'
             ) ?>
         `;
 

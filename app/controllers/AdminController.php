@@ -46,7 +46,8 @@ class AdminController extends Controller
             "screen" => $screen,
             "title" => $title,
             "user" => $this->admin,
-            "filter" => isset($_GET['filter']) ? $_GET['filter'] : ''
+            "filter" => isset($_GET['filter']) ? $_GET['filter'] : '',
+            "search" => isset($_GET['search']) ? $_GET['search'] : ''
         ]);
     }
 
