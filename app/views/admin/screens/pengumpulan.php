@@ -521,7 +521,9 @@ include_once VIEWS . 'admin/template/pengumpulan-modal.php';
 
                     if (callOnStart) {
                         callOnStart = false;
-                        selectFilter("<?= $data['filter'] ?>");
+                        filterData.value = "<?= $data['filter'] ?>";
+                        searchInput.value = "<?= $data['search'] ?>";
+                        renderTableWithTweaks();
                     }
                 },
                 error: function(response) {
