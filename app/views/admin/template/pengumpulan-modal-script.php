@@ -15,9 +15,10 @@
         }
         document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
         document.getElementById('pdf-viewer-wrapper').innerHTML = `
-            <iframe src="${url}?t=${new Date().getTime()}" data="" id="pdf-viewer" style="width: 100%; height: 70vh;">
-                Loading...
-            </iframe>`;
+            <object src="${url}?t=${new Date().getTime()}" data="${url}?t=${new Date().getTime()}" id="pdf-viewer" style="width: 100%; height: 70vh;">
+                <p>Browser tidak dapat meload File</p>
+                <p><a href="${url}" download="${getFileName(url)}">Download Saja min</a></p>
+            </object>`;
     }
 
     function setDokumenInOpen(idDokumen, namaDokumen, namaMahasiswa, nim) {
