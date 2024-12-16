@@ -1176,3 +1176,17 @@ td,
 }
 
 /* End Result */
+
+/* Start Modal Dialog */
+
+.modal-header .d-flex {
+  overflow: hidden;
+}
+
+.modal-header h1 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* End Modal Dialog */

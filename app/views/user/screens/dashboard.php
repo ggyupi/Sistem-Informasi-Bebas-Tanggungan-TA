@@ -28,8 +28,15 @@
         font-size: 24px;
         font-weight: 600;
         margin: 0px;
+        white-space: break-spaces;
+        text-align: center;
     }
 
+    @media (max-width: 768px) {
+        #status-lulus {
+            height: 87vh;
+        }
+    }
 
     #status-lulus svg {
         width: 50%;
@@ -208,8 +215,7 @@
                 <div class="status-badge-text success"><?= SvgIcons::getIconWithColor(Icons::Check, "white") ?></div>
                 <h2>Anda Sudah Lulus</h2>
             `;
-        }
-        else{
+        } else {
             statusLulus.classList.add('danger-bg');
             statusLulus.children[0].innerHTML = `
                 <div class="status-badge-text danger"><?= SvgIcons::getIconWithColor(Icons::Close, "white") ?></div>
@@ -235,7 +241,6 @@
         });
     }
 
-    // Panggil fungsi pertama kali dan ulangi setiap 60 detik
     updateDokumenStatus();
     funToCallEachInterval.push(updateDokumenStatus);
 </script>

@@ -68,24 +68,26 @@ dialogYesNoCustom(
     </div>',
     '<div id="pdf-viewer-wrapper">
     </div>',
-    '<div class="d-flex flex-row align-items-center" id="pdf-viewer-footer">
-        <button style="padding: 14px 12px; margin: 0px 8px" type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
-        <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-decl" 
-        onclick="
-            changeModalDialogMessage(`dialog-decl`, 
-                `Tolak <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
-                ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
-                ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
-                ' . statusBadge('danger', Icons::Close, 'Tolak') . '
-        </button>
-        <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-acc"
-        onclick="
-            changeModalDialogMessage(`dialog-acc`, 
-                `Acc <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
-                ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
-                ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
-         ' . statusBadge('success', Icons::Check, 'Terima') . '
-         </button>
+    '<div class="d-flex flex-row align-items-center justify-content-end flex-wrap" id="pdf-viewer-footer">
+        <button style="padding: 14px 12px; margin: 0px 8px; flex: 1;" type="button" class="btn btn-outline" data-bs-dismiss="modal">' . SvgIcons::getIcon(Icons::Close) . 'Ga Jadi</button>
+        <div class="d-flex flex-row align-items-center">
+            <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-decl" 
+            onclick="
+                changeModalDialogMessage(`dialog-decl`, 
+                    `Tolak <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
+                    ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
+                    ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
+                    ' . statusBadge('danger', Icons::Close, 'Tolak') . '
+            </button>
+            <button class="btn btn-badge" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#btn-acc"
+            onclick="
+                changeModalDialogMessage(`dialog-acc`, 
+                    `Acc <strong>[${document.getElementById(`in-open-dokumen`).nim.value}] 
+                    ${document.getElementById(`in-open-dokumen`).nama_mahasiswa.value} <br>
+                    ${document.getElementById(`in-open-dokumen`).nama_dokumen.value}</strong>?`);">
+             ' . statusBadge('success', Icons::Check, 'Terima') . '
+             </button>
+        </div>
     </div>',
     true,
     '70vw'
