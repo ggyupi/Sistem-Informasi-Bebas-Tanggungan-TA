@@ -9,9 +9,9 @@
         resetDialogSee();
         let pdfViewerFooter = document.querySelector('#btn-see #pdf-viewer-footer');
         if (status === '<?= StatusDokumen::Diverifikasi->value ?>') {
-            pdfViewerFooter.children[2].style.display = 'none';
+            pdfViewerFooter.children[1].children[1].style.display = 'none';
         } else if (status === '<?= StatusDokumen::Ditolak->value ?>') {
-            pdfViewerFooter.children[1].style.display = 'none';
+            pdfViewerFooter.children[1].children[0].style.display = 'none';
         }
         document.getElementById('pdf-viewer-title').innerHTML = getFileName(url);
         document.getElementById('pdf-viewer-wrapper').innerHTML = `
